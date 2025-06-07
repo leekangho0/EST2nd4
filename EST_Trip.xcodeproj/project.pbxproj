@@ -26,6 +26,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		36F409B02DF48EFF00BD8C7B /* Exceptions for "EST_Trip" folder in "EST_TripTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/Resource/Secrets.xcconfig,
+			);
+			target = B76EE96E2DF0AF9300290F80 /* EST_TripTests */;
+		};
 		B76EE9812DF0AF9300290F80 /* Exceptions for "EST_Trip" folder in "EST_Trip" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -40,6 +47,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				B76EE9812DF0AF9300290F80 /* Exceptions for "EST_Trip" folder in "EST_Trip" target */,
+				36F409B02DF48EFF00BD8C7B /* Exceptions for "EST_Trip" folder in "EST_TripTests" target */,
 			);
 			path = EST_Trip;
 			sourceTree = "<group>";
@@ -224,6 +232,8 @@
 /* Begin XCBuildConfiguration section */
 		B76EE9832DF0AF9300290F80 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B76EE9582DF0AF9200290F80 /* EST_Trip */;
+			baseConfigurationReferenceRelativePath = App/Resource/Secrets.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -256,6 +266,8 @@
 		};
 		B76EE9842DF0AF9300290F80 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B76EE9582DF0AF9200290F80 /* EST_Trip */;
+			baseConfigurationReferenceRelativePath = App/Resource/Secrets.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -409,6 +421,8 @@
 		};
 		B76EE9882DF0AF9300290F80 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B76EE9582DF0AF9200290F80 /* EST_Trip */;
+			baseConfigurationReferenceRelativePath = App/Resource/Secrets.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -431,6 +445,8 @@
 		};
 		B76EE9892DF0AF9300290F80 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B76EE9582DF0AF9200290F80 /* EST_Trip */;
+			baseConfigurationReferenceRelativePath = App/Resource/Secrets.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
