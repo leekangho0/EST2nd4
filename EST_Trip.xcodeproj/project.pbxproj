@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		36F409AA2DF4839000BD8C7B /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 36F409A92DF4839000BD8C7B /* GoogleMaps */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B76EE9702DF0AF9300290F80 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36F409AA2DF4839000BD8C7B /* GoogleMaps in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +108,7 @@
 			);
 			name = EST_Trip;
 			packageProductDependencies = (
+				36F409A92DF4839000BD8C7B /* GoogleMaps */,
 			);
 			productName = EST_Trip;
 			productReference = B76EE9562DF0AF9200290F80 /* EST_Trip.app */;
@@ -159,6 +165,9 @@
 			);
 			mainGroup = B76EE94D2DF0AF9200290F80;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				36F409A42DF4785700BD8C7B /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B76EE9572DF0AF9200290F80 /* Products */;
 			projectDirPath = "";
@@ -473,6 +482,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36F409A42DF4785700BD8C7B /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36F409A92DF4839000BD8C7B /* GoogleMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36F409A42DF4785700BD8C7B /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
+			productName = GoogleMaps;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B76EE94E2DF0AF9200290F80 /* Project object */;
 }
