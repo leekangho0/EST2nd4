@@ -8,7 +8,7 @@
 import Foundation
 
 class CalendarSelectionManager {
-    private var travelDate = TravelDate()
+    private(set) var travelDate = TravelDate()
 
     // 달력의 날짜 선택
     func select(date: Date) {
