@@ -26,13 +26,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		36F409B02DF48EFF00BD8C7B /* Exceptions for "EST_Trip" folder in "EST_TripTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				App/Resource/Secrets.xcconfig,
-			);
-			target = B76EE96E2DF0AF9300290F80 /* EST_TripTests */;
-		};
 		B76EE9812DF0AF9300290F80 /* Exceptions for "EST_Trip" folder in "EST_Trip" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -47,7 +40,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				B76EE9812DF0AF9300290F80 /* Exceptions for "EST_Trip" folder in "EST_Trip" target */,
-				36F409B02DF48EFF00BD8C7B /* Exceptions for "EST_Trip" folder in "EST_TripTests" target */,
 			);
 			path = EST_Trip;
 			sourceTree = "<group>";
