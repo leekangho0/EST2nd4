@@ -50,7 +50,7 @@
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TY7-Zj-KUD">
-                                        <rect key="frame" x="0.0" y="72" width="393" height="552"/>
+                                        <rect key="frame" x="0.0" y="72" width="393" height="662"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="G9a-GF-Bcc">
                                             <size key="itemSize" width="71" height="72"/>
@@ -177,7 +177,7 @@
                                             </connections>
                                         </collectionReusableView>
                                     </collectionView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gjm-tv-vzb">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gjm-tv-vzb">
                                         <rect key="frame" x="0.0" y="624" width="393" height="110"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCl-Cg-pdU">
@@ -222,6 +222,8 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="TY7-Zj-KUD" id="ZIT-4K-sd0"/>
+                        <outlet property="dateSelectionView" destination="Gjm-tv-vzb" id="7Pm-EB-HoV"/>
+                        <outlet property="setDateButton" destination="OCl-Cg-pdU" id="C2F-Hv-Y7D"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UC8-hP-LrG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

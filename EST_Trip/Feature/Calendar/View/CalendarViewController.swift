@@ -9,6 +9,8 @@ import UIKit
 
 final class CalendarViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var setDateButton: UIButton!
+    @IBOutlet weak var dateSelectionView: UIView!
 
     private let calendarManager = CalendarManager()
     private let calendarSelectionManager = CalendarSelectionManager()
@@ -16,12 +18,47 @@ final class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        dateSelectionView.layer.shadowColor = UIColor.black.cgColor
+        dateSelectionView.layer.shadowOpacity = 0.1
+
         collectionView.dataSource = self
         collectionView.delegate = self
 
         print("뷰디드로드 됨")
         print("컬렉션뷰 프레임:", collectionView.frame)
         print("섹션 데이터 개수:", calendarManager.dates(for: 0).count)
+    }
+
+    func updateDateSelectionUI() {
+        let travelDate = calendarSelectionManager.travelDate
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.M.d"
+
+        if let start = travelDate.startDate, let end = travelDate.endDate {
+            let startText = formatter.string(from: start)
+            let endFormatter = DateFormatter()
+            endFormatter.dateFormat = "M.d"
+            let endText = endFormatter.string(from: end)
+
+            let fullText = "\(startText) - \(endText) / 등록 완료"
+            let attributed = NSAttributedString(string: fullText, attributes: [
+                .font: UIFont.systemFont(ofSize: 13, weight: .bold),
+                .foregroundColor: UIColor.white
+            ])
+            setDateButton.setAttributedTitle(attributed, for: .normal)
+            dateSelectionView.isHidden = false
+        } else if let start = travelDate.startDate {
+            let startText = formatter.string(from: start)
+            let fullText = "\(startText) / 당일 일정으로 등록완료"
+            let attributed = NSAttributedString(string: fullText, attributes: [
+                .font: UIFont.systemFont(ofSize: 13, weight: .bold),
+                .foregroundColor: UIColor.white
+            ])
+            setDateButton.setAttributedTitle(attributed, for: .normal)
+            dateSelectionView.isHidden = false
+        } else {
+            dateSelectionView.isHidden = true
+        }
     }
 }
 
@@ -97,6 +134,7 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
         calendarSelectionManager.select(date: model.date)
         collectionView.reloadData()
+        updateDateSelectionUI()
     }
 
     func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -105,6 +143,12 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let totalSpacing: CGFloat = 0
+        let width = (collectionView.bounds.width - totalSpacing) / 7
+        return CGSize(width: floor(width), height: floor(width))
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
