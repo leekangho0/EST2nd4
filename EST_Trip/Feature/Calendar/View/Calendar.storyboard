@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="OHA-bI-IIC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -202,7 +202,7 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="TY7-Zj-KUD" secondAttribute="bottom" id="6OO-wd-4O8"/>
+                                    <constraint firstAttribute="bottom" secondItem="TY7-Zj-KUD" secondAttribute="bottom" priority="999" constant="110" id="6OO-wd-4O8"/>
                                     <constraint firstItem="TY7-Zj-KUD" firstAttribute="top" secondItem="JaQ-3U-vxM" secondAttribute="bottom" id="BvU-Eh-07C"/>
                                     <constraint firstAttribute="bottom" secondItem="Gjm-tv-vzb" secondAttribute="bottom" id="UJf-i6-FuI"/>
                                     <constraint firstAttribute="trailing" secondItem="TY7-Zj-KUD" secondAttribute="trailing" id="jp0-t3-WBX"/>

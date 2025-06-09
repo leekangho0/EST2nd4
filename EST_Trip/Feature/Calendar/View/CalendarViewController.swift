@@ -14,6 +14,7 @@ final class CalendarViewController: UIViewController {
 
     private let calendarManager = CalendarManager()
     private let calendarSelectionManager = CalendarSelectionManager()
+    private var didScrollToToday = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +30,15 @@ final class CalendarViewController: UIViewController {
         print("섹션 데이터 개수:", calendarManager.dates(for: 0).count)
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        if let todayIndexPath = calendarManager.todayIndexPath {
-            collectionView.scrollToItem(at: todayIndexPath, at: .centeredVertically, animated: false)
+        guard !didScrollToToday,
+              let indexPath = calendarManager.todayIndexPath else { return }
+
+        collectionView.performBatchUpdates(nil) { [weak self] _ in
+            self?.collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
+            self?.didScrollToToday = true
         }
     }
 
@@ -106,8 +111,6 @@ extension CalendarViewController: UICollectionViewDataSource {
         let dateString = dateFormatter.string(from: date)
 
         let isToday = Calendar.current.isDateInToday(date)
-        let weekday = Calendar.current.component(.weekday, from: date)
-
         let isWeekend: Bool
         if dateModel.date == .distantPast {
             isWeekend = false
