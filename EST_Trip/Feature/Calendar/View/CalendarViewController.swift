@@ -29,8 +29,8 @@ final class CalendarViewController: UIViewController {
         print("섹션 데이터 개수:", calendarManager.dates(for: 0).count)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
         if let todayIndexPath = calendarManager.todayIndexPath {
             collectionView.scrollToItem(at: todayIndexPath, at: .centeredVertically, animated: false)

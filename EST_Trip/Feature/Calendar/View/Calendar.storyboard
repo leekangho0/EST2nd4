@@ -61,7 +61,7 @@
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="PoN-DT-8Zv" customClass="DateCell" customModule="EST_Trip" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="100" width="71" height="72"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="hjg-sZ-2Xc">
                                                     <rect key="frame" x="0.0" y="0.0" width="71" height="72"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -202,8 +202,9 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="TY7-Zj-KUD" secondAttribute="bottom" id="6OO-wd-4O8"/>
+                                    <constraint firstItem="TY7-Zj-KUD" firstAttribute="top" secondItem="JaQ-3U-vxM" secondAttribute="bottom" id="BvU-Eh-07C"/>
                                     <constraint firstAttribute="bottom" secondItem="Gjm-tv-vzb" secondAttribute="bottom" id="UJf-i6-FuI"/>
-                                    <constraint firstAttribute="bottom" secondItem="TY7-Zj-KUD" secondAttribute="bottom" constant="110" id="Zjf-fa-xfF"/>
                                     <constraint firstAttribute="trailing" secondItem="TY7-Zj-KUD" secondAttribute="trailing" id="jp0-t3-WBX"/>
                                     <constraint firstItem="Gjm-tv-vzb" firstAttribute="leading" secondItem="H6a-xT-A74" secondAttribute="leading" id="lEc-Ao-ff4"/>
                                     <constraint firstAttribute="trailing" secondItem="Gjm-tv-vzb" secondAttribute="trailing" id="mdr-68-uPU"/>
