@@ -36,15 +36,16 @@ class CalendarManager {
             let year = comp.year
             let month = comp.month
 
-            let monthTitle = "\(String(describing: year))년 \(String(describing: month))월"
-
             // 앞쪽 빈칸 계산
             guard let firstOfMonth = calendar.date(from: DateComponents(year: year, month: month, day: 1)) else {
                 print("첫날 날짜 객체 생성 오류")
                 return
             }
+
             let weekday = calendar.component(.weekday, from: firstOfMonth)
             let padding = weekday - 1
+            
+            let monthTitle = "\(year!)년 \(month!)월"
 
             // 필요한 일자 배열
             guard let range = calendar.range(of: .day, in: .month, for: firstOfMonth) else {
@@ -70,10 +71,7 @@ class CalendarManager {
                 dates.append(CalendarDate(date: date, annotation: annotation))
             }
 
-            let trailingPadding = 42 - dates.count
-            if trailingPadding > 0 {
-                dates.append(contentsOf: Array(repeating: CalendarDate(date: .distantPast, annotation: nil), count: trailingPadding))
-            }
+            // 트레일링 패딩 구현이 필요할 수 있음, 달이 넘어가는 하이라이트 구현시
 
             sections.append(CalendarSection(title: monthTitle, dates: dates))
 
@@ -84,5 +82,17 @@ class CalendarManager {
             monthCursor = nextMonth
             sectionIdex += 1
         }
+    }
+
+    var numberOfSections: Int {
+        sections.count
+    }
+
+    func dates(for section: Int) -> [CalendarDate] {
+        return sections[section].dates
+    }
+
+    func title(for section: Int) -> String {
+        sections[section].title
     }
 }
