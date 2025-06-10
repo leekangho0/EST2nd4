@@ -93,4 +93,13 @@ final class CalendarManager {
     func title(for section: Int) -> String {
         sections[section].title
     }
+
+    func isToday(_ date: Date) -> Bool {
+        Calendar.current.isDateInToday(date)
+    }
+
+    func isWeekend(_ date: Date) -> Bool {
+        let w = Calendar.current.component(.weekday, from: date)
+        return w == 1 || w == 7
+    }
 }

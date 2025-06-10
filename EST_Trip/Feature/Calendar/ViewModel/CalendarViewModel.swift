@@ -48,10 +48,10 @@ final class CalendarViewModel {
     }
     // MARK: - 유틸
     func isToday(_ date: Date) -> Bool {
-        Calendar.current.isDateInToday(date)
+        calendarManager.isToday(date)
     }
+
     func isWeekend(_ date: Date) -> Bool {
-        let w = Calendar.current.component(.weekday, from: date)
-        return w == 1 || w == 7
+        calendarManager.isWeekend(date)
     }
 }
