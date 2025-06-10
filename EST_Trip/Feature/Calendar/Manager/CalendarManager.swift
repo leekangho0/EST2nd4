@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CalendarManager {
+final class CalendarManager {
 	// 2025.01~2030.12까지 담을 섹션
     private(set) var sections: [CalendarSection] = []
 	// 뷰컨이 오늘 셀로 스크롤할 때 쓰는 인덱스
@@ -71,12 +71,10 @@ class CalendarManager {
                 dates.append(CalendarDate(date: date, annotation: annotation))
             }
 
-            // 트레일링 패딩 구현이 필요할 수 있음, 달이 넘어가는 하이라이트 구현시
-
             sections.append(CalendarSection(title: monthTitle, dates: dates))
 
             guard let nextMonth = calendar.date(byAdding: .month, value: 1, to: monthCursor) else {
-                print("다음 달 계산 올퓨")
+                print("다음 달 계산 오류")
                 return
             }
             monthCursor = nextMonth
@@ -94,5 +92,14 @@ class CalendarManager {
 
     func title(for section: Int) -> String {
         sections[section].title
+    }
+
+    func isToday(_ date: Date) -> Bool {
+        Calendar.current.isDateInToday(date)
+    }
+
+    func isWeekend(_ date: Date) -> Bool {
+        let w = Calendar.current.component(.weekday, from: date)
+        return w == 1 || w == 7
     }
 }

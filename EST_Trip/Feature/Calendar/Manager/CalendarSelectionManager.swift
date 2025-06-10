@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CalendarSelectionManager {
+final class CalendarSelectionManager {
     private(set) var travelDate = TravelDate()
 
     // 달력의 날짜 선택
