@@ -83,9 +83,7 @@ extension RouteFindingNetworkManager {
             startX: "\(origin.longitude)",
             startY: "\(origin.latitude)",
             endX: "\(destination.longitude)",
-            endY: "\(destination.latitude)",
-            startName: "%EA",
-            endName: "%EC%"
+            endY: "\(destination.latitude)"
         )
         
         guard let jsonData = try? JSONEncoder().encode(body) else {
