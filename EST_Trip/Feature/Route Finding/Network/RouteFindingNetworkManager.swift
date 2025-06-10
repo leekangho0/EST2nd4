@@ -23,6 +23,7 @@ final class RouteFindingNetworkManager {
         
         enum Directions {
             static let pedestrian = "\(TmapAPI.baseURL)/tmap/routes/pedestrian"
+            static let routes = "\(TmapAPI.baseURL)/tmap/routes"
         }
     }
     
@@ -30,9 +31,51 @@ final class RouteFindingNetworkManager {
     private init() {}
 }
 
-// MARK: - Tmap Pedestrian API
+// MARK: - Tmap Routes API (자동차 경로)
 extension RouteFindingNetworkManager {
-    func fetchTmapTransitRoute(
+    func fetchTmapRoutes(
+        from origin: CLLocationCoordinate2D,
+        to destination: CLLocationCoordinate2D
+    ) async throws -> [TmapRoutesAPIModels.Feature] {
+        let body = TmapRoutesAPIModels.Request(
+            startX: origin.longitude,
+            startY: origin.latitude,
+            endX: destination.longitude,
+            endY: destination.latitude
+        )
+        
+        guard let jsonData = try? JSONEncoder().encode(body) else {
+            throw EncodingError.invalidValue(body, .init(codingPath: [], debugDescription: "Failed to encode body"))
+        }
+        
+        guard let components = URLComponents(string: TmapAPI.Directions.routes) else {
+            throw URLError(.badURL)
+        }
+
+        guard let url = components.url else {
+            throw URLError(.badURL)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(APIKey.tmap.value, forHTTPHeaderField: "appKey")
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+//        print("📦 응답 데이터: \(String(data: data, encoding: .utf8) ?? "none")")
+        
+        let response = try JSONDecoder().decode(TmapRoutesAPIModels.Response.self, from: data)
+        
+        return response.features
+    }
+}
+
+// MARK: - Tmap Pedestrian API (보행자 경로)
+extension RouteFindingNetworkManager {
+    func fetchTmapPedestrianRoute(
         from origin: CLLocationCoordinate2D,
         to destination: CLLocationCoordinate2D
     ) async throws -> [TmapPedestrianRouteAPIModels.Feature] {
