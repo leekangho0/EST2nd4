@@ -14,13 +14,13 @@ enum GooglePlacesAPI {
 
 extension GooglePlacesAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "https://maps.googleapis.com/maps/api/place")!
+        return URL(string: "https://maps.googleapis.com/maps/api")!
     }
 
     var path: String {
         switch self {
         case .textSearch:
-            return "/textsearch/json"
+            return "place/textsearch/json"
         }
     }
 

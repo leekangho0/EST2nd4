@@ -4,6 +4,8 @@
 <dict>
 	<key>GoogleAPIKey</key>
 	<string>$(GOOGLE_API_KEY)</string>
+	<key>GoogleAPIKey2</key>
+	<string>$(GOOGLE_API_KEY2)</string>
 	<key>OdsayAPIKey</key>
 	<string>$(ODSAY_API_KEY)</string>
 	<key>UIApplicationSceneManifest</key>
