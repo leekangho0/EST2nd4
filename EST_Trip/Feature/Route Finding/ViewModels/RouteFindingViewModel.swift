@@ -12,6 +12,71 @@ final class RouteFindingViewModel {
     
 }
 
+// MARK: - Tmap API 보행자 경로 데이터 가공
+extension RouteFindingViewModel {
+    func parseFeatures(features: [TmapPedestrianRouteAPIModels.Feature]) -> TmapPedestrianRoute {
+        var locations = [CLLocationCoordinate2D]()
+        var totalTime = 0
+        var totalDistance = 0
+        
+        for feature in features {
+            let geometry = feature.geometry
+            let coordinates = geometry.coordinates
+            
+            if geometry.type == "Point" {
+                // Point면 [Double] 타입 (ex.[127.xxx, 35.xxx])
+                var location: [Double] = []
+                
+                coordinates.forEach {
+                    if case let .double(value) = $0 {
+                        location.append(value)
+                    }
+                }
+                
+                if location.count == 2 {
+                    locations
+                        .append(
+                            CLLocationCoordinate2D(
+                                latitude: location[1],
+                                longitude: location[0]
+                            )
+                        )
+                }
+            } else {
+                // LineString이면 [[Double]] 타입 (ex. [[127.xx, 34.xx], [127.xx, 34.xx] ... ])
+                coordinates.forEach {
+                    if case let .doubleArray(value) = $0 {
+                        if value.count == 2 {
+                            locations
+                                .append(
+                                    CLLocationCoordinate2D(
+                                        latitude: value[1],
+                                        longitude: value[0]
+                                    )
+                                )
+                        }
+                    }
+                }
+            }
+            
+            let properties = feature.properties
+            
+            if properties.pointType == "SP",
+               let time = properties.totalTime,
+                let distance = properties.totalDistance {
+                totalTime = time
+                totalDistance = distance
+            }
+        }
+        
+        return TmapPedestrianRoute(
+            distance: totalDistance,
+            time: totalTime,
+            locations: locations
+        )
+    }
+}
+
 // MARK: - Google Route API로 받은 데이터 가공
 extension RouteFindingViewModel {
     func parseRoutes(routes: [GoogleRouteAPIModels.Route]) {

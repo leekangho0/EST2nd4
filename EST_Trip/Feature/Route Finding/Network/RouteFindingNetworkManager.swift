@@ -18,9 +18,62 @@ final class RouteFindingNetworkManager {
         }
     }
     
+    enum TmapAPI {
+        static let baseURL = "https://apis.openapi.sk.com"
+        
+        enum Directions {
+            static let pedestrian = "\(TmapAPI.baseURL)/tmap/routes/pedestrian"
+        }
+    }
+    
     static let shared = RouteFindingNetworkManager()
     private init() {}
 }
+
+// MARK: - Tmap Pedestrian API
+extension RouteFindingNetworkManager {
+    func fetchTmapTransitRoute(
+        from origin: CLLocationCoordinate2D,
+        to destination: CLLocationCoordinate2D
+    ) async throws -> [TmapPedestrianRouteAPIModels.Feature] {
+        let body = TmapPedestrianRouteAPIModels.Request(
+            startX: "\(origin.longitude)",
+            startY: "\(origin.latitude)",
+            endX: "\(destination.longitude)",
+            endY: "\(destination.latitude)",
+            startName: "%EA",
+            endName: "%EC%"
+        )
+        
+        guard let jsonData = try? JSONEncoder().encode(body) else {
+            throw EncodingError.invalidValue(body, .init(codingPath: [], debugDescription: "Failed to encode body"))
+        }
+        
+        guard let components = URLComponents(string: TmapAPI.Directions.pedestrian) else {
+            throw URLError(.badURL)
+        }
+
+        guard let url = components.url else {
+            throw URLError(.badURL)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(APIKey.tmap.value, forHTTPHeaderField: "appKey")
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+//        print("📦 응답 데이터: \(String(data: data, encoding: .utf8) ?? "none")")
+        
+        let response = try JSONDecoder().decode(TmapPedestrianRouteAPIModels.Response.self, from: data)
+        
+        return response.features
+    }
+}
+
 
 // MARK: - Google Route API
 extension RouteFindingNetworkManager {
