@@ -9,6 +9,7 @@ import Foundation
 
 enum APIKey: String {
     case googleMaps = "GoogleAPIKey"
+    case odsayKey = "OdsayAPIKey"
     
     var value: String {
         guard let key = Bundle.main.object(forInfoDictionaryKey: self.rawValue) as? String, !key.isEmpty else {
