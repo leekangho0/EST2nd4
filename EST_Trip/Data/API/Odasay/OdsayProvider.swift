@@ -25,12 +25,15 @@ class OdsayProvider {
                     let model = try JSONDecoder().decode(D.self, from: response.data)
                     completion(.success(model))
                 } catch {
-                    let errorResponse = try? JSONDecoder().decode(Odsay.ErrorResponse.self, from: response.data)
-                    
-                    completion(.failure(NetworkError.decodeError(error.localizedDescription)))
-                    if let rawString = String(data: response.data, encoding: .utf8) {
-                        print(rawString)
+                    guard let errorResponse = try? JSONDecoder().decode(Odsay.ErrorResponse.self, from: response.data) else {
+                        if let rawString = String(data: response.data, encoding: .utf8) {
+                            print(rawString)
+                        }
+                        completion(.failure(NetworkError.decodeError(error.localizedDescription)))
+                        return
                     }
+                    
+                    completion(.failure(NetworkError.underlying(errorResponse.description)))
                 }
                 
             case .failure(let error):
