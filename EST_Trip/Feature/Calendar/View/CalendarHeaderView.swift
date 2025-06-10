@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CalendarHeaderView: UICollectionReusableView {
+final class CalendarHeaderView: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel!
 
     func configure(title: String) {
