@@ -26,6 +26,7 @@
 /* Begin PBXFileReference section */
 		B76EE9562DF0AF9200290F80 /* EST_Trip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EST_Trip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76EE96F2DF0AF9300290F80 /* EST_TripTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EST_TripTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7E1F10D2DF814B100E23A9C /* EST_Trip.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = EST_Trip.xctestplan; path = EST_TripTests/EST_Trip.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -86,6 +87,7 @@
 		B76EE94D2DF0AF9200290F80 = {
 			isa = PBXGroup;
 			children = (
+				B7E1F10D2DF814B100E23A9C /* EST_Trip.xctestplan */,
 				B76EE9582DF0AF9200290F80 /* EST_Trip */,
 				B76EE9722DF0AF9300290F80 /* EST_TripTests */,
 				B74CA2D82DF69181006CE350 /* Frameworks */,
