@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "B8E4B997-E440-4827-99E4-8FF8F322D76A",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:EST_Trip.xcodeproj",
+      "identifier" : "B76EE9552DF0AF9200290F80",
+      "name" : "EST_Trip"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:EST_Trip.xcodeproj",
+        "identifier" : "B76EE96E2DF0AF9300290F80",
+        "name" : "EST_TripTests"
+      }
+    }
+  ],
+  "version" : 1
+}
