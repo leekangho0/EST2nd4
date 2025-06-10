@@ -27,5 +27,7 @@
 	<string>위치 정보 요청</string>
 	<key>GoogleAPIKey</key>
 	<string>$(GOOGLE_API_KEY)</string>
+	<key>TmapAPIKey</key>
+	<string>$(TMAP_API_KEY)</string>
 </dict>
 </plist>
