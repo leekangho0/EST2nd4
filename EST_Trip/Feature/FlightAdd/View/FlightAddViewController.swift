@@ -16,6 +16,10 @@ class FlightAddViewController: UIViewController {
         presentDataSelectionSheet()
     }
 
+    @IBOutlet weak var departureAirport: UIButton!
+    @IBOutlet weak var arrivalAirport: UIButton!
+    
+
     private var hasPresentedDateSheet = false
 
     override func viewDidLoad() {
@@ -69,6 +73,15 @@ class FlightAddViewController: UIViewController {
 
                 departureDate.setTitle(title, for: .normal)
                 departureDate.setTitleColor(.label, for: .normal)
+
+                if !viewModel.flight.departureAirport.isEmpty {
+                    departureAirport.setTitle(viewModel.flight.departureAirport, for: .normal)
+                    departureAirport.setTitleColor(.label, for: .normal)
+                }
+                if !viewModel.flight.arrivalAirport.isEmpty {
+                    arrivalAirport.setTitle(viewModel.flight.arrivalAirport, for: .normal)
+                    arrivalAirport.setTitleColor(.label, for: .normal)
+                }
             }
             present(vc, animated: true)
         }

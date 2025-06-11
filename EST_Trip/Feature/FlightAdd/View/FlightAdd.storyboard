@@ -188,13 +188,13 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Iqq-Lf-FtF">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aLJ-sZ-ZbQ">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aLJ-sZ-ZbQ" userLabel="공항을 선택해주세요.">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="J9B-uH-vHD"/>
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="시간을 선택해주세요.">
+                                                                <buttonConfiguration key="configuration" style="plain" title="공항을 선택해주세요.">
                                                                     <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
@@ -238,13 +238,13 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="EsA-8z-vb4">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78R-fb-D58">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78R-fb-D58" userLabel="날짜를 선택해주세요.">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="d20-7w-K5Z"/>
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="시간을 선택해주세요.">
+                                                                <buttonConfiguration key="configuration" style="plain" title="날짜를 선택해주세요.">
                                                                     <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
@@ -338,15 +338,18 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="fzM-a4-5aO">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="공항을 선택해주세요." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFn-0D-xlk">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1M-dP-GZk" userLabel="공항을 선택해주세요.">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="22" id="FIS-8d-UCv"/>
+                                                                    <constraint firstAttribute="height" constant="22" id="N6u-GZ-R3H"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                <color key="textColor" systemColor="systemGray3Color"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                                <state key="normal" title="Button"/>
+                                                                <buttonConfiguration key="configuration" style="plain" title="공항을 선택해주세요.">
+                                                                    <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
+                                                                    <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
+                                                                    <color key="baseForegroundColor" systemColor="systemGray3Color"/>
+                                                                </buttonConfiguration>
+                                                            </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meQ-4F-8Xz">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
                                                                 <color key="backgroundColor" systemColor="systemGray3Color"/>
@@ -356,9 +359,9 @@
                                                             </view>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="uFn-0D-xlk" firstAttribute="leading" secondItem="fzM-a4-5aO" secondAttribute="leading" id="0qI-51-51K"/>
                                                             <constraint firstItem="meQ-4F-8Xz" firstAttribute="leading" secondItem="fzM-a4-5aO" secondAttribute="leading" id="PLF-QB-tJC"/>
-                                                            <constraint firstAttribute="trailing" secondItem="uFn-0D-xlk" secondAttribute="trailing" id="URZ-1a-n0B"/>
+                                                            <constraint firstItem="U1M-dP-GZk" firstAttribute="leading" secondItem="fzM-a4-5aO" secondAttribute="leading" id="XO6-DJ-MYb"/>
+                                                            <constraint firstAttribute="trailing" secondItem="U1M-dP-GZk" secondAttribute="trailing" id="ZU0-gO-Qp9"/>
                                                             <constraint firstAttribute="trailing" secondItem="meQ-4F-8Xz" secondAttribute="trailing" id="wid-Fh-h6k"/>
                                                         </constraints>
                                                     </stackView>
@@ -406,6 +409,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="NWc-Vw-slg"/>
                     <connections>
+                        <outlet property="arrivalAirport" destination="U1M-dP-GZk" id="Ib4-i0-Jro"/>
+                        <outlet property="departureAirport" destination="aLJ-sZ-ZbQ" id="Lj4-UC-FdM"/>
                         <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
                     </connections>
                 </viewController>

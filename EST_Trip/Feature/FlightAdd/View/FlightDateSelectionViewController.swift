@@ -24,6 +24,7 @@ class FlightDateSelectionViewController: UIViewController {
     @IBAction func firstDateButtonTapped(_ sender: Any) {
         let date = travelDate.startDate ?? Date()
         viewModel.flight.departureDate = date
+        viewModel.flight.arrivalAirport = "제주국제공항"
 		onSelectDepartureDate?(date)
         dismiss(animated: true)
     }
@@ -32,6 +33,7 @@ class FlightDateSelectionViewController: UIViewController {
     @IBAction func secondDateButtonTapped(_ sender: Any) {
         let date = travelDate.endDate ?? Date()
         viewModel.flight.departureDate = date
+        viewModel.flight.departureAirport = "제주국제공항"
         onSelectDepartureDate?(date)
         dismiss(animated: true)
     }
