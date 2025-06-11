@@ -9,6 +9,7 @@ import Foundation
 
 enum APIKey: String {
     case googleMaps = "GoogleAPIKey"
+    case tmap = "TmapAPIKey"
     case odsayKey = "OdsayAPIKey"
     case googleMaps2 = "GoogleAPIKey2"
     
