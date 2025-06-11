@@ -31,6 +31,8 @@ class RouteFindingViewController: UIViewController {
     @IBOutlet weak var startLocationField: UITextField!
     @IBOutlet weak var endLocationField: UITextField!
     
+    @IBOutlet weak var iconImgeView: UIImageView!
+    
     private var mapView: GMSMapView!
     
     private var isLayoutSetupDone = false
@@ -44,21 +46,9 @@ class RouteFindingViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
+        setupMapView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        print(#function, transportationCollectionView.frame.size)
-    }
-    
-    override func viewIsAppearing(_ animated: Bool) {
-        super.viewIsAppearing(animated)
-        
-        print(#function, transportationCollectionView.frame.size)
-    }
-    
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -95,7 +85,16 @@ extension RouteFindingViewController {
         
         transportationCollectionView.isScrollEnabled = false
         
-        // MapView 설정
+        iconImgeView.transform = CGAffineTransform(rotationAngle: .pi / 2)
+            
+        locationManager.delegate = self
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.black
+        ]
+    }
+    
+    private func setupMapView() {
 //        let camera = GMSCameraPosition.camera(withLatitude: 37.5665, longitude: 126.9780, zoom: 14.0)
         let options = GMSMapViewOptions()
         options.frame = mapContainerView.bounds
@@ -105,8 +104,6 @@ extension RouteFindingViewController {
         mapView.isMyLocationEnabled = true
 
         mapContainerView.addSubview(mapView)
-        
-        locationManager.delegate = self
     }
     
     private func setupCurrentLocationButton() {
@@ -128,8 +125,6 @@ extension RouteFindingViewController {
         layout.minimumLineSpacing = cellSpacing
         
         transportationCollectionView.collectionViewLayout = layout
-        
-        print(transportationCollectionView.frame.size.width, cellWidth)
     }
 }
 
