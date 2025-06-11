@@ -12,18 +12,24 @@ class FlightAddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        let leftButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
+        let chevronImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        leftButton.setImage(chevronImage, for: .normal)
+        leftButton.tintColor = .label
+        let customLeftBarButton = UIBarButtonItem(customView: leftButton)
+        navigationItem.leftBarButtonItem = customLeftBarButton
+
+        let titleView = FlightAddNavigationTitleView()
+        titleView.titleLabel.text = "항공편 추가"
+        titleView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)
+        navigationItem.titleView = titleView
+
+        let rightButton = UIButton(type: .system)
+        rightButton.setTitle("완료", for: .normal)
+        rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        let customRightBarButton = UIBarButtonItem(customView: rightButton)
+        navigationItem.rightBarButtonItem = customRightBarButton
+
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
