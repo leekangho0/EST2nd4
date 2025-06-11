@@ -8,10 +8,31 @@
 import UIKit
 
 class FlightAddViewController: UIViewController {
+    let viewModel = FlightAddViewModel()
+
+    @IBOutlet weak var departureDate: UIButton!
+
+    @IBAction func departureDateButtonTapped(_ sender: Any) {
+        presentDataSelectionSheet()
+    }
+
+    private var hasPresentedDateSheet = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+		setupNavigationBar()
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if !hasPresentedDateSheet {
+            presentDataSelectionSheet()
+            hasPresentedDateSheet = true
+        }
+    }
+
+    private func setupNavigationBar() {
         let leftButton = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
         let chevronImage = UIImage(systemName: "chevron.left", withConfiguration: config)
@@ -30,6 +51,26 @@ class FlightAddViewController: UIViewController {
         rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         let customRightBarButton = UIBarButtonItem(customView: rightButton)
         navigationItem.rightBarButtonItem = customRightBarButton
+    }
 
+    private func presentDataSelectionSheet() {
+        let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FlightDateSelectionViewController") as? FlightDateSelectionViewController {
+
+            vc.viewModel = viewModel
+            vc.modalPresentationStyle = .pageSheet
+
+            vc.onSelectDepartureDate = { [weak self] selectedDate in
+                guard let self else { return }
+
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy.M.d"
+                let title = formatter.string(from: selectedDate)
+
+                departureDate.setTitle(title, for: .normal)
+                departureDate.setTitleColor(.label, for: .normal)
+            }
+            present(vc, animated: true)
+        }
     }
 }

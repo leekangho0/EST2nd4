@@ -39,15 +39,21 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="kSc-U0-zvC">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜를 선택해주세요." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sl6-RJ-2rp">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Nb-ef-Au4">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="22" id="O1e-Mu-lov"/>
+                                                                    <constraint firstAttribute="height" constant="22" id="fmE-Te-OIs"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                <color key="textColor" systemColor="systemGray3Color"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                                <state key="normal" title="Button"/>
+                                                                <buttonConfiguration key="configuration" style="plain" title="날짜를 선택해주세요.">
+                                                                    <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
+                                                                    <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
+                                                                    <color key="baseForegroundColor" systemColor="systemGray3Color"/>
+                                                                </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="departureDateButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JQu-r0-6Z3"/>
+                                                                </connections>
+                                                            </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yql-PI-Exd">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
                                                                 <color key="backgroundColor" systemColor="systemGray3Color"/>
@@ -57,10 +63,10 @@
                                                             </view>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="sl6-RJ-2rp" secondAttribute="trailing" id="HCM-rX-daS"/>
                                                             <constraint firstItem="yql-PI-Exd" firstAttribute="leading" secondItem="kSc-U0-zvC" secondAttribute="leading" id="OEF-5Y-IxN"/>
+                                                            <constraint firstItem="4Nb-ef-Au4" firstAttribute="leading" secondItem="kSc-U0-zvC" secondAttribute="leading" id="ROF-b5-ZRy"/>
                                                             <constraint firstAttribute="trailing" secondItem="yql-PI-Exd" secondAttribute="trailing" id="m75-qO-6PV"/>
-                                                            <constraint firstItem="sl6-RJ-2rp" firstAttribute="leading" secondItem="kSc-U0-zvC" secondAttribute="leading" id="uTh-bb-XcJ"/>
+                                                            <constraint firstAttribute="trailing" secondItem="4Nb-ef-Au4" secondAttribute="trailing" id="sdn-eX-jBl"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
@@ -399,10 +405,97 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NWc-Vw-slg"/>
+                    <connections>
+                        <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1979.3893129770991" y="-34.507042253521128"/>
+        </scene>
+        <!--Flight Date Selection View Controller-->
+        <scene sceneID="GMf-5L-G6N">
+            <objects>
+                <viewController storyboardIdentifier="FlightDateSelectionViewController" id="Qfh-UX-tV7" customClass="FlightDateSelectionViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nah-nF-St0">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ghe-xk-0Hp">
+                                <rect key="frame" x="0.0" y="656" width="393" height="196"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="rEX-7H-595">
+                                        <rect key="frame" x="32" y="0.0" width="329" height="134"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="항공편 이용일 선택" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pm9-Jy-59y">
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                <color key="textColor" name="DolHareubangGray"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DtH-Cu-Ig4">
+                                                <rect key="frame" x="0.0" y="34" width="329" height="100"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wg3-kA-xjG">
+                                                        <rect key="frame" x="0.0" y="0.0" width="329" height="50"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="가는날 선택 06.27 / 금">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="15"/>
+                                                            <directionalEdgeInsets key="contentInsets" top="16" leading="0.0" bottom="16" trailing="0.0"/>
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="firstDateButtonTapped:" destination="Qfh-UX-tV7" eventType="touchUpInside" id="u0K-2l-W3J"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="43R-K2-hRv">
+                                                        <rect key="frame" x="0.0" y="50" width="329" height="50"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="오는날 선택 06.29 / 일">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="15"/>
+                                                            <directionalEdgeInsets key="contentInsets" top="16" leading="0.0" bottom="16" trailing="0.0"/>
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="secondDateButtonTapped:" destination="Qfh-UX-tV7" eventType="touchUpInside" id="rWF-1v-7d2"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="DtH-Cu-Ig4" firstAttribute="leading" secondItem="rEX-7H-595" secondAttribute="leading" id="NtN-T6-jfq"/>
+                                            <constraint firstAttribute="trailing" secondItem="DtH-Cu-Ig4" secondAttribute="trailing" id="gVz-KG-1va"/>
+                                            <constraint firstAttribute="trailing" secondItem="Pm9-Jy-59y" secondAttribute="trailing" id="kWB-YI-hXM"/>
+                                            <constraint firstItem="Pm9-Jy-59y" firstAttribute="leading" secondItem="rEX-7H-595" secondAttribute="leading" id="s32-j6-1Rk"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="rEX-7H-595" firstAttribute="top" secondItem="Ghe-xk-0Hp" secondAttribute="top" id="UNz-bs-7gU"/>
+                                    <constraint firstItem="rEX-7H-595" firstAttribute="leading" secondItem="Ghe-xk-0Hp" secondAttribute="leading" constant="32" id="YKB-TG-AI4"/>
+                                    <constraint firstAttribute="height" constant="196" id="aQH-ot-ctG"/>
+                                    <constraint firstAttribute="trailing" secondItem="rEX-7H-595" secondAttribute="trailing" constant="32" id="zVo-GY-FdF"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="G2e-6h-rwP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ghe-xk-0Hp" firstAttribute="leading" secondItem="G2e-6h-rwP" secondAttribute="leading" id="C2Q-Ro-7DM"/>
+                            <constraint firstAttribute="bottom" secondItem="Ghe-xk-0Hp" secondAttribute="bottom" id="DbR-Im-kL0"/>
+                            <constraint firstItem="Ghe-xk-0Hp" firstAttribute="trailing" secondItem="G2e-6h-rwP" secondAttribute="trailing" id="wmB-wW-Idx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="firstDateButton" destination="Wg3-kA-xjG" id="RlG-H0-H4T"/>
+                        <outlet property="secondDateButton" destination="43R-K2-hRv" id="6dg-Lf-Wcm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U0D-Rh-3Ns" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2780.9160305343512" y="-35.211267605633807"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l3D-7m-IwI">
@@ -427,6 +520,9 @@
         <namedColor name="DolHareubangGray">
             <color red="0.49411764705882355" green="0.49411764705882355" blue="0.49411764705882355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
