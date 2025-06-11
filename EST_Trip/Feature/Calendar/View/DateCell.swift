@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DateCell: UICollectionViewCell {
+final class DateCell: UICollectionViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var subLabel: UILabel!
     @IBOutlet weak var circleBackgroundView: UIView!
@@ -50,7 +50,7 @@ class DateCell: UICollectionViewCell {
             dateLabel.textColor = UIColor.white
         } else if isInRange {
             circleBackgroundView.isHidden = false
-            circleBackgroundView.backgroundColor = UIColor.systemYellow
+            circleBackgroundView.backgroundColor = UIColor.canolaSand
         } else {
             circleBackgroundView.isHidden = true
         }

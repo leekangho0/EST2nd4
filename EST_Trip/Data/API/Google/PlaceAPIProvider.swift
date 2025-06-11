@@ -1,0 +1,49 @@
+//
+//  Provider.swift
+//  EST_Trip
+//
+//  Created by kangho lee on 6/10/25.
+//
+
+import Foundation
+import Moya
+
+struct TextSearchDTO {
+    let query: String
+    let location: String
+    let radius: Int
+}
+
+class PlaceAPIProvider {
+    typealias Target = GooglePlacesAPI
+    
+    private let provider: MoyaProvider<Target>
+    
+    init() {
+        provider = MoyaProvider<Target>(plugins: [NetworkLoggerPlugin()])
+    }
+    
+    func textSearch<D: Decodable>(type: D.Type, query: String, location: String?, radius: Int?, completion: @escaping ((Result<D, Error>) -> Void)) {
+        provider.request(.textSearch(query: query, location: location, radius: radius)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let model = try JSONDecoder().decode(D.self, from: response.data)
+                    completion(.success(model))
+                } catch {
+                    guard let errorResponse = try? JSONDecoder().decode(Odsay.ErrorResponse.self, from: response.data) else {
+                        if let rawString = String(data: response.data, encoding: .utf8) {
+                            print(rawString)
+                        }
+                        completion(.failure(NetworkError.decodeError(error.localizedDescription)))
+                        return
+                    }
+                    completion(.failure(NetworkError.underlying(errorResponse.description)))
+                }
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}
