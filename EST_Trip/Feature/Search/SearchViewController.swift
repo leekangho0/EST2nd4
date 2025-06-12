@@ -25,6 +25,47 @@ class SearchViewController: UIViewController {
     var filteredPlaces: [Place] = []
     var selectedCategory: Category?
 
+    private let emptyView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        let imageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
+        imageView.tintColor = .systemGray
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.text = "검색 결과가 없어요."
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.textColor = .black
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let subtitleLabel = UILabel()
+        subtitleLabel.text = "정확하게 다시 입력해주세요."
+        subtitleLabel.font = UIFont.systemFont(ofSize: 14)
+        subtitleLabel.textColor = .systemGray
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(imageView)
+        view.addSubview(titleLabel)
+        view.addSubview(subtitleLabel)
+
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
+            imageView.widthAnchor.constraint(equalToConstant: 50),
+            imageView.heightAnchor.constraint(equalToConstant: 50),
+
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+
+            subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+        ])
+
+        view.isHidden = true
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -33,19 +74,25 @@ class SearchViewController: UIViewController {
 
         filteredPlaces = allPlaces
         setupSelectButtonAppearance()
-            
-            // 카테고리 버튼 기본 색상 지정
+
+        // 버튼 스타일
         [tourButton, foodButton, cafeButton].forEach { button in
             button.backgroundColor = .systemGray5
             button.setTitleColor(.black, for: .normal)
             button.layer.cornerRadius = button.frame.height / 2
             button.layer.masksToBounds = true
         }
+
+        // emptyView 추가
+        view.addSubview(emptyView)
+        NSLayoutConstraint.activate([
+            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 
     private func setupSelectButtonAppearance() {
-        // "선택" 버튼 색상은 셀에서 처리되지만,
-        // 예시로 여기에 공통 스타일 설정 로직 두면 좋아!
+        // 버튼 외형 공통 설정용
     }
 
     // 카테고리 버튼 토글
@@ -73,7 +120,7 @@ class SearchViewController: UIViewController {
 
             var config = button.configuration
             config?.baseBackgroundColor = UIColor(named: "JejuOrange")
-            config?.baseForegroundColor = .white // 버튼 텍스트 색 흰색
+            config?.baseForegroundColor = .white
             button.configuration = config
         }
     }
@@ -83,18 +130,17 @@ class SearchViewController: UIViewController {
         buttons.forEach { btn in
             var config = btn?.configuration
             config?.baseBackgroundColor = .systemGray5
-            config?.baseForegroundColor = .black // 버튼 텍스트 색 검정
+            config?.baseForegroundColor = .black
             btn?.configuration = config
         }
     }
-
 
     // 검색어 입력 처리
     @objc private func searchTextChanged(_ textField: UITextField) {
         filterPlaces()
     }
 
-    // 카테고리 + 검색어 필터링 로직
+    // 카테고리 + 검색어 필터링 + emptyView 처리
     private func filterPlaces() {
         let searchText = searchBar.text?.lowercased() ?? ""
 
@@ -103,11 +149,20 @@ class SearchViewController: UIViewController {
             let matchesSearch = searchText.isEmpty || place.title.lowercased().contains(searchText)
             return matchesCategory && matchesSearch
         }
+
+        if filteredPlaces.isEmpty {
+            emptyView.isHidden = false
+            tableView.isHidden = true
+        } else {
+            emptyView.isHidden = true
+            tableView.isHidden = false
+        }
+
         tableView.reloadData()
     }
 }
 
-// 데이터소스
+// MARK: - 데이터소스
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredPlaces.count
@@ -117,18 +172,20 @@ extension SearchViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as? placeCell else {
             return UITableViewCell()
         }
+
         let place = filteredPlaces[indexPath.row]
         cell.configure(with: place)
 
         cell.onSelectTapped = {
             print("선택된 장소: \(place.title)")
-            //TODO: 선택버튼 눌렀을때, 일정리스트 메인화면으로 넘어가기 구현하기
+            // TODO: 선택 후 일정 화면으로 이동 구현
         }
+
         return cell
     }
 }
 
-// 델리게이트
+// MARK: - 델리게이트
 extension SearchViewController: UITableViewDelegate {
-    // 필요시 구현해놓기
+    // 필요시 구현
 }

@@ -17,7 +17,7 @@ extension ScheduleEntity {
     }
 
     @NSManaged public var date: Date?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: UUID
     @NSManaged public var travelId: UUID?
     @NSManaged public var places: NSSet?
     @NSManaged public var travel: TravelEntity?
