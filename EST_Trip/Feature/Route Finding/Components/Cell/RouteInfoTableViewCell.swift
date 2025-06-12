@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol RouteInfoTableViewCellDelegate {
+    func didTapSelectButton()
+}
+
 class RouteInfoTableViewCell: UITableViewCell {
 
     @IBOutlet weak var durationLabel: UILabel!
@@ -18,9 +22,14 @@ class RouteInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var findRouteButton: UIButton!
     @IBOutlet weak var selectButton: UIButton!
     
+    var delegate: RouteInfoTableViewCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+    @IBAction func presentTransitDetailVC(_ sender: Any) {
+        delegate?.didTapSelectButton()
+    }
 }

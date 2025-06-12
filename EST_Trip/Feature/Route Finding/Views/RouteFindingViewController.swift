@@ -39,7 +39,7 @@ class RouteFindingViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
-//        setupMapView()
+        //        setupMapView()
         embedRouteDetailVC()
     }
     
@@ -130,17 +130,14 @@ extension RouteFindingViewController {
     private func embedRouteDetailVC() {
         guard let detailVC else { return }
         
-        addChild(detailVC)
-        routeDetailContainerView.addSubview(detailVC.view)
+        let navController = UINavigationController(rootViewController: detailVC)
 
-        detailVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            detailVC.view.topAnchor.constraint(equalTo: routeDetailContainerView.topAnchor),
-            detailVC.view.leadingAnchor.constraint(equalTo: routeDetailContainerView.leadingAnchor),
-            detailVC.view.trailingAnchor.constraint(equalTo: routeDetailContainerView.trailingAnchor),
-            detailVC.view.bottomAnchor.constraint(equalTo: routeDetailContainerView.bottomAnchor),
-        ])
-        
+        addChild(navController)
+        routeDetailContainerView.addSubview(navController.view)
+        navController.view.frame = routeDetailContainerView.bounds
+        navController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        navController.didMove(toParent: self)
+
         detailVC.didMove(toParent: self)
     }
     

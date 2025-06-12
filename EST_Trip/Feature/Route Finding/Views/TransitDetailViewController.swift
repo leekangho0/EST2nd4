@@ -9,21 +9,26 @@ import UIKit
 
 class TransitDetailViewController: UIViewController {
 
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var walkDurationLabel: UILabel!
+    @IBOutlet weak var fareLabel: UILabel!
+    
+    @IBOutlet weak var routeStepsTableView: UITableView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        configure()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func configure() {
+        self.navigationController?.isNavigationBarHidden = true
     }
-    */
-
+    
+    @IBAction func dismiss(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
 }

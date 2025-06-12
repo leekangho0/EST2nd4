@@ -81,6 +81,8 @@ extension RouteDetailViewController: UITableViewDataSource {
             cell.selectButton.isHidden = !isTransit
         }
         
+        cell.delegate = self
+        
         return cell
     }
 }
@@ -95,5 +97,15 @@ extension RouteDetailViewController: UITableViewDelegate {
             // 348:88 비율 적용
             return self.routeInfoTableView.frame.width * 0.25
         }
+    }
+}
+
+// MARK: - RouteInfoTableViewCellDelegate
+extension RouteDetailViewController: RouteInfoTableViewCellDelegate {
+    func didTapSelectButton() {
+        let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: String(describing: TransitDetailViewController.self)) as? TransitDetailViewController else { return }
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
