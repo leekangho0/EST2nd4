@@ -103,6 +103,9 @@
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="departureTimeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JiP-id-g0a"/>
+                                                                </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dh6-AL-sqF">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
@@ -412,6 +415,7 @@
                         <outlet property="arrivalAirport" destination="U1M-dP-GZk" id="Ib4-i0-Jro"/>
                         <outlet property="departureAirport" destination="aLJ-sZ-ZbQ" id="Lj4-UC-FdM"/>
                         <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
+                        <outlet property="departureTime" destination="YVY-qh-6EG" id="ywy-xS-r5Q"/>
                         <outlet property="flightName" destination="VGI-IR-YAz" id="SI3-bl-nMv"/>
                     </connections>
                 </viewController>
@@ -501,7 +505,57 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U0D-Rh-3Ns" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2780.9160305343512" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="2750" y="-35"/>
+        </scene>
+        <!--Time Picker View Controller-->
+        <scene sceneID="Hob-Ni-M9t">
+            <objects>
+                <viewController storyboardIdentifier="TimePickerViewController" id="NyF-Pf-1AW" customClass="TimePickerViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gdc-2J-v8Y">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="f94-9U-qRq">
+                                <rect key="frame" x="36.666666666666657" y="301" width="320" height="250.33333333333337"/>
+                                <subviews>
+                                    <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="tgq-qQ-htL">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                                        <locale key="locale" localeIdentifier="ko_KR"/>
+                                    </datePicker>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5t-wZ-03K">
+                                        <rect key="frame" x="0.0" y="216" width="320" height="34.333333333333343"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="확인"/>
+                                        <connections>
+                                            <action selector="confimButtonTapped:" destination="NyF-Pf-1AW" eventType="touchUpInside" id="0Nh-Py-Enk"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="tgq-qQ-htL" secondAttribute="trailing" id="3iH-RT-k5c"/>
+                                    <constraint firstItem="tgq-qQ-htL" firstAttribute="leading" secondItem="f94-9U-qRq" secondAttribute="leading" id="5uP-7B-XO7"/>
+                                    <constraint firstItem="tgq-qQ-htL" firstAttribute="top" secondItem="f94-9U-qRq" secondAttribute="top" id="Che-ZN-YGh"/>
+                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="leading" secondItem="f94-9U-qRq" secondAttribute="leading" id="ESd-ZG-aZB"/>
+                                    <constraint firstAttribute="trailing" secondItem="g5t-wZ-03K" secondAttribute="trailing" id="gvD-Vq-pqc"/>
+                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="top" secondItem="tgq-qQ-htL" secondAttribute="bottom" id="yPY-4F-EAU"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="QKE-E6-F5b"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="f94-9U-qRq" firstAttribute="centerY" secondItem="Gdc-2J-v8Y" secondAttribute="centerY" id="MBG-RN-z9O"/>
+                            <constraint firstItem="f94-9U-qRq" firstAttribute="centerX" secondItem="Gdc-2J-v8Y" secondAttribute="centerX" id="mTh-ge-ZcS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="datePicker" destination="tgq-qQ-htL" id="LHl-8S-tMu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Lb-QB-EYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2750" y="-738"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l3D-7m-IwI">
@@ -534,6 +588,9 @@
         </systemColor>
         <systemColor name="systemGray3Color">
             <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -16,6 +16,11 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         presentDataSelectionSheet()
     }
 
+    @IBOutlet weak var departureTime: UIButton!
+    
+    @IBAction func departureTimeButtonTapped(_ sender: Any) {
+    }
+    
     @IBOutlet weak var departureAirport: UIButton!
     @IBOutlet weak var arrivalAirport: UIButton!
     @IBOutlet weak var flightName: UITextField!
@@ -34,6 +39,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         viewModel.flight.flightName = flightName.text
         print(viewModel.flight.flightName ?? "")
     }
+
+
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -117,6 +124,19 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
                 string: "공항을 선택해주세요.",
                 attributes: [.font: UIFont.systemFont(ofSize: 13),
                              .foregroundColor: UIColor.systemGray3]), for: .normal)
+        }
+    }
+
+    private func presentDatePicker() {
+        let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
+
+        if let vc =
+            storyboard.instantiateViewController(withIdentifier: "TimePickerViewController") as? TimePickerViewController {
+            vc.modalPresentationStyle = .overCurrentContext
+            vc.onTimeSelected = { [weak self] selectedDate in
+                self?.viewModel.flight.departureTime = selectedDate
+            }
+            present(vc, animated: true)
         }
     }
 }
