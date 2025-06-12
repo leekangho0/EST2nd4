@@ -28,8 +28,8 @@ enum FeatureFactory {
         return vc
     }
     
-    static func makeRoute() -> RouteViewController {
-        let vc = StoryboardType.route.makeViewController(RouteViewController.self)
+    static func makeRoute() -> RouteFindingViewController {
+        let vc = StoryboardType.route.makeViewController(RouteFindingViewController.self)
         
         return vc
     }
