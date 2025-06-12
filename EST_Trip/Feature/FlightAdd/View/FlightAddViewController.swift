@@ -23,6 +23,11 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBOutlet weak var departureAirport: UIButton!
+
+    @IBAction func dapartureAirportButtonTapped(_ sender: Any) {
+        presentDepartureAirportPicker()
+    }
+
     @IBOutlet weak var arrivalAirport: UIButton!
     @IBOutlet weak var flightName: UITextField!
 
@@ -150,6 +155,27 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
                 departureTime.setTitleColor(.label, for: .normal)
 
                 viewModel.flight.departureTime = selectedDate
+            }
+            present(vc, animated: true)
+        }
+    }
+
+    private func presentDepartureAirportPicker() {
+        let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
+
+        if let vc = storyboard.instantiateViewController(withIdentifier: "AirportPickerViewController") as? AirportPickerViewController {
+
+            vc.modalPresentationStyle = .overFullScreen
+
+            vc.onAirportSelected = { [weak self] selectedAirport in
+                guard let self else { return }
+
+				print("선택된 공항 \(selectedAirport)")
+                print("뷰모델 상태:", viewModel.flight.departureAirport ?? "없음")
+                departureAirport.setAttributedTitle(nil, for: .normal)
+                departureAirport.setTitle(selectedAirport, for: .normal)
+                departureAirport.setTitleColor(.label, for: .normal)
+                viewModel.flight.departureAirport = selectedAirport
             }
             present(vc, animated: true)
         }

@@ -11,7 +11,7 @@ class TimePickerViewController: UIViewController {
 
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var containerView: UIView!
-    
+
     var onTimeSelected: ((Date) -> Void)?
 
     override func viewDidLoad() {
@@ -21,7 +21,7 @@ class TimePickerViewController: UIViewController {
         containerView.layer.masksToBounds = true
     }
 
-    @IBAction func confimButtonTapped(_ sender: Any) {
+    @IBAction func confirmButtonTapped(_ sender: Any) {
         onTimeSelected?(datePicker.date)
         dismiss(animated: true)
     }

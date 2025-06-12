@@ -202,6 +202,9 @@
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="dapartureAirportButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="HRs-eD-sAA"/>
+                                                                </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9M0-4f-Xz3">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
@@ -413,6 +416,7 @@
                     <navigationItem key="navigationItem" id="NWc-Vw-slg"/>
                     <connections>
                         <outlet property="arrivalAirport" destination="U1M-dP-GZk" id="Ib4-i0-Jro"/>
+                        <outlet property="arrivalDate" destination="78R-fb-D58" id="kkz-K8-WNX"/>
                         <outlet property="departureAirport" destination="aLJ-sZ-ZbQ" id="Lj4-UC-FdM"/>
                         <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
                         <outlet property="departureTime" destination="YVY-qh-6EG" id="ywy-xS-r5Q"/>
@@ -516,35 +520,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wiz-FB-Zgt">
-                                <rect key="frame" x="46" y="285.33333333333337" width="301" height="281.33333333333337"/>
+                                <rect key="frame" x="49.666666666666657" y="285.33333333333337" width="294" height="281.33333333333337"/>
                                 <subviews>
-                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="nml-xG-Dud">
-                                        <rect key="frame" x="-10" y="16" width="321" height="215"/>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="nml-xG-Dud">
+                                        <rect key="frame" x="0.0" y="16" width="294" height="215"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="321" id="SWk-rD-TNm"/>
+                                            <constraint firstAttribute="width" constant="294" id="SWk-rD-TNm"/>
                                             <constraint firstAttribute="height" constant="215" id="fIU-Ei-pth"/>
                                         </constraints>
                                         <locale key="locale" localeIdentifier="ko_KR"/>
                                     </datePicker>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5t-wZ-03K">
-                                        <rect key="frame" x="123.66666666666667" y="231.00000000000006" width="53.666666666666671" height="34.333333333333314"/>
+                                        <rect key="frame" x="120.00000000000001" y="231.00000000000006" width="53.666666666666671" height="34.333333333333314"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34.333333333333343" id="AEL-HB-DQL"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="확인"/>
                                         <connections>
-                                            <action selector="confimButtonTapped:" destination="NyF-Pf-1AW" eventType="touchUpInside" id="0Nh-Py-Enk"/>
+                                            <action selector="confirmButtonTapped:" destination="NyF-Pf-1AW" eventType="touchUpInside" id="0Nh-Py-Enk"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="g5t-wZ-03K" secondAttribute="bottom" constant="16" id="BXO-K0-xWH"/>
-                                    <constraint firstAttribute="trailing" secondItem="nml-xG-Dud" secondAttribute="trailing" constant="-10" id="CNn-j1-57b"/>
+                                    <constraint firstAttribute="trailing" secondItem="nml-xG-Dud" secondAttribute="trailing" id="CNn-j1-57b"/>
                                     <constraint firstItem="nml-xG-Dud" firstAttribute="centerX" secondItem="Wiz-FB-Zgt" secondAttribute="centerX" id="FYg-nT-cqV"/>
                                     <constraint firstItem="g5t-wZ-03K" firstAttribute="centerX" secondItem="Wiz-FB-Zgt" secondAttribute="centerX" id="LNY-xb-CdO"/>
-                                    <constraint firstItem="nml-xG-Dud" firstAttribute="leading" secondItem="Wiz-FB-Zgt" secondAttribute="leading" constant="-10" id="TKB-Ah-4Mb"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="leading" secondItem="Wiz-FB-Zgt" secondAttribute="leading" id="TKB-Ah-4Mb"/>
                                     <constraint firstItem="g5t-wZ-03K" firstAttribute="top" secondItem="nml-xG-Dud" secondAttribute="bottom" id="sCQ-fs-dDD"/>
                                     <constraint firstItem="nml-xG-Dud" firstAttribute="top" secondItem="Wiz-FB-Zgt" secondAttribute="top" constant="16" id="yLo-Ih-Ff8"/>
                                 </constraints>
@@ -565,6 +569,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Lb-QB-EYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2747.3282442748091" y="-738.0281690140846"/>
+        </scene>
+        <!--Airport Picker View Controller-->
+        <scene sceneID="7nx-Wi-r9s">
+            <objects>
+                <viewController storyboardIdentifier="AirportPickerViewController" id="bZd-h8-XHn" customClass="AirportPickerViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pZt-eL-JFl">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUG-zy-Spa">
+                                <rect key="frame" x="49.666666666666657" y="285" width="294" height="282"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7X0-F3-Sjd">
+                                        <rect key="frame" x="0.0" y="16" width="294" height="215"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="294" id="Bh1-CY-VCn"/>
+                                            <constraint firstAttribute="height" constant="215" id="Wft-o7-0JE"/>
+                                        </constraints>
+                                    </pickerView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOm-lT-ins">
+                                        <rect key="frame" x="120" y="231" width="54" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="확인"/>
+                                        <connections>
+                                            <action selector="confirmButtonTapped:" destination="bZd-h8-XHn" eventType="touchUpInside" id="fGq-1n-2jx"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstItem="7X0-F3-Sjd" firstAttribute="leading" secondItem="XUG-zy-Spa" secondAttribute="leading" id="2FT-fU-ba7"/>
+                                    <constraint firstAttribute="bottom" secondItem="xOm-lT-ins" secondAttribute="bottom" constant="16" id="6xE-7C-ofP"/>
+                                    <constraint firstAttribute="trailing" secondItem="7X0-F3-Sjd" secondAttribute="trailing" id="YsD-Wo-jUt"/>
+                                    <constraint firstItem="xOm-lT-ins" firstAttribute="centerX" secondItem="XUG-zy-Spa" secondAttribute="centerX" id="h55-fJ-d9u"/>
+                                    <constraint firstItem="7X0-F3-Sjd" firstAttribute="centerX" secondItem="XUG-zy-Spa" secondAttribute="centerX" id="ptD-NC-QlA"/>
+                                    <constraint firstItem="xOm-lT-ins" firstAttribute="top" secondItem="7X0-F3-Sjd" secondAttribute="bottom" id="sUI-mh-ZPV"/>
+                                    <constraint firstItem="7X0-F3-Sjd" firstAttribute="top" secondItem="XUG-zy-Spa" secondAttribute="top" constant="16" id="x5q-92-TtB"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WBF-Ba-Muk"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="XUG-zy-Spa" firstAttribute="centerY" secondItem="pZt-eL-JFl" secondAttribute="centerY" id="2Rc-bL-oTL"/>
+                            <constraint firstItem="XUG-zy-Spa" firstAttribute="centerX" secondItem="pZt-eL-JFl" secondAttribute="centerX" id="SHU-je-e0E"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="XUG-zy-Spa" id="PDh-dU-1IA"/>
+                        <outlet property="pickerView" destination="7X0-F3-Sjd" id="IaD-9p-Ttw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PDC-8h-yBb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3638.9312977099235" y="-738.0281690140846"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l3D-7m-IwI">
