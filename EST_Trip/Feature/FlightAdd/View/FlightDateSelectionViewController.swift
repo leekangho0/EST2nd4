@@ -9,7 +9,7 @@ import UIKit
 
 class FlightDateSelectionViewController: UIViewController {
     var onSelectDepartureDate: ((Date, Bool) -> Void)?
-    var viewModel: FlightAddViewModel!
+
     var travelDate: TravelDate {
         //테스팅용 임시 데이터, 캘린더와 추후 연결 필요
         let firstDate = Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date()

@@ -515,15 +515,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="f94-9U-qRq">
-                                <rect key="frame" x="36.666666666666657" y="301" width="320" height="250.33333333333337"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wiz-FB-Zgt">
+                                <rect key="frame" x="46" y="285.33333333333337" width="301" height="281.33333333333337"/>
                                 <subviews>
-                                    <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="tgq-qQ-htL">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="nml-xG-Dud">
+                                        <rect key="frame" x="-10" y="16" width="321" height="215"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="321" id="SWk-rD-TNm"/>
+                                            <constraint firstAttribute="height" constant="215" id="fIU-Ei-pth"/>
+                                        </constraints>
                                         <locale key="locale" localeIdentifier="ko_KR"/>
                                     </datePicker>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5t-wZ-03K">
-                                        <rect key="frame" x="0.0" y="216" width="320" height="34.333333333333343"/>
+                                        <rect key="frame" x="123.66666666666667" y="231.00000000000006" width="53.666666666666671" height="34.333333333333314"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34.333333333333343" id="AEL-HB-DQL"/>
+                                        </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="확인"/>
                                         <connections>
@@ -533,29 +540,31 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="tgq-qQ-htL" secondAttribute="trailing" id="3iH-RT-k5c"/>
-                                    <constraint firstItem="tgq-qQ-htL" firstAttribute="leading" secondItem="f94-9U-qRq" secondAttribute="leading" id="5uP-7B-XO7"/>
-                                    <constraint firstItem="tgq-qQ-htL" firstAttribute="top" secondItem="f94-9U-qRq" secondAttribute="top" id="Che-ZN-YGh"/>
-                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="leading" secondItem="f94-9U-qRq" secondAttribute="leading" id="ESd-ZG-aZB"/>
-                                    <constraint firstAttribute="trailing" secondItem="g5t-wZ-03K" secondAttribute="trailing" id="gvD-Vq-pqc"/>
-                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="top" secondItem="tgq-qQ-htL" secondAttribute="bottom" id="yPY-4F-EAU"/>
+                                    <constraint firstAttribute="bottom" secondItem="g5t-wZ-03K" secondAttribute="bottom" constant="16" id="BXO-K0-xWH"/>
+                                    <constraint firstAttribute="trailing" secondItem="nml-xG-Dud" secondAttribute="trailing" constant="-10" id="CNn-j1-57b"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="centerX" secondItem="Wiz-FB-Zgt" secondAttribute="centerX" id="FYg-nT-cqV"/>
+                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="centerX" secondItem="Wiz-FB-Zgt" secondAttribute="centerX" id="LNY-xb-CdO"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="leading" secondItem="Wiz-FB-Zgt" secondAttribute="leading" constant="-10" id="TKB-Ah-4Mb"/>
+                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="top" secondItem="nml-xG-Dud" secondAttribute="bottom" id="sCQ-fs-dDD"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="top" secondItem="Wiz-FB-Zgt" secondAttribute="top" constant="16" id="yLo-Ih-Ff8"/>
                                 </constraints>
-                            </stackView>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="QKE-E6-F5b"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="f94-9U-qRq" firstAttribute="centerY" secondItem="Gdc-2J-v8Y" secondAttribute="centerY" id="MBG-RN-z9O"/>
-                            <constraint firstItem="f94-9U-qRq" firstAttribute="centerX" secondItem="Gdc-2J-v8Y" secondAttribute="centerX" id="mTh-ge-ZcS"/>
+                            <constraint firstItem="Wiz-FB-Zgt" firstAttribute="centerX" secondItem="Gdc-2J-v8Y" secondAttribute="centerX" id="FYJ-5L-X9U"/>
+                            <constraint firstItem="Wiz-FB-Zgt" firstAttribute="centerY" secondItem="Gdc-2J-v8Y" secondAttribute="centerY" id="lpI-lf-Vb5"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="datePicker" destination="tgq-qQ-htL" id="LHl-8S-tMu"/>
+                        <outlet property="containerView" destination="Wiz-FB-Zgt" id="PBu-Z8-zG1"/>
+                        <outlet property="datePicker" destination="nml-xG-Dud" id="TjC-l4-m70"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Lb-QB-EYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2750" y="-738"/>
+            <point key="canvasLocation" x="2747.3282442748091" y="-738.0281690140846"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l3D-7m-IwI">

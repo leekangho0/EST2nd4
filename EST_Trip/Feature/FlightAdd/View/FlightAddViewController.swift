@@ -19,6 +19,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var departureTime: UIButton!
 
     @IBAction func departureTimeButtonTapped(_ sender: Any) {
+		presentDatePicker()
     }
 
     @IBOutlet weak var departureAirport: UIButton!
@@ -39,8 +40,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         viewModel.flight.flightName = flightName.text
         print(viewModel.flight.flightName ?? "")
     }
-
-
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -76,12 +75,10 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
     }
 
-
     private func presentDataSelectionSheet() {
         let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "FlightDateSelectionViewController") as? FlightDateSelectionViewController {
 
-            vc.viewModel = viewModel
             vc.modalPresentationStyle = .pageSheet
 
             vc.onSelectDepartureDate = { [weak self] selectedDate, isFirst in
@@ -93,6 +90,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
                 departureDate.setTitle(title, for: .normal)
                 departureDate.setTitleColor(.label, for: .normal)
+
+                viewModel.flight.departureDate = selectedDate
 
                 if isFirst {
                     viewModel.flight.arrivalAirport = "제주국제공항"
@@ -137,9 +136,20 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
         if let vc =
             storyboard.instantiateViewController(withIdentifier: "TimePickerViewController") as? TimePickerViewController {
-            vc.modalPresentationStyle = .overCurrentContext
+
+            vc.modalPresentationStyle = .overFullScreen
+
             vc.onTimeSelected = { [weak self] selectedDate in
-                self?.viewModel.flight.departureTime = selectedDate
+                guard let self else { return }
+
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                let title = formatter.string(from: selectedDate)
+
+                departureTime.setTitle(title, for: .normal)
+                departureTime.setTitleColor(.label, for: .normal)
+
+                viewModel.flight.departureTime = selectedDate
             }
             present(vc, animated: true)
         }
