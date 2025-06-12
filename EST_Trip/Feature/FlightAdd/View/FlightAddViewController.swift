@@ -17,9 +17,11 @@ class FlightAddViewController: UIViewController {
         let chevronImage = UIImage(systemName: "chevron.left", withConfiguration: config)
         leftButton.setImage(chevronImage, for: .normal)
         leftButton.tintColor = .label
+        
+        leftButton.addTarget(self, action: #selector(onBack), for: .touchUpInside)
         let customLeftBarButton = UIBarButtonItem(customView: leftButton)
         navigationItem.leftBarButtonItem = customLeftBarButton
-
+        
         let titleView = FlightAddNavigationTitleView()
         titleView.titleLabel.text = "항공편 추가"
         titleView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)
@@ -30,6 +32,20 @@ class FlightAddViewController: UIViewController {
         rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         let customRightBarButton = UIBarButtonItem(customView: rightButton)
         navigationItem.rightBarButtonItem = customRightBarButton
+        
+        rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
 
+    }
+}
+
+extension FlightAddViewController {
+    @objc func completeTap(_ sender: Any) {
+        let vc = FeatureFactory.makePlanner()
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func onBack(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
     }
 }
