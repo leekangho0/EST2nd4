@@ -10,21 +10,6 @@ import GoogleMaps
 
 class RouteFindingViewController: UIViewController {
     
-    enum Transport: Int, CaseIterable {
-        case car, transit, walk
-        
-        var image: String {
-            switch self {
-            case .car:
-                return "car.fill"
-            case .transit:
-                return "bus.fill"
-            case .walk:
-                return "figure.walk"
-            }
-        }
-    }
-    
     @IBOutlet var mapContainerView: UIView!
     @IBOutlet weak var transportationCollectionView: UICollectionView!
     @IBOutlet weak var currentLocationButton: UIButton!
@@ -32,6 +17,8 @@ class RouteFindingViewController: UIViewController {
     @IBOutlet weak var endLocationField: UITextField!
     
     @IBOutlet weak var iconImgeView: UIImageView!
+    @IBOutlet weak var routeDetailContainerView: UIView!
+    @IBOutlet weak var routeDetailContainerViewHeightConstraint: NSLayoutConstraint!
     
     private var mapView: GMSMapView!
     
@@ -40,13 +27,20 @@ class RouteFindingViewController: UIViewController {
     
     private let locationManager = CLLocationManager()
     
+    private lazy var detailVC: RouteDetailViewController? = {
+        let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RouteDetailViewController.self)) as? RouteDetailViewController
+        return vc
+    }()
+    
     var place: PlaceEntity?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configure()
-        setupMapView()
+//        setupMapView()
+        embedRouteDetailVC()
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,6 +48,7 @@ class RouteFindingViewController: UIViewController {
         
         setupCurrentLocationButton()
         setupLayout()
+        setupRouteDetailContainerViewHeight()
     }
     
     @IBAction func moveToCurrentLocation(_ sender: Any) {
@@ -67,6 +62,11 @@ class RouteFindingViewController: UIViewController {
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
+    }
+    
+    private func updateSelectedTransport(transport: Transport) {
+        selectedTransport = transport
+        detailVC?.selectedTransport = selectedTransport
     }
 }
 
@@ -126,6 +126,29 @@ extension RouteFindingViewController {
         
         transportationCollectionView.collectionViewLayout = layout
     }
+    
+    private func embedRouteDetailVC() {
+        guard let detailVC else { return }
+        
+        addChild(detailVC)
+        routeDetailContainerView.addSubview(detailVC.view)
+
+        detailVC.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            detailVC.view.topAnchor.constraint(equalTo: routeDetailContainerView.topAnchor),
+            detailVC.view.leadingAnchor.constraint(equalTo: routeDetailContainerView.leadingAnchor),
+            detailVC.view.trailingAnchor.constraint(equalTo: routeDetailContainerView.trailingAnchor),
+            detailVC.view.bottomAnchor.constraint(equalTo: routeDetailContainerView.bottomAnchor),
+        ])
+        
+        detailVC.didMove(toParent: self)
+    }
+    
+    private func setupRouteDetailContainerViewHeight() {
+        guard let detailVC else { return }
+        
+        routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight(forRouteInfoCount: 2)
+    }
 }
 
 // MARK: - CLLocationManagerDelegate
@@ -168,7 +191,7 @@ extension RouteFindingViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension RouteFindingViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedTransport = Transport.allCases[indexPath.item]
+        updateSelectedTransport(transport: Transport.allCases[indexPath.item])
         
         transportationCollectionView.reloadData()
     }
