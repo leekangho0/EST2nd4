@@ -17,14 +17,14 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBOutlet weak var departureTime: UIButton!
-    
+
     @IBAction func departureTimeButtonTapped(_ sender: Any) {
     }
-    
+
     @IBOutlet weak var departureAirport: UIButton!
     @IBOutlet weak var arrivalAirport: UIButton!
     @IBOutlet weak var flightName: UITextField!
-    
+
     private var hasPresentedDateSheet = false
 
     override func viewDidLoad() {
@@ -57,6 +57,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         let chevronImage = UIImage(systemName: "chevron.left", withConfiguration: config)
         leftButton.setImage(chevronImage, for: .normal)
         leftButton.tintColor = .label
+
+        leftButton.addTarget(self, action: #selector(onBack), for: .touchUpInside)
         let customLeftBarButton = UIBarButtonItem(customView: leftButton)
         navigationItem.leftBarButtonItem = customLeftBarButton
 
@@ -70,7 +72,10 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         let customRightBarButton = UIBarButtonItem(customView: rightButton)
         navigationItem.rightBarButtonItem = customRightBarButton
+
+        rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
     }
+
 
     private func presentDataSelectionSheet() {
         let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
@@ -138,5 +143,17 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             }
             present(vc, animated: true)
         }
+    }
+}
+
+extension FlightAddViewController {
+    @objc func completeTap(_ sender: Any) {
+        let vc = FeatureFactory.makePlanner()
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func onBack(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
     }
 }

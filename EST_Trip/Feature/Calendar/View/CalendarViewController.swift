@@ -24,10 +24,12 @@ final class CalendarViewController: UIViewController {
         dateSelectionView.layer.shadowColor = UIColor.black.cgColor
         dateSelectionView.layer.shadowOpacity = 0.1
         dateSelectionView.isHidden = true
+        
+        setDateButton.addTarget(self, action: #selector(dateButtonTap), for: .touchUpInside)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
         guard !didScrollToToday, let indexPath = viewModel.todayIndexPath else { return }
 
         collectionView.performBatchUpdates(nil) { [weak self] _ in
@@ -146,5 +148,13 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
         header.configure(title: viewModel.title(for: indexPath.section))
         return header
+    }
+}
+
+extension CalendarViewController {
+    @objc func dateButtonTap(_ sender: Any) {
+        let vc = FeatureFactory.makeFlight()
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
