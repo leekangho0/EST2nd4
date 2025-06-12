@@ -18,7 +18,7 @@ extension PlaceEntity {
 
     @NSManaged public var address: String?
     @NSManaged public var arrivalTime: Date?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: UUID
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
     @NSManaged public var memo: String?

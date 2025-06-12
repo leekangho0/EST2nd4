@@ -18,7 +18,7 @@ extension ExpenseEntity {
 
     @NSManaged public var amount: Int64
     @NSManaged public var category: Int16
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: UUID
     @NSManaged public var memo: String?
     @NSManaged public var payerCount: Int16
     @NSManaged public var place: PlaceEntity?
