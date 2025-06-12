@@ -18,7 +18,7 @@ class TravelPlanMapViewController: UIViewController {
         travel.schedules
     }
     
-    var firstPlace: Place? {
+    var firstPlace: PlaceDTO? {
         schedules.first?.places.first
     }
     

@@ -21,16 +21,16 @@ struct Schedule {
     let id: UUID
     let date: Date
     let travelID: UUID
-    let places: [Place]
+    let places: [PlaceDTO]
 }
 
-struct Place {
+struct PlaceDTO {
     let id: UUID
     let scheduleID: UUID
     let name: String
     let latitude, longittude: Double
     let address: String
-    let category: Category
+    let category: CategoryDTO
     let memo: String?
     let expense: Expense?
     let photo: Data?
@@ -38,7 +38,7 @@ struct Place {
 }
 
 struct Expense {
-    let category: Category
+    let category: CategoryDTO
     let amount: String
     let memo: String
     let payerCount: Int
@@ -69,7 +69,7 @@ struct FlightDTO {
     let arrivalAirport: String
 }
 
-struct Category {
+struct CategoryDTO {
     let type: CategoryType
     let name: String
 }
@@ -95,7 +95,7 @@ extension CategoryType {
     }
 }
 
-extension Category {
+extension CategoryDTO {
     var image: UIImage? {
         UIImage(systemName: type.imageName)
     }

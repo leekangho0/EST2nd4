@@ -63,19 +63,19 @@ extension Travel {
         return jejuTrip
     }
     
-    private static func makeDay1Places(scheduleID: UUID, date: Date) -> [Place] {
+    private static func makeDay1Places(scheduleID: UUID, date: Date) -> [PlaceDTO] {
         [
-            Place(
+            PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
                 name: "협재 해수욕장",
                 latitude: 33.3943,
                 longittude: 126.2396,
                 address: "제주시 한림읍 협재리",
-                category: Category(type: .travel, name: "해변"),
+                category: CategoryDTO(type: .travel, name: "해변"),
                 memo: "사진 찍기 좋은 곳",
                 expense: Expense(
-                    category: Category(type: .transportation, name: "렌터카"),
+                    category: CategoryDTO(type: .transportation, name: "렌터카"),
                     amount: "30000",
                     memo: "하루 렌트",
                     payerCount: 2,
@@ -84,17 +84,17 @@ extension Travel {
                 photo: nil,
                 arrivalTime: Calendar.current.date(byAdding: .hour, value: 2, to: date)
             ),
-            Place(
+            PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
                 name: "협재 해수욕장",
                 latitude: 33.3943,
                 longittude: 126.2396,
                 address: "제주시 한림읍 협재리",
-                category: Category(type: .travel, name: "해변"),
+                category: CategoryDTO(type: .travel, name: "해변"),
                 memo: "사진 찍기 좋은 곳",
                 expense: Expense(
-                    category: Category(type: .transportation, name: "렌터카"),
+                    category: CategoryDTO(type: .transportation, name: "렌터카"),
                     amount: "30000",
                     memo: "하루 렌트",
                     payerCount: 2,
@@ -103,17 +103,17 @@ extension Travel {
                 photo: nil,
                 arrivalTime: Calendar.current.date(byAdding: .hour, value: 2, to: date)
             ),
-            Place(
+            PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
                 name: "용두암",
                 latitude: 33.50,
                 longittude: 126.50,
                 address: "제주시 한림읍 협재리",
-                category: Category(type: .travel, name: "해변"),
+                category: CategoryDTO(type: .travel, name: "해변"),
                 memo: "사진 찍기 좋은 곳",
                 expense: Expense(
-                    category: Category(type: .transportation, name: "렌터카"),
+                    category: CategoryDTO(type: .transportation, name: "렌터카"),
                     amount: "30000",
                     memo: "하루 렌트",
                     payerCount: 2,
@@ -125,35 +125,35 @@ extension Travel {
         ]
     }
     
-    private static func makeDay2Places(scheduleID: UUID, date: Date) -> [Place] {
+    private static func makeDay2Places(scheduleID: UUID, date: Date) -> [PlaceDTO] {
         [
             
             
-            Place(
+            PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
                 name: "카페 봄날",
                 latitude: 33.4912,
                 longittude: 126.3805,
                 address: "제주시 애월읍",
-                category: Category(type: .cafe, name: "카페"),
+                category: CategoryDTO(type: .cafe, name: "카페"),
                 memo: nil,
                 expense: nil,
                 photo: nil,
                 arrivalTime: Calendar.current.date(byAdding: .hour, value: 10, to: date)
             ),
             
-            Place(
+            PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
                 name: "협재 해수욕장",
                 latitude: 33.4912,
                 longittude: 126.2396,
                 address: "제주시 한림읍 협재리",
-                category: Category(type: .travel, name: "해변"),
+                category: CategoryDTO(type: .travel, name: "해변"),
                 memo: "사진 찍기 좋은 곳",
                 expense: Expense(
-                    category: Category(type: .transportation, name: "렌터카"),
+                    category: CategoryDTO(type: .transportation, name: "렌터카"),
                     amount: "30000",
                     memo: "하루 렌트",
                     payerCount: 2,
@@ -162,17 +162,17 @@ extension Travel {
                 photo: nil,
                 arrivalTime: Calendar.current.date(byAdding: .hour, value: 2, to: date)
             ),
-            Place(
+            PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
                 name: "협재 해수욕장",
                 latitude: 33.3943,
                 longittude: 126.3805,
                 address: "제주시 한림읍 협재리",
-                category: Category(type: .travel, name: "해변"),
+                category: CategoryDTO(type: .travel, name: "해변"),
                 memo: "사진 찍기 좋은 곳",
                 expense: Expense(
-                    category: Category(type: .transportation, name: "렌터카"),
+                    category: CategoryDTO(type: .transportation, name: "렌터카"),
                     amount: "30000",
                     memo: "하루 렌트",
                     payerCount: 2,
