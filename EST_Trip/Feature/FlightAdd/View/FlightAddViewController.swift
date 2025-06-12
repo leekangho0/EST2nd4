@@ -18,13 +18,13 @@ class FlightAddViewController: UIViewController {
 
     @IBOutlet weak var departureAirport: UIButton!
     @IBOutlet weak var arrivalAirport: UIButton!
-    
+
 
     private var hasPresentedDateSheet = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		setupNavigationBar()
+        setupNavigationBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,26 +64,51 @@ class FlightAddViewController: UIViewController {
             vc.viewModel = viewModel
             vc.modalPresentationStyle = .pageSheet
 
-            vc.onSelectDepartureDate = { [weak self] selectedDate in
+            vc.onSelectDepartureDate = { [weak self] selectedDate, isFirst in
                 guard let self else { return }
 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy.M.d"
-                let title = formatter.string(from: selectedDate)
+				let title = formatter.string(from: selectedDate)
 
                 departureDate.setTitle(title, for: .normal)
                 departureDate.setTitleColor(.label, for: .normal)
 
-                if !viewModel.flight.departureAirport.isEmpty {
-                    departureAirport.setTitle(viewModel.flight.departureAirport, for: .normal)
-                    departureAirport.setTitleColor(.label, for: .normal)
+                if isFirst {
+                    viewModel.flight.arrivalAirport = "제주국제공항"
+                    viewModel.flight.departureAirport = nil
+                } else {
+                    viewModel.flight.departureAirport = "제주국제공항"
+                    viewModel.flight.arrivalAirport = nil
                 }
-                if !viewModel.flight.arrivalAirport.isEmpty {
-                    arrivalAirport.setTitle(viewModel.flight.arrivalAirport, for: .normal)
-                    arrivalAirport.setTitleColor(.label, for: .normal)
-                }
+
+                refreshAirportButtonsUI()
             }
             present(vc, animated: true)
+        }
+    }
+
+    private func refreshAirportButtonsUI() {
+        if let departure = viewModel.flight.departureAirport, !departure.isEmpty {
+            departureAirport.setAttributedTitle(nil, for: .normal)
+            departureAirport.setTitle(departure, for: .normal)
+            departureAirport.setTitleColor(.label, for: .normal)
+        } else {
+            departureAirport.setAttributedTitle(NSAttributedString(
+                string: "공항을 선택해주세요.",
+                attributes: [.font: UIFont.systemFont(ofSize: 13),
+                             .foregroundColor: UIColor.systemGray3]), for: .normal)
+        }
+
+        if let arrival = viewModel.flight.arrivalAirport, !arrival.isEmpty {
+            arrivalAirport.setAttributedTitle(nil, for: .normal)
+            arrivalAirport.setTitle(arrival, for: .normal)
+            arrivalAirport.setTitleColor(.label, for: .normal)
+        } else {
+            arrivalAirport.setAttributedTitle(NSAttributedString(
+                string: "공항을 선택해주세요.",
+                attributes: [.font: UIFont.systemFont(ofSize: 13),
+                             .foregroundColor: UIColor.systemGray3]), for: .normal)
         }
     }
 }
