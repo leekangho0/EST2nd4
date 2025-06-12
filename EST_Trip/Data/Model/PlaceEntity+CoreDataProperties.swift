@@ -24,7 +24,7 @@ extension PlaceEntity {
     @NSManaged public var memo: String?
     @NSManaged public var name: String?
     @NSManaged public var photo: Data?
-    @NSManaged public var scheduleID: UUID?
+    @NSManaged public var scheduleID: UUID
     @NSManaged public var category: Int16
     @NSManaged public var expense: ExpenseEntity?
     @NSManaged public var schedule: ScheduleEntity?

@@ -107,7 +107,7 @@ class SearchViewController: UIViewController {
         default:
             break
         }
-        filterPlaces()
+        filterPlaces(allPlaces)
     }
 
     private func toggleCategory(_ category: Category, _ button: UIButton) {
@@ -137,11 +137,16 @@ class SearchViewController: UIViewController {
 
     // 검색어 입력 처리
     @objc private func searchTextChanged(_ textField: UITextField) {
-        filterPlaces()
+        loadPlace(textField.text ?? "")
+    }
+    
+    private func loadPlace(_ text: String) {
+         let places = allPlaces
+        filteredPlaces
     }
 
     // 카테고리 + 검색어 필터링 + emptyView 처리
-    private func filterPlaces() {
+    private func filterPlaces(_ place: [Place]) {
         let searchText = searchBar.text?.lowercased() ?? ""
 
         filteredPlaces = allPlaces.filter { place in
@@ -162,7 +167,7 @@ class SearchViewController: UIViewController {
     }
 }
 
-// MARK: - 데이터소스
+//데이터소스
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredPlaces.count
@@ -185,7 +190,7 @@ extension SearchViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - 델리게이트
+// 델리게이트
 extension SearchViewController: UITableViewDelegate {
     // 필요시 구현
 }
