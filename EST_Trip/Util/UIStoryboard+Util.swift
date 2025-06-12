@@ -12,7 +12,7 @@ enum StoryboardType: String {
     case flight = "FlightAdd"
     case calendar = "Calendar"
     case schedule = "Schedule"
-    case route = "Route"
+    case route = "RouteFinding"
     case search = "Search"
     case map = "Map"
 }
