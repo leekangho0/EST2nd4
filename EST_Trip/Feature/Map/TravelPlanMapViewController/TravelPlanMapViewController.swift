@@ -28,16 +28,32 @@ class TravelPlanMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // 메소드 분리
+        // ViewDIdload life cycle
+        
         if let firstPlace {
             let camera = GMSCameraPosition.camera(withLatitude: firstPlace.latitude, longitude: firstPlace.longittude, zoom: 14)
             mapView.camera = camera
         }
         
-        let markers = travel.schedules.flatMap { $0.places }
-            .map(GMSMarker.make(from:))
+        let places = travel.schedules.flatMap { $0.places }
+        
+        
+        let markers = places.map(GMSMarker.make(from:))
         
         markers.forEach { marker in
             marker.map = mapView
         }
+        
+        // 경로 그리기
+        let path = GMSMutablePath()
+        for place in places {
+            path.add(CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longittude))
+        }
+
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeColor = .systemBlue
+        polyline.strokeWidth = 3.0
+        polyline.map = mapView
     }
 }
