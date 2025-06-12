@@ -27,6 +27,25 @@ class LocalPlaceService {
             entity.category = CategoryType.from(placeTypes: place.types ?? [] ).rawValue
         }
     }
+    
+    
+    func fetchByCoordinate(latitude: Double, longitude: Double, tolerance: Double = 0.0001) -> PlaceEntity? {
+            let latPredicate = NSPredicate(format: "ABS(latitude - %f) < %f", latitude, tolerance)
+            let lonPredicate = NSPredicate(format: "ABS(longitude - %f) < %f", longitude, tolerance)
+            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [latPredicate, lonPredicate])
+
+            let result: [PlaceEntity] = CoreDataManager.shared.fetch(PlaceEntity.self, predicate: predicate)
+            return result.first
+        }
+
+    func fetchByName(_ name: String) -> [PlaceEntity] {
+            let predicate = NSPredicate(format: "name CONTAINS[c] %@", name)
+            return CoreDataManager.shared.fetch(PlaceEntity.self, predicate: predicate)
+        }
+    
+    func remove(place: PlaceEntity) {
+        CoreDataManager.shared.delete(place)
+    }
 }
 
 
