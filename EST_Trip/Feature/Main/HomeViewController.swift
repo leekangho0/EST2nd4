@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class MainViewController: UIViewController {
 
     @IBOutlet weak var header: UIView!
 
@@ -32,6 +32,12 @@ class HomeViewController: UIViewController {
         header.backgroundColor = UIColor.dolHareubangLightGray.withAlphaComponent(0.2)
     }
 
+    @IBAction func plusButtonTap(_ sender: Any) {
+        let vc = FeatureFactory.makeCalendar()
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         if sender == futureTripButton {
             currentTitle = futureTripTitle
@@ -53,7 +59,7 @@ class CustomCell: UITableViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
 }
 
-extension HomeViewController: UITableViewDataSource {
+extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentTitle.count
     }

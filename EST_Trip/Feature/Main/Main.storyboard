@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="XkC-Ur-69e">
             <objects>
-                <viewController id="nkk-Y5-Veu" customClass="HomeViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="nkk-Y5-Veu" customClass="MainViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="esQ-Sz-faZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -83,7 +83,7 @@
                                                 <color key="backgroundColor" name="DolHareubangLightGray"/>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="105" translatesAutoresizingMaskIntoConstraints="NO" id="wUx-eO-Q2l">
-                                                <rect key="frame" x="23" y="249" width="373.66666666666669" height="34.333333333333314"/>
+                                                <rect key="frame" x="23" y="248.99999999999997" width="373.66666666666669" height="34.333333333333343"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xfc-Ns-vOk">
                                                         <rect key="frame" x="0.0" y="0.0" width="221.33333333333334" height="34.333333333333336"/>
@@ -119,6 +119,9 @@
                                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="semibold"/>
                                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="plusButtonTap:" destination="nkk-Y5-Veu" eventType="touchUpInside" id="cLk-9V-Xu6"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
