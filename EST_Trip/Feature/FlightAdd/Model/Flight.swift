@@ -10,7 +10,7 @@ import Foundation
 struct Flight {
     var departureDate: Date
     var departureTime: Date
-    var flightName: String
+    var flightName: String?
     var departureAirport: String?
     var arrivalDate: Date
     var arrivalTime: Date

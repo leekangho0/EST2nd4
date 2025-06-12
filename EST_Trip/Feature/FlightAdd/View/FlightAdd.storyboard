@@ -412,6 +412,7 @@
                         <outlet property="arrivalAirport" destination="U1M-dP-GZk" id="Ib4-i0-Jro"/>
                         <outlet property="departureAirport" destination="aLJ-sZ-ZbQ" id="Lj4-UC-FdM"/>
                         <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
+                        <outlet property="flightName" destination="VGI-IR-YAz" id="SI3-bl-nMv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

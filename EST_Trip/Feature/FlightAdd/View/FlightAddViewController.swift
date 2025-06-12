@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FlightAddViewController: UIViewController {
+class FlightAddViewController: UIViewController, UITextFieldDelegate {
     let viewModel = FlightAddViewModel()
 
     @IBOutlet weak var departureDate: UIButton!
@@ -18,13 +18,21 @@ class FlightAddViewController: UIViewController {
 
     @IBOutlet weak var departureAirport: UIButton!
     @IBOutlet weak var arrivalAirport: UIButton!
-
-
+    @IBOutlet weak var flightName: UITextField!
+    
     private var hasPresentedDateSheet = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+
+        flightName.delegate = self
+        flightName.addTarget(self, action: #selector(flightNameChanged), for: .editingChanged)
+    }
+
+    @objc private func flightNameChanged() {
+        viewModel.flight.flightName = flightName.text
+        print(viewModel.flight.flightName ?? "")
     }
 
     override func viewDidAppear(_ animated: Bool) {
