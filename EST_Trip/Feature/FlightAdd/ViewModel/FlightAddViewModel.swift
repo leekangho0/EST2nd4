@@ -8,5 +8,13 @@
 import Foundation
 
 final class FlightAddViewModel {
-	var flight = Flight(departureDate: Date(), departureTime: Date(), flightName: "", departureAirport: "", arrivalDate: Date(), arrivalTime: Date(), arrivalAirport: "")
+    var flight = Flight(
+        departureDate: Date(),
+        departureTime: Date(),
+        flightName: "",
+        departureAirport: "",
+        arrivalDate: Date(),
+        arrivalTime: Date(),
+        arrivalAirport: ""
+    )
 }
