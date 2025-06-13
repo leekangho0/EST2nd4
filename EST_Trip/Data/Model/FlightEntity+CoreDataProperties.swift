@@ -21,7 +21,7 @@ extension FlightEntity {
     @NSManaged public var arrivalTime: Date?
     @NSManaged public var departureAirport: String?
     @NSManaged public var flightname: String?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: UUID
     @NSManaged public var startFlight: TravelEntity?
     @NSManaged public var endFlight: TravelEntity?
 

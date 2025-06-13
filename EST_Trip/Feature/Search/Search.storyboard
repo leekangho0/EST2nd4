@@ -9,25 +9,19 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--SearchViewController-->
+        <!--장소검색-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="SearchViewController" title="SearchViewController" id="Y6W-OH-hqX" customClass="SearchViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchViewController" title="장소검색" id="Y6W-OH-hqX" customClass="SearchViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ege-BV-D2T">
-                                <rect key="frame" x="16" y="75" width="361" height="34.333333333333343"/>
+                                <rect key="frame" x="16" y="114" width="361" height="34"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a6R-HU-dsE">
-                                        <rect key="frame" x="0.0" y="0.0" width="39.666666666666664" height="34.333333333333336"/>
-                                        <color key="tintColor" systemColor="labelColor"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="chevron.left" catalog="system"/>
-                                    </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="추가하고 싶은 장소를 검색하세요" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tes-YD-aQu">
-                                        <rect key="frame" x="39.666666666666657" y="0.0" width="321.33333333333337" height="34.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="361" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
@@ -37,7 +31,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Il-Ild">
-                                <rect key="frame" x="16" y="127.33333333333333" width="172" height="33.333333333333329"/>
+                                <rect key="frame" x="16" y="166" width="172" height="33.333333333333343"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TbD-yq-VSj">
                                         <rect key="frame" x="0.0" y="0.0" width="52" height="33.333333333333336"/>
@@ -78,24 +72,18 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="185" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-Os-xVE">
-                                <rect key="frame" x="16" y="178.66666666666666" width="361" height="34.333333333333343"/>
+                                <rect key="frame" x="16" y="217.33333333333337" width="361" height="24"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day1 추천 장소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPL-fj-FWd">
-                                        <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="34.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="361" height="24"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rja-Il-HWm">
-                                        <rect key="frame" x="308.33333333333331" y="0.0" width="52.666666666666686" height="34.333333333333336"/>
-                                        <color key="tintColor" systemColor="labelColor"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="map" catalog="system"/>
-                                    </button>
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="9hY-Vf-aMc">
-                                <rect key="frame" x="0.0" y="253" width="393" height="599"/>
+                                <rect key="frame" x="0.0" y="275" width="393" height="577"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="placeCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="placeCell" id="fzk-5d-lvQ" customClass="placeCell" customModule="EST_Trip" customModuleProvider="target">
@@ -178,8 +166,8 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Gbh-Os-xVE" secondAttribute="trailing" constant="16" id="1oJ-kM-e9t"/>
                             <constraint firstItem="bJW-Il-Ild" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Hox-LP-nJI"/>
                             <constraint firstItem="Gbh-Os-xVE" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="R80-0S-3og"/>
-                            <constraint firstItem="9hY-Vf-aMc" firstAttribute="top" secondItem="Gbh-Os-xVE" secondAttribute="bottom" constant="40" id="SDi-4K-sbY"/>
-                            <constraint firstItem="ege-BV-D2T" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="75" id="WTZ-7x-dc9"/>
+                            <constraint firstItem="9hY-Vf-aMc" firstAttribute="top" secondItem="Gbh-Os-xVE" secondAttribute="bottom" constant="33.6666666666666" id="SDi-4K-sbY"/>
+                            <constraint firstItem="ege-BV-D2T" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="114" id="WTZ-7x-dc9"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="bJW-Il-Ild" secondAttribute="trailing" constant="205" id="WUU-ag-ce6"/>
                             <constraint firstItem="Gbh-Os-xVE" firstAttribute="top" secondItem="bJW-Il-Ild" secondAttribute="bottom" constant="18" id="XeL-Wb-mH7"/>
                             <constraint firstItem="ege-BV-D2T" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" constant="16" id="YgT-Sx-RWr"/>
@@ -204,8 +192,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="chevron.left" catalog="system" width="97" height="128"/>
-        <image name="map" catalog="system" width="128" height="112"/>
         <namedColor name="DolHareubangGray">
             <color red="0.49411764705882355" green="0.49411764705882355" blue="0.49411764705882355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -216,10 +202,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

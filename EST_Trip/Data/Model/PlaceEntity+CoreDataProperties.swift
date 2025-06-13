@@ -18,13 +18,13 @@ extension PlaceEntity {
 
     @NSManaged public var address: String?
     @NSManaged public var arrivalTime: Date?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: UUID
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
     @NSManaged public var memo: String?
     @NSManaged public var name: String?
     @NSManaged public var photo: Data?
-    @NSManaged public var scheduleID: UUID?
+    @NSManaged public var scheduleID: UUID
     @NSManaged public var category: Int16
     @NSManaged public var expense: ExpenseEntity?
     @NSManaged public var schedule: ScheduleEntity?
