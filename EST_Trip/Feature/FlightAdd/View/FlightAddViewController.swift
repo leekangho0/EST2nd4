@@ -62,8 +62,17 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc private func flightNameChanged() {
-        viewModel.flight.flightName = flightName.text
-        print(viewModel.flight.flightName ?? "")
+        viewModel.updateFlightName(name: flightName.text ?? "")
+        print(viewModel.flight.flightName)
+    }
+
+    private func setButtonTitle(title: String, for button: UIButton, active: Bool = true) {
+        let color: UIColor = active ? .label : .systemGray3
+        button.setAttributedTitle(
+            NSAttributedString(string: title,
+                               attributes: [.font: UIFont.systemFont(ofSize: 13),
+                                            .foregroundColor: color]),
+            for: .normal)
     }
 
     private func setupNavigationBar() {
@@ -100,24 +109,10 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             vc.onSelectDepartureDate = { [weak self] selectedDate, isFirst in
                 guard let self else { return }
 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy.M.d"
-                let title = formatter.string(from: selectedDate)
+                let title = viewModel.updateDepartureDate(date: selectedDate)
+                setButtonTitle(title: title, for: departureDate)
 
-                departureDate.setAttributedTitle(NSAttributedString(
-                    string: title,
-                    attributes: [.font: UIFont.systemFont(ofSize: 13),
-                                 .foregroundColor: UIColor.label]), for: .normal)
-
-                viewModel.flight.departureDate = selectedDate
-
-                if isFirst {
-                    viewModel.flight.arrivalAirport = "제주국제공항"
-                    viewModel.flight.departureAirport = nil
-                } else {
-                    viewModel.flight.departureAirport = "제주국제공항"
-                    viewModel.flight.arrivalAirport = nil
-                }
+                viewModel.updateTripDirection(isFirst: isFirst)
 
                 refreshAirportButtonsUI()
             }
@@ -126,33 +121,16 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func refreshAirportButtonsUI() {
-        if let departure = viewModel.flight.departureAirport, !departure.isEmpty {
-            departureAirport.setAttributedTitle(nil, for: .normal)
+        let dep = viewModel.flight.departureAirport ?? ""
+        let arr = viewModel.flight.arrivalAirport ?? ""
 
-            departureAirport.setAttributedTitle(NSAttributedString(
-                string: departure,
-                attributes: [.font: UIFont.systemFont(ofSize: 13),
-                             .foregroundColor: UIColor.label]), for: .normal)
-        } else {
-            departureAirport.setAttributedTitle(NSAttributedString(
-                string: "공항을 선택해주세요.",
-                attributes: [.font: UIFont.systemFont(ofSize: 13),
-                             .foregroundColor: UIColor.systemGray3]), for: .normal)
-        }
+        setButtonTitle(title: dep.isEmpty ? "공항을 선택해주세요." : dep,
+                       for: departureAirport,
+                       active: !dep.isEmpty)
 
-        if let arrival = viewModel.flight.arrivalAirport, !arrival.isEmpty {
-            arrivalAirport.setAttributedTitle(nil, for: .normal)
-
-            arrivalAirport.setAttributedTitle(NSAttributedString(
-                string: arrival,
-                attributes: [.font: UIFont.systemFont(ofSize: 13),
-                             .foregroundColor: UIColor.label]), for: .normal)
-        } else {
-            arrivalAirport.setAttributedTitle(NSAttributedString(
-                string: "공항을 선택해주세요.",
-                attributes: [.font: UIFont.systemFont(ofSize: 13),
-                             .foregroundColor: UIColor.systemGray3]), for: .normal)
-        }
+        setButtonTitle(title: arr.isEmpty ? "공항을 선택해주세요." : arr,
+                       for: arrivalAirport,
+                       active: !arr.isEmpty)
     }
 
     private func presentDatePicker() {
@@ -166,16 +144,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             vc.onTimeSelected = { [weak self] selectedDate in
                 guard let self else { return }
 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm"
-                let title = formatter.string(from: selectedDate)
-
-                departureTime.setAttributedTitle(NSAttributedString(
-                    string: title,
-                    attributes: [.font: UIFont.systemFont(ofSize: 13),
-                                 .foregroundColor: UIColor.label]), for: .normal)
-
-                viewModel.flight.departureTime = selectedDate
+                let title = viewModel.updateDepartureTime(date: selectedDate)
+                setButtonTitle(title: title, for: departureTime)
             }
             present(vc, animated: true)
         }
@@ -193,14 +163,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
                 print("선택된 공항 \(selectedAirport)")
                 print("뷰모델 상태:", viewModel.flight.departureAirport ?? "없음")
-                departureAirport.setAttributedTitle(nil, for: .normal)
-
-                departureAirport.setAttributedTitle(NSAttributedString(
-                    string: selectedAirport,
-                    attributes: [.font: UIFont.systemFont(ofSize: 13),
-                                 .foregroundColor: UIColor.label]), for: .normal)
-
-                viewModel.flight.departureAirport = selectedAirport
+                let title = viewModel.updateDepartureAirport(airport: selectedAirport)
+                setButtonTitle(title: title, for: departureAirport)
             }
             present(vc, animated: true)
         }
@@ -216,18 +180,9 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
             vc.onSelectArrivalDate = { [weak self] date in
                 guard let self else { return }
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy.M.d"
-
-                arrivalDate.setAttributedTitle(nil, for: .normal)
-                arrivalDate.setAttributedTitle(
-                    NSAttributedString(string: formatter.string(from: date), attributes: [
-                        .font: UIFont.systemFont(ofSize: 13),
-                        .foregroundColor: UIColor.label
-                    ]), for: .normal)
-
-                viewModel.flight.arrivalDate = date
-                print("도착일 체크 \(viewModel.flight.arrivalDate)")
+                let title = viewModel.updateArrivalDate(date: date)
+                setButtonTitle(title: title, for: arrivalDate)
+                print("도착일 체크 \(String(describing: viewModel.flight.arrivalDate))")
             }
             present(vc, animated: true)
         }
@@ -242,17 +197,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
             vc.onTimeSelected = { [weak self] selectDate in
                 guard let self else { return }
-
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm"
-                let title = formatter.string(from: selectDate)
-
-                arrivalTime.setAttributedTitle(NSAttributedString(
-                    string: title,
-                    attributes: [.font: UIFont.systemFont(ofSize: 13),
-                                 .foregroundColor: UIColor.label]), for: .normal)
-
-                viewModel.flight.arrivalTime = selectDate
+                let title = viewModel.updateArrivalTime(date: selectDate)
+                setButtonTitle(title: title, for: arrivalTime)
             }
             present(vc, animated: true)
         }
@@ -267,14 +213,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
             vc.onAirportSelected = { [weak self] selectAirport in
                 guard let self else { return }
-
-                arrivalAirport.setAttributedTitle(nil, for: .normal)
-
-                arrivalAirport.setAttributedTitle(NSAttributedString(
-                    string: selectAirport,
-                    attributes: [.font: UIFont.systemFont(ofSize: 13), .foregroundColor: UIColor.label]), for: .normal)
-
-                viewModel.flight.arrivalAirport = selectAirport
+                let title = viewModel.updateArrivalAirport(airport: selectAirport)
+                setButtonTitle(title: title, for: arrivalAirport)
                 print("모델 전체 상태 체크",viewModel.flight)
             }
             present(vc, animated: true)
