@@ -28,8 +28,8 @@ final class CalendarViewController: UIViewController {
         setDateButton.addTarget(self, action: #selector(dateButtonTap), for: .touchUpInside)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
         guard !didScrollToToday, let indexPath = viewModel.todayIndexPath else { return }
 
         collectionView.performBatchUpdates(nil) { [weak self] _ in

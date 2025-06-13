@@ -9,7 +9,7 @@ import UIKit
 
 final class CalendarViewModel {
     private let calendarManager = CalendarManager()
-    private let selectionManager = CalendarSelectionManager()
+    private let selectionManager = CalendarSelectionManager.shared
 
     // MARK: - 달력 생성 파트
     // 섹션 수 조회

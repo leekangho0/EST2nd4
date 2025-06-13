@@ -8,6 +8,8 @@
 import Foundation
 
 final class CalendarSelectionManager {
+    static let shared = CalendarSelectionManager()
+    private init() {}
     private(set) var travelDate = TravelDate()
 
     // 달력의 날짜 선택

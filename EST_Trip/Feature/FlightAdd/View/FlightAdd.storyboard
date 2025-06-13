@@ -39,15 +39,21 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="kSc-U0-zvC">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜를 선택해주세요." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sl6-RJ-2rp">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Nb-ef-Au4">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="22" id="O1e-Mu-lov"/>
+                                                                    <constraint firstAttribute="height" constant="22" id="fmE-Te-OIs"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                <color key="textColor" systemColor="systemGray3Color"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                                <state key="normal" title="Button"/>
+                                                                <buttonConfiguration key="configuration" style="plain" title="날짜를 선택해주세요.">
+                                                                    <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
+                                                                    <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
+                                                                    <color key="baseForegroundColor" systemColor="systemGray3Color"/>
+                                                                </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="departureDateButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JQu-r0-6Z3"/>
+                                                                </connections>
+                                                            </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yql-PI-Exd">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
                                                                 <color key="backgroundColor" systemColor="systemGray3Color"/>
@@ -57,10 +63,10 @@
                                                             </view>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="sl6-RJ-2rp" secondAttribute="trailing" id="HCM-rX-daS"/>
                                                             <constraint firstItem="yql-PI-Exd" firstAttribute="leading" secondItem="kSc-U0-zvC" secondAttribute="leading" id="OEF-5Y-IxN"/>
+                                                            <constraint firstItem="4Nb-ef-Au4" firstAttribute="leading" secondItem="kSc-U0-zvC" secondAttribute="leading" id="ROF-b5-ZRy"/>
                                                             <constraint firstAttribute="trailing" secondItem="yql-PI-Exd" secondAttribute="trailing" id="m75-qO-6PV"/>
-                                                            <constraint firstItem="sl6-RJ-2rp" firstAttribute="leading" secondItem="kSc-U0-zvC" secondAttribute="leading" id="uTh-bb-XcJ"/>
+                                                            <constraint firstAttribute="trailing" secondItem="4Nb-ef-Au4" secondAttribute="trailing" id="sdn-eX-jBl"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
@@ -97,6 +103,9 @@
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="departureTimeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JiP-id-g0a"/>
+                                                                </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dh6-AL-sqF">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
@@ -182,17 +191,20 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Iqq-Lf-FtF">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aLJ-sZ-ZbQ">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aLJ-sZ-ZbQ" userLabel="공항을 선택해주세요.">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="J9B-uH-vHD"/>
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="시간을 선택해주세요.">
+                                                                <buttonConfiguration key="configuration" style="plain" title="공항을 선택해주세요.">
                                                                     <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="dapartureAirportButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="HRs-eD-sAA"/>
+                                                                </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9M0-4f-Xz3">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
@@ -232,17 +244,20 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="EsA-8z-vb4">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78R-fb-D58">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78R-fb-D58" userLabel="날짜를 선택해주세요.">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="d20-7w-K5Z"/>
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="시간을 선택해주세요.">
+                                                                <buttonConfiguration key="configuration" style="plain" title="날짜를 선택해주세요.">
                                                                     <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="arrivalDateButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Mht-gs-jAD"/>
+                                                                </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctU-2U-uD1">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
@@ -293,6 +308,9 @@
                                                                     <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="arrivalTimeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1Gm-LO-M90"/>
+                                                                </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uza-Wx-lrw">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
@@ -332,15 +350,21 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="fzM-a4-5aO">
                                                         <rect key="frame" x="0.0" y="32" width="329" height="27"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="공항을 선택해주세요." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFn-0D-xlk">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1M-dP-GZk" userLabel="공항을 선택해주세요.">
                                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="22"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="22" id="FIS-8d-UCv"/>
+                                                                    <constraint firstAttribute="height" constant="22" id="N6u-GZ-R3H"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                <color key="textColor" systemColor="systemGray3Color"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                                <state key="normal" title="Button"/>
+                                                                <buttonConfiguration key="configuration" style="plain" title="공항을 선택해주세요.">
+                                                                    <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
+                                                                    <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
+                                                                    <color key="baseForegroundColor" systemColor="systemGray3Color"/>
+                                                                </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="arrivalAirportButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1Gg-3B-ayx"/>
+                                                                </connections>
+                                                            </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meQ-4F-8Xz">
                                                                 <rect key="frame" x="0.0" y="26" width="329" height="1"/>
                                                                 <color key="backgroundColor" systemColor="systemGray3Color"/>
@@ -350,9 +374,9 @@
                                                             </view>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="uFn-0D-xlk" firstAttribute="leading" secondItem="fzM-a4-5aO" secondAttribute="leading" id="0qI-51-51K"/>
                                                             <constraint firstItem="meQ-4F-8Xz" firstAttribute="leading" secondItem="fzM-a4-5aO" secondAttribute="leading" id="PLF-QB-tJC"/>
-                                                            <constraint firstAttribute="trailing" secondItem="uFn-0D-xlk" secondAttribute="trailing" id="URZ-1a-n0B"/>
+                                                            <constraint firstItem="U1M-dP-GZk" firstAttribute="leading" secondItem="fzM-a4-5aO" secondAttribute="leading" id="XO6-DJ-MYb"/>
+                                                            <constraint firstAttribute="trailing" secondItem="U1M-dP-GZk" secondAttribute="trailing" id="ZU0-gO-Qp9"/>
                                                             <constraint firstAttribute="trailing" secondItem="meQ-4F-8Xz" secondAttribute="trailing" id="wid-Fh-h6k"/>
                                                         </constraints>
                                                     </stackView>
@@ -399,10 +423,217 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NWc-Vw-slg"/>
+                    <connections>
+                        <outlet property="arrivalAirport" destination="U1M-dP-GZk" id="Ib4-i0-Jro"/>
+                        <outlet property="arrivalDate" destination="78R-fb-D58" id="rod-mq-h7B"/>
+                        <outlet property="arrivalTime" destination="fjy-vm-C5G" id="htF-6J-8Jb"/>
+                        <outlet property="departureAirport" destination="aLJ-sZ-ZbQ" id="Lj4-UC-FdM"/>
+                        <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
+                        <outlet property="departureTime" destination="YVY-qh-6EG" id="ywy-xS-r5Q"/>
+                        <outlet property="flightName" destination="VGI-IR-YAz" id="FJf-8v-pUv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1979.3893129770991" y="-34.507042253521128"/>
+        </scene>
+        <!--Flight Date Selection View Controller-->
+        <scene sceneID="GMf-5L-G6N">
+            <objects>
+                <viewController storyboardIdentifier="FlightDateSelectionViewController" id="Qfh-UX-tV7" customClass="FlightDateSelectionViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nah-nF-St0">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ghe-xk-0Hp">
+                                <rect key="frame" x="0.0" y="656" width="393" height="196"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="rEX-7H-595">
+                                        <rect key="frame" x="32" y="0.0" width="329" height="134"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="항공편 이용일 선택" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pm9-Jy-59y">
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                <color key="textColor" name="DolHareubangGray"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DtH-Cu-Ig4">
+                                                <rect key="frame" x="0.0" y="34" width="329" height="100"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wg3-kA-xjG">
+                                                        <rect key="frame" x="0.0" y="0.0" width="329" height="50"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="가는날 선택 06.27 / 금">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="15"/>
+                                                            <directionalEdgeInsets key="contentInsets" top="16" leading="0.0" bottom="16" trailing="0.0"/>
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="firstDateButtonTapped:" destination="Qfh-UX-tV7" eventType="touchUpInside" id="u0K-2l-W3J"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="43R-K2-hRv">
+                                                        <rect key="frame" x="0.0" y="50" width="329" height="50"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="오는날 선택 06.29 / 일">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="15"/>
+                                                            <directionalEdgeInsets key="contentInsets" top="16" leading="0.0" bottom="16" trailing="0.0"/>
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="secondDateButtonTapped:" destination="Qfh-UX-tV7" eventType="touchUpInside" id="rWF-1v-7d2"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="DtH-Cu-Ig4" firstAttribute="leading" secondItem="rEX-7H-595" secondAttribute="leading" id="NtN-T6-jfq"/>
+                                            <constraint firstAttribute="trailing" secondItem="DtH-Cu-Ig4" secondAttribute="trailing" id="gVz-KG-1va"/>
+                                            <constraint firstAttribute="trailing" secondItem="Pm9-Jy-59y" secondAttribute="trailing" id="kWB-YI-hXM"/>
+                                            <constraint firstItem="Pm9-Jy-59y" firstAttribute="leading" secondItem="rEX-7H-595" secondAttribute="leading" id="s32-j6-1Rk"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="rEX-7H-595" firstAttribute="top" secondItem="Ghe-xk-0Hp" secondAttribute="top" id="UNz-bs-7gU"/>
+                                    <constraint firstItem="rEX-7H-595" firstAttribute="leading" secondItem="Ghe-xk-0Hp" secondAttribute="leading" constant="32" id="YKB-TG-AI4"/>
+                                    <constraint firstAttribute="height" constant="196" id="aQH-ot-ctG"/>
+                                    <constraint firstAttribute="trailing" secondItem="rEX-7H-595" secondAttribute="trailing" constant="32" id="zVo-GY-FdF"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="G2e-6h-rwP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ghe-xk-0Hp" firstAttribute="leading" secondItem="G2e-6h-rwP" secondAttribute="leading" id="C2Q-Ro-7DM"/>
+                            <constraint firstAttribute="bottom" secondItem="Ghe-xk-0Hp" secondAttribute="bottom" id="DbR-Im-kL0"/>
+                            <constraint firstItem="Ghe-xk-0Hp" firstAttribute="trailing" secondItem="G2e-6h-rwP" secondAttribute="trailing" id="wmB-wW-Idx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="firstDateButton" destination="Wg3-kA-xjG" id="RlG-H0-H4T"/>
+                        <outlet property="secondDateButton" destination="43R-K2-hRv" id="6dg-Lf-Wcm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U0D-Rh-3Ns" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2750" y="-35"/>
+        </scene>
+        <!--Time Picker View Controller-->
+        <scene sceneID="Hob-Ni-M9t">
+            <objects>
+                <viewController storyboardIdentifier="TimePickerViewController" id="NyF-Pf-1AW" customClass="TimePickerViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gdc-2J-v8Y">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wiz-FB-Zgt">
+                                <rect key="frame" x="49.666666666666657" y="285.33333333333337" width="294" height="281.33333333333337"/>
+                                <subviews>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="nml-xG-Dud">
+                                        <rect key="frame" x="0.0" y="16" width="294" height="215"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="294" id="SWk-rD-TNm"/>
+                                            <constraint firstAttribute="height" constant="215" id="fIU-Ei-pth"/>
+                                        </constraints>
+                                        <locale key="locale" localeIdentifier="ko_KR"/>
+                                    </datePicker>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5t-wZ-03K">
+                                        <rect key="frame" x="120.00000000000001" y="231.00000000000006" width="53.666666666666671" height="34.333333333333314"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34.333333333333343" id="AEL-HB-DQL"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="확인"/>
+                                        <connections>
+                                            <action selector="confirmButtonTapped:" destination="NyF-Pf-1AW" eventType="touchUpInside" id="0Nh-Py-Enk"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="g5t-wZ-03K" secondAttribute="bottom" constant="16" id="BXO-K0-xWH"/>
+                                    <constraint firstAttribute="trailing" secondItem="nml-xG-Dud" secondAttribute="trailing" id="CNn-j1-57b"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="centerX" secondItem="Wiz-FB-Zgt" secondAttribute="centerX" id="FYg-nT-cqV"/>
+                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="centerX" secondItem="Wiz-FB-Zgt" secondAttribute="centerX" id="LNY-xb-CdO"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="leading" secondItem="Wiz-FB-Zgt" secondAttribute="leading" id="TKB-Ah-4Mb"/>
+                                    <constraint firstItem="g5t-wZ-03K" firstAttribute="top" secondItem="nml-xG-Dud" secondAttribute="bottom" id="sCQ-fs-dDD"/>
+                                    <constraint firstItem="nml-xG-Dud" firstAttribute="top" secondItem="Wiz-FB-Zgt" secondAttribute="top" constant="16" id="yLo-Ih-Ff8"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="QKE-E6-F5b"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Wiz-FB-Zgt" firstAttribute="centerX" secondItem="Gdc-2J-v8Y" secondAttribute="centerX" id="FYJ-5L-X9U"/>
+                            <constraint firstItem="Wiz-FB-Zgt" firstAttribute="centerY" secondItem="Gdc-2J-v8Y" secondAttribute="centerY" id="lpI-lf-Vb5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="Wiz-FB-Zgt" id="PBu-Z8-zG1"/>
+                        <outlet property="datePicker" destination="nml-xG-Dud" id="TjC-l4-m70"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Lb-QB-EYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2747.3282442748091" y="-738.0281690140846"/>
+        </scene>
+        <!--Airport Picker View Controller-->
+        <scene sceneID="7nx-Wi-r9s">
+            <objects>
+                <viewController storyboardIdentifier="AirportPickerViewController" id="bZd-h8-XHn" customClass="AirportPickerViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pZt-eL-JFl">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUG-zy-Spa">
+                                <rect key="frame" x="49.666666666666657" y="285" width="294" height="282"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7X0-F3-Sjd">
+                                        <rect key="frame" x="0.0" y="16" width="294" height="215"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="294" id="Bh1-CY-VCn"/>
+                                            <constraint firstAttribute="height" constant="215" id="Wft-o7-0JE"/>
+                                        </constraints>
+                                    </pickerView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOm-lT-ins">
+                                        <rect key="frame" x="120" y="231" width="54" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="확인"/>
+                                        <connections>
+                                            <action selector="confirmButtonTapped:" destination="bZd-h8-XHn" eventType="touchUpInside" id="fGq-1n-2jx"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstItem="7X0-F3-Sjd" firstAttribute="leading" secondItem="XUG-zy-Spa" secondAttribute="leading" id="2FT-fU-ba7"/>
+                                    <constraint firstAttribute="bottom" secondItem="xOm-lT-ins" secondAttribute="bottom" constant="16" id="6xE-7C-ofP"/>
+                                    <constraint firstAttribute="trailing" secondItem="7X0-F3-Sjd" secondAttribute="trailing" id="YsD-Wo-jUt"/>
+                                    <constraint firstItem="xOm-lT-ins" firstAttribute="centerX" secondItem="XUG-zy-Spa" secondAttribute="centerX" id="h55-fJ-d9u"/>
+                                    <constraint firstItem="7X0-F3-Sjd" firstAttribute="centerX" secondItem="XUG-zy-Spa" secondAttribute="centerX" id="ptD-NC-QlA"/>
+                                    <constraint firstItem="xOm-lT-ins" firstAttribute="top" secondItem="7X0-F3-Sjd" secondAttribute="bottom" id="sUI-mh-ZPV"/>
+                                    <constraint firstItem="7X0-F3-Sjd" firstAttribute="top" secondItem="XUG-zy-Spa" secondAttribute="top" constant="16" id="x5q-92-TtB"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WBF-Ba-Muk"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="XUG-zy-Spa" firstAttribute="centerY" secondItem="pZt-eL-JFl" secondAttribute="centerY" id="2Rc-bL-oTL"/>
+                            <constraint firstItem="XUG-zy-Spa" firstAttribute="centerX" secondItem="pZt-eL-JFl" secondAttribute="centerX" id="SHU-je-e0E"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="XUG-zy-Spa" id="PDh-dU-1IA"/>
+                        <outlet property="pickerView" destination="7X0-F3-Sjd" id="IaD-9p-Ttw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PDC-8h-yBb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3638.9312977099235" y="-738.0281690140846"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l3D-7m-IwI">
@@ -424,11 +655,17 @@
         <namedColor name="DolHareubangGray">
             <color red="0.49411764705882355" green="0.49411764705882355" blue="0.49411764705882355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
             <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
