@@ -18,7 +18,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var departureTime: UIButton!
     @IBAction func departureTimeButtonTapped(_ sender: Any) {
-		presentDatePicker()
+        presentDatePicker()
     }
 
     @IBOutlet weak var flightName: UITextField!
@@ -30,14 +30,18 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var arrivalDate: UIButton!
     @IBAction func arrivalDateButtonTapped(_ sender: Any) {
+        print("도착일 선택 체크")
+        presentArrivalDataSheet()
     }
 
     @IBOutlet weak var arrivalTime: UIButton!
     @IBAction func arrivalTimeButtonTapped(_ sender: Any) {
+        presentArrivalTimePicker()
     }
-    
+
     @IBOutlet weak var arrivalAirport: UIButton!
     @IBAction func arrivalAirportButtonTapped(_ sender: Any) {
+        presentArrivalAirportPicker()
     }
 
     override func viewDidLoad() {
@@ -98,7 +102,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy.M.d"
-				let title = formatter.string(from: selectedDate)
+                let title = formatter.string(from: selectedDate)
 
                 departureDate.setAttributedTitle(NSAttributedString(
                     string: title,
@@ -143,8 +147,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
                 string: arrival,
                 attributes: [.font: UIFont.systemFont(ofSize: 13),
                              .foregroundColor: UIColor.label]), for: .normal)
-
-
         } else {
             arrivalAirport.setAttributedTitle(NSAttributedString(
                 string: "공항을 선택해주세요.",
@@ -189,7 +191,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             vc.onAirportSelected = { [weak self] selectedAirport in
                 guard let self else { return }
 
-				print("선택된 공항 \(selectedAirport)")
+                print("선택된 공항 \(selectedAirport)")
                 print("뷰모델 상태:", viewModel.flight.departureAirport ?? "없음")
                 departureAirport.setAttributedTitle(nil, for: .normal)
 
@@ -203,15 +205,90 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             present(vc, animated: true)
         }
     }
+
+    private func presentArrivalDataSheet() {
+        let departureDate = viewModel.flight.departureDate
+        let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FlightDateSelectionViewController") as? FlightDateSelectionViewController {
+            vc.modalPresentationStyle = .pageSheet
+            vc.isArrivalSelection = true
+            vc.baseDepartureDate = departureDate
+
+            vc.onSelectArrivalDate = { [weak self] date in
+                guard let self else { return }
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy.M.d"
+
+                arrivalDate.setAttributedTitle(nil, for: .normal)
+                arrivalDate.setAttributedTitle(
+                    NSAttributedString(string: formatter.string(from: date), attributes: [
+                        .font: UIFont.systemFont(ofSize: 13),
+                        .foregroundColor: UIColor.label
+                    ]), for: .normal)
+
+                viewModel.flight.arrivalDate = date
+                print("도착일 체크 \(viewModel.flight.arrivalDate)")
+            }
+            present(vc, animated: true)
+        }
+    }
+
+    private func presentArrivalTimePicker() {
+        let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
+
+        if let vc = storyboard.instantiateViewController(withIdentifier: "TimePickerViewController") as? TimePickerViewController {
+
+            vc.modalPresentationStyle = .overFullScreen
+
+            vc.onTimeSelected = { [weak self] selectDate in
+                guard let self else { return }
+
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                let title = formatter.string(from: selectDate)
+
+                arrivalTime.setAttributedTitle(NSAttributedString(
+                    string: title,
+                    attributes: [.font: UIFont.systemFont(ofSize: 13),
+                                 .foregroundColor: UIColor.label]), for: .normal)
+
+                viewModel.flight.arrivalTime = selectDate
+            }
+            present(vc, animated: true)
+        }
+    }
+
+    private func presentArrivalAirportPicker() {
+        let storyboard = UIStoryboard(name: "FlightAdd", bundle: nil)
+
+        if let vc = storyboard.instantiateViewController(withIdentifier: "AirportPickerViewController") as? AirportPickerViewController {
+
+            vc.modalPresentationStyle = .overFullScreen
+
+            vc.onAirportSelected = { [weak self] selectAirport in
+                guard let self else { return }
+
+                arrivalAirport.setAttributedTitle(nil, for: .normal)
+
+                arrivalAirport.setAttributedTitle(NSAttributedString(
+                    string: selectAirport,
+                    attributes: [.font: UIFont.systemFont(ofSize: 13), .foregroundColor: UIColor.label]), for: .normal)
+
+                viewModel.flight.arrivalAirport = selectAirport
+                print("모델 전체 상태 체크",viewModel.flight)
+            }
+            present(vc, animated: true)
+        }
+    }
 }
 
 extension FlightAddViewController {
     @objc func completeTap(_ sender: Any) {
         let vc = FeatureFactory.makePlanner()
-        
+
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @objc func onBack(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }

@@ -8,8 +8,11 @@
 import UIKit
 
 class FlightDateSelectionViewController: UIViewController {
-    var onSelectDepartureDate: ((Date, Bool) -> Void)?
+    var isArrivalSelection: Bool = false
+    var baseDepartureDate: Date?
+    var onSelectArrivalDate: ((Date) -> Void)?
 
+    var onSelectDepartureDate: ((Date, Bool) -> Void)?
     var travelDate: TravelDate {
         //테스팅용 임시 데이터, 캘린더와 추후 연결 필요
         let firstDate = Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date()
@@ -22,18 +25,27 @@ class FlightDateSelectionViewController: UIViewController {
 
     @IBOutlet weak var firstDateButton: UIButton!
     @IBAction func firstDateButtonTapped(_ sender: Any) {
-        let date = travelDate.startDate ?? Date()
-		onSelectDepartureDate?(date, true)
+        if isArrivalSelection {
+			let arrivalDate = baseDepartureDate ?? Date()
+            onSelectArrivalDate?(arrivalDate)
+        } else {
+            let date = travelDate.startDate ?? Date()
+            onSelectDepartureDate?(date, true)
+        }
         dismiss(animated: true)
     }
 
     @IBOutlet weak var secondDateButton: UIButton!
     @IBAction func secondDateButtonTapped(_ sender: Any) {
-        let date = travelDate.endDate ?? Date()
-        onSelectDepartureDate?(date, false)
+        if isArrivalSelection {
+            let arrivalDate = Calendar.current.date(byAdding: .day, value: 1, to: baseDepartureDate ?? Date())!
+            onSelectArrivalDate?(arrivalDate)
+        } else {
+            let date = travelDate.endDate ?? Date()
+            onSelectDepartureDate?(date, false)
+        }
         dismiss(animated: true)
     }
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,15 +55,28 @@ class FlightDateSelectionViewController: UIViewController {
             sheet.preferredCornerRadius = 16
         }
 
-        let date = travelDate
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "MM.dd / E"
-        let firstFormattedStr = formatter.string(from: date.startDate ?? Date())
-        firstDateButton.setTitle("가는날 선택 \(firstFormattedStr)", for: .normal)
+        if isArrivalSelection {
+			let departureDate = baseDepartureDate ?? Date()
 
-        let SecondFormattedStr = formatter.string(from: date.endDate ?? Date())
-        secondDateButton.setTitle("오는날 선택 \(SecondFormattedStr)", for: .normal)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM.dd"
 
+            let todayStr = formatter.string(from: departureDate)
+            let nextStr = formatter.string(from: Calendar.current.date(byAdding: .day, value: 1, to: departureDate)!
+            )
+
+            firstDateButton.setTitle(todayStr, for: .normal)
+            secondDateButton.setTitle(nextStr, for: .normal)
+        } else {
+            let date = travelDate
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko_KR")
+            formatter.dateFormat = "MM.dd / E"
+            let firstFormattedStr = formatter.string(from: date.startDate ?? Date())
+            firstDateButton.setTitle("가는날 선택 \(firstFormattedStr)", for: .normal)
+
+            let SecondFormattedStr = formatter.string(from: date.endDate ?? Date())
+            secondDateButton.setTitle("오는날 선택 \(SecondFormattedStr)", for: .normal)
+        }
     }
 }

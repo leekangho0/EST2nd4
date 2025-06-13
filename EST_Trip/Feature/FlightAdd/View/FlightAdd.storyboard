@@ -309,8 +309,7 @@
                                                                     <color key="baseForegroundColor" systemColor="systemGray3Color"/>
                                                                 </buttonConfiguration>
                                                                 <connections>
-                                                                    <action selector="arrivalTime:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="aTu-Wl-aNh"/>
-                                                                    <action selector="arrivalTimeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="rCb-EG-vkb"/>
+                                                                    <action selector="arrivalTimeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1Gm-LO-M90"/>
                                                                 </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uza-Wx-lrw">
@@ -427,7 +426,7 @@
                     <connections>
                         <outlet property="arrivalAirport" destination="U1M-dP-GZk" id="Ib4-i0-Jro"/>
                         <outlet property="arrivalDate" destination="78R-fb-D58" id="rod-mq-h7B"/>
-                        <outlet property="arrivalTime" destination="fjy-vm-C5G" id="X2l-7b-QdK"/>
+                        <outlet property="arrivalTime" destination="fjy-vm-C5G" id="htF-6J-8Jb"/>
                         <outlet property="departureAirport" destination="aLJ-sZ-ZbQ" id="Lj4-UC-FdM"/>
                         <outlet property="departureDate" destination="4Nb-ef-Au4" id="bnO-sA-y4e"/>
                         <outlet property="departureTime" destination="YVY-qh-6EG" id="ywy-xS-r5Q"/>
