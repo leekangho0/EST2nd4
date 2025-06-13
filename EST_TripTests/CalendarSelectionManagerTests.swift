@@ -9,11 +9,11 @@ import XCTest
 @testable import EST_Trip
 
 final class CalendarSelectionManagerTests: XCTestCase {
-    var manager: CalendarSelectionManager!
+    var manager: CalendarSelectionStore!
 
     override func setUp() {
         super.setUp()
-        manager = CalendarSelectionManager()
+        manager = CalendarSelectionStore()
     }
 
     override func tearDown() {

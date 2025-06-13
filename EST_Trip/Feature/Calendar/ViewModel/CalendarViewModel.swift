@@ -8,12 +8,11 @@
 import UIKit
 
 final class CalendarViewModel {
-    private let selectionManager = CalendarSelectionManager.shared
+    private let selectionStore = CalendarSelectionStore.shared
 
     private let calendar = Calendar.current
     private(set) var sections: [CalendarSection] = []
     private(set) var todayIndexPath: IndexPath?
-
 
     // MARK: - 달력 생성 파트
     // 섹션 수 조회
@@ -53,12 +52,13 @@ final class CalendarViewModel {
         }
 
         var monthCursor = start
-        var sectionIdex = 0
+        var sectionIndex = 0
 
         while monthCursor <= end {
             let comp = calendar.dateComponents([.year, .month], from: monthCursor)
-            let year = comp.year
-            let month = comp.month
+
+            guard let year = comp.year else { return }
+            guard let month = comp.month else { return }
 
             // 앞쪽 빈칸 계산
             guard let firstOfMonth = calendar.date(from: DateComponents(year: year, month: month, day: 1)) else {
@@ -69,7 +69,7 @@ final class CalendarViewModel {
             let weekday = calendar.component(.weekday, from: firstOfMonth)
             let padding = weekday - 1
 
-            let monthTitle = "\(year!)년 \(month!)월"
+            let monthTitle = "\(year)년 \(month)월"
 
             // 필요한 일자 배열
             guard let range = calendar.range(of: .day, in: .month, for: firstOfMonth) else {
@@ -89,7 +89,7 @@ final class CalendarViewModel {
                 let annotation = calendar.isDateInToday(date) ? "오늘" : nil
 
                 if annotation == "오늘" {
-                    todayIndexPath = IndexPath(item: dates.count, section: sectionIdex)
+                    todayIndexPath = IndexPath(item: dates.count, section: sectionIndex)
                 }
 
                 dates.append(CalendarDate(date: date, annotation: annotation))
@@ -102,25 +102,25 @@ final class CalendarViewModel {
                 return
             }
             monthCursor = nextMonth
-            sectionIdex += 1
+            sectionIndex += 1
         }
     }
 
     // MARK: - 날짜 선택 파트
     // 날짜 선택
     func select(date: Date) {
-        selectionManager.select(date: date)
+        selectionStore.select(date: date)
     }
     // travelDate 조회
     var travelDate: TravelDate {
-        selectionManager.travelDate
+        selectionStore.travelDate
     }
     // 선택된 날짜가 시작날짜인지 마지막 날짜인지 확인
     func isStartOrEndDate(_ date: Date) -> Bool {
-        selectionManager.isStartOrEndDate(date)
+        selectionStore.isStartOrEndDate(date)
     }
     // 선택된 날짜가 시작날짜와 마지막 날짜 사이인지 확인
     func isInSelectedRange(_ date: Date) -> Bool {
-        selectionManager.isInSelectedRange(date)
+        selectionStore.isInSelectedRange(date)
     }
 }
