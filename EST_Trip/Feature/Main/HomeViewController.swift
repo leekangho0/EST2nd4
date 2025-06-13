@@ -7,6 +7,12 @@
 
 import UIKit
 
+struct Trip {
+    let title: String
+    let startDate: Date
+    let endDate: Date
+}
+
 class MainViewController: UIViewController {
 
     @IBOutlet weak var header: UIView!
@@ -16,79 +22,98 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    // 📌 앱을 들어가는 시간 기준으로 예정된 여행이거나 당일 여행이면 futureTripTitle, 과거 여행이면 pastTripTitle에 넣어주기?
-    var futureTripTitle = ["7월 제주", "2025 8월 제주", "2025 9월 제주", "2025 10~11월 제주", "2025 겨울 내 생일 제주", "2025 겨울 2주살기 제주", "2025 겨울 한달살기 제주"]
-    var pastTripTitle = ["2024 여름 제주", "2024 가을 제주", "2023 겨울 제주"]
-    var currentTitle: [String] = []
+    let trips = [
+        Trip(title: "6월", startDate: Date(year: 2025, month: 6, day: 13), endDate: Date(year: 2025, month: 6, day: 15)),
+        Trip(title: "7월 여름휴가입니다아아아", startDate: Date(year: 2025, month: 7, day: 10), endDate: Date(year: 2025, month: 7, day: 12)),
+        Trip(title: "4월 제주", startDate: Date(year: 2024, month: 4, day: 15), endDate: Date(year: 2024, month: 4, day: 20)),
+        Trip(title: "8월 제주", startDate: Date(year: 2025, month: 8, day: 15), endDate: Date(year: 2025, month: 8, day: 23)),
+        Trip(title: "9월 한달살기", startDate: Date(year: 2025, month: 9, day: 3), endDate: Date(year: 2025, month: 10, day: 2)),
+        Trip(title: "겨울 제주", startDate: Date(year: 2024, month: 12, day: 15), endDate: Date(year: 2024, month: 12, day: 19))
+    ]
 
-    private let viewModel = CalendarViewModel()
+    // 📌 dday를 기준으로 dday >=0 이면 futureTripTitle, dday < 0 이면 pastTripTitle에 넣어주기
+    var futureTrip: [Trip] = []
+    var pastTrip: [Trip] = []
+    var currentTrip: [Trip] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        currentTitle = futureTripTitle
+        loadTrips()
+
         tableView.dataSource = self
+
+        currentTrip = futureTrip
 
         header.backgroundColor = UIColor.dolHareubangLightGray.withAlphaComponent(0.2)
     }
 
-    @IBAction func plusButtonTap(_ sender: Any) {
+    @IBAction func plusButtonTapped(_ sender: Any) {
         let vc = FeatureFactory.makeCalendar()
-        
+
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         if sender == futureTripButton {
-            currentTitle = futureTripTitle
+            currentTrip = futureTrip
             futureTripButton.tintColor = .label
             pastTripButton.tintColor = .dolHareubangGray
         } else {
-            currentTitle = pastTripTitle
+            currentTrip = pastTrip
             futureTripButton.tintColor = .dolHareubangGray
             pastTripButton.tintColor = .label
         }
 
         tableView.reloadData()
     }
-}
 
-class CustomCell: UITableViewCell {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var iconImageView: UIImageView!
+    func loadTrips() {
+        for trip in trips {
+            let dayDiff = trip.startDate.days(from: Date.today)
+
+            if dayDiff >= 0 {
+                futureTrip.append(trip)
+            } else {
+                pastTrip.append(trip)
+            }
+        }
+    }
 }
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentTitle.count
+        return currentTrip.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as? CustomCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
             return UITableViewCell()
         }
 
-        /// 캘린더에서 시작, 종료일 가져와 label에 띄어주기
-//        func dateLabel() {
-//            let travelDate = viewModel.travelDate
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "MM월.dd일"
-//
-//            if let start = travelDate.startDate, let end = travelDate.endDate {
-//                let startText = formatter.string(from: start)
-//                let endText = formatter.string(from: end)
-//                let fullText = "\(startText) - \(endText)"
-//
-//                cell.dateLabel.text = "\(fullText)"
-//            }
-//        }
+        let trip = currentTrip[indexPath.row]
 
-        cell.titleLabel.text = currentTitle[indexPath.row]
-        cell.dateLabel.text = "07월 15일 - 07월 18일"
-        cell.iconImageView.image = UIImage(systemName: "airplane")
+        func showDday() {
+            let targetDate = trip.startDate // 📌 Schedule 메인에서 날짜 가져와 넣어주기
+            let today = Date.today
+
+            let dayDiff = targetDate.days(from: today)
+
+            if dayDiff == 0 {
+                cell.dDay.text = "D-Day"
+            } else if dayDiff > 0 {
+                cell.dDay.text = "D-\(dayDiff)"
+            } else {
+                cell.dDay.text = "D+\(abs(dayDiff))"
+            }
+        }
+
+        showDday()
+
+        cell.tripTitle.text = trip.title // 📌 Schedule 메인에서 일정 제목 가져와 넣어주기
+        cell.tripDate.text = "\(trip.startDate.toString()) ~ \(trip.endDate.toString(format: "MM.dd"))" // 📌 Schedule 메인에서 날짜 가져와 넣어주기
+        cell.tripImage.image = UIImage(systemName: "airplane")
 
         return cell
     }
 }
-
