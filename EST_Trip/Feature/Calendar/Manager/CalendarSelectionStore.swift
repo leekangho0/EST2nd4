@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class CalendarSelectionManager {
-    static let shared = CalendarSelectionManager()
+final class CalendarSelectionStore {
+    static let shared = CalendarSelectionStore()
     private init() {}
     private(set) var travelDate = TravelDate()
 

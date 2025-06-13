@@ -11,16 +11,11 @@ class FlightDateSelectionViewController: UIViewController {
     var isArrivalSelection: Bool = false
     var baseDepartureDate: Date?
     var onSelectArrivalDate: ((Date) -> Void)?
-
     var onSelectDepartureDate: ((Date, Bool) -> Void)?
+    private let selectionStore = CalendarSelectionStore.shared
+
     var travelDate: TravelDate {
-        //테스팅용 임시 데이터, 캘린더와 추후 연결 필요
-        let firstDate = Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date()
-        let secondDate = Calendar.current.date(byAdding: .day, value: 4, to: Date()) ?? Date()
-        CalendarSelectionManager.shared.select(date: firstDate)
-        CalendarSelectionManager.shared.select(date: secondDate)
-        print("travelDate 체크 \(CalendarSelectionManager.shared.travelDate)")
-        return CalendarSelectionManager.shared.travelDate
+        return selectionStore.travelDate
     }
 
     @IBOutlet weak var firstDateButton: UIButton!
