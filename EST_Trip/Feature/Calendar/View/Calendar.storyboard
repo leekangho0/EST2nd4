@@ -63,7 +63,7 @@
                                                 <rect key="frame" x="0.0" y="100" width="71" height="63"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="hjg-sZ-2Xc">
-                                                    <rect key="frame" x="0.0" y="0.0" width="71" height="62.666666666666671"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="71" height="63"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2P-Ez-2HL">
