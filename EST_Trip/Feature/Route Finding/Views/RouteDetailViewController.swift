@@ -39,6 +39,11 @@ class RouteDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
+    }
+    
+    private func setupView() {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     /// RouteInfoTableViewCell 개수에 따른 viewHeight을 반환합니다.
