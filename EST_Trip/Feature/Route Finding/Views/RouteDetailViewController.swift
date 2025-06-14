@@ -16,7 +16,8 @@ class RouteDetailViewController: UIViewController {
     struct TestData {
         let duration: Int
         let distance: Double
-        let taxiFare: Int
+        var walkDuration: Int = 0
+        var taxiFare: Int = 0
         let fare: Int
     }
     
