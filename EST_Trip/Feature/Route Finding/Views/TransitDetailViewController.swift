@@ -9,6 +9,8 @@ import UIKit
 
 class TransitDetailViewController: UIViewController {
 
+    @IBOutlet weak var draggableHeaderView: UIView!
+    
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var walkDurationLabel: UILabel!
@@ -56,6 +58,7 @@ class TransitDetailViewController: UIViewController {
         .init(mode: .walk, duration: 20),
         .init(mode: .end, address: "제주시 애월읍"),
     ]
+    var dragDelegate: DraggableHeaderViewDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +132,10 @@ class TransitDetailViewController: UIViewController {
     
     @IBAction func dismiss(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func handlePan(_ gesture: UIPanGestureRecognizer) {
+        dragDelegate?.draggableHeaderView(draggableHeaderView, gesture: gesture)
     }
 }
 
