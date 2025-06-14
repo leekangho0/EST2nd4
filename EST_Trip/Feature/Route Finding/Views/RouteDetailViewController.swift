@@ -9,6 +9,7 @@ import UIKit
 
 class RouteDetailViewController: UIViewController {
 
+    @IBOutlet weak var draggableHeaderView: UIView!
     @IBOutlet weak var routeInfoTableView: UITableView!
     @IBOutlet weak var routeInfoTableViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var routeInfoTableViewBottomCosntraint: NSLayoutConstraint!
@@ -16,7 +17,8 @@ class RouteDetailViewController: UIViewController {
     struct TestData {
         let duration: Int
         let distance: Double
-        let taxiFare: Int
+        var walkDuration: Int = 0
+        var taxiFare: Int = 0
         let fare: Int
     }
     
@@ -34,10 +36,16 @@ class RouteDetailViewController: UIViewController {
             routeInfoTableView.reloadData()
         }
     }
+    var dragDelegate: DraggableHeaderViewDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
+    }
+    
+    private func setupView() {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     /// RouteInfoTableViewCell 개수에 따른 viewHeight을 반환합니다.
@@ -55,6 +63,10 @@ class RouteDetailViewController: UIViewController {
         }
         
         return height
+    }
+    
+    @IBAction func handlePan(_ gesture: UIPanGestureRecognizer) {
+        dragDelegate?.draggableHeaderView(draggableHeaderView, gesture: gesture)
     }
 }
 
@@ -105,7 +117,15 @@ extension RouteDetailViewController: RouteInfoTableViewCellDelegate {
     func didTapSelectButton() {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: String(describing: TransitDetailViewController.self)) as? TransitDetailViewController else { return }
+        vc.dragDelegate = self
         
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: DraggableHeaderViewDelegate
+extension RouteDetailViewController: DraggableHeaderViewDelegate {
+    func draggableHeaderView(_ headerView: UIView, gesture: UIPanGestureRecognizer) {
+        dragDelegate?.draggableHeaderView(headerView, gesture: gesture)
     }
 }
