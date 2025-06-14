@@ -215,7 +215,7 @@ extension RouteFindingViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: DraggableHeaderViewDelegate
+// MARK: - DraggableHeaderViewDelegate
 extension RouteFindingViewController: DraggableHeaderViewDelegate {
     func draggableHeaderView(_ headerView: UIView, gesture: UIPanGestureRecognizer) {
         let translationY = gesture.translation(in: headerView).y
@@ -249,5 +249,13 @@ extension RouteFindingViewController: DraggableHeaderViewDelegate {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension RouteFindingViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
