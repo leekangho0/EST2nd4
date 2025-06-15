@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GooglePlaces
 
 class SearchViewController: UIViewController {
 
@@ -24,6 +25,20 @@ class SearchViewController: UIViewController {
 
     var filteredPlaces: [Place] = []
     var selectedCategory: Category?
+
+    private lazy var autocompleteDataSource: GMSAutocompleteTableDataSource = {
+        let source = GMSAutocompleteTableDataSource()
+        source.delegate = self
+        return source
+    }()
+
+    private lazy var resultsController: UITableViewController = {
+        let controller = UITableViewController(style: .plain)
+        controller.tableView.delegate = autocompleteDataSource
+        controller.tableView.dataSource = autocompleteDataSource
+        controller.view.alpha = 0
+        return controller
+    }()
 
     private let emptyView: UIView = {
         let view = UIView()
@@ -68,14 +83,16 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.dataSource = self
         tableView.delegate = self
+
+        searchBar.delegate = self
         searchBar.addTarget(self, action: #selector(searchTextChanged(_:)), for: .editingChanged)
 
         filteredPlaces = allPlaces
         setupSelectButtonAppearance()
 
-        // 버튼 스타일
         [tourButton, foodButton, cafeButton].forEach { button in
             button.backgroundColor = .systemGray5
             button.setTitleColor(.black, for: .normal)
@@ -83,19 +100,37 @@ class SearchViewController: UIViewController {
             button.layer.masksToBounds = true
         }
 
-        // emptyView 추가
         view.addSubview(emptyView)
         NSLayoutConstraint.activate([
             emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+
+        // 자동완성 결과 테이블 뷰 설정
+        addChild(resultsController)
+        view.addSubview(resultsController.view)
+        resultsController.didMove(toParent: self)
+
+        resultsController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            resultsController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            resultsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            resultsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            resultsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hideAutocompleteResults()
+        autocompleteDataSource.delegate = nil
+        searchBar.delegate = nil
     }
 
     private func setupSelectButtonAppearance() {
-        // 버튼 외형 공통 설정용
+        // 버튼 공통 외형 설정
     }
 
-    // 카테고리 버튼 토글
     @IBAction func categoryButtonTapped(_ sender: UIButton) {
         switch sender {
         case tourButton:
@@ -135,17 +170,25 @@ class SearchViewController: UIViewController {
         }
     }
 
-    // 검색어 입력 처리
     @objc private func searchTextChanged(_ textField: UITextField) {
-        loadPlace(textField.text ?? "")
-    }
-    
-    private func loadPlace(_ text: String) {
-         let places = allPlaces
-        filteredPlaces
+        let text = textField.text ?? ""
+        if text.trimmingCharacters(in: .whitespaces).isEmpty {
+            hideAutocompleteResults()
+        } else {
+            autocompleteDataSource.sourceTextHasChanged(text)
+            UIView.animate(withDuration: 0.3) {
+                self.resultsController.view.alpha = 1
+            }
+        }
     }
 
-    // 카테고리 + 검색어 필터링 + emptyView 처리
+    private func hideAutocompleteResults() {
+        UIView.animate(withDuration: 0.3) {
+            self.resultsController.view.alpha = 0
+        }
+        autocompleteDataSource.clearResults()
+    }
+
     private func filterPlaces(_ place: [Place]) {
         let searchText = searchBar.text?.lowercased() ?? ""
 
@@ -155,19 +198,13 @@ class SearchViewController: UIViewController {
             return matchesCategory && matchesSearch
         }
 
-        if filteredPlaces.isEmpty {
-            emptyView.isHidden = false
-            tableView.isHidden = true
-        } else {
-            emptyView.isHidden = true
-            tableView.isHidden = false
-        }
-
+        emptyView.isHidden = !filteredPlaces.isEmpty
+        tableView.isHidden = filteredPlaces.isEmpty
         tableView.reloadData()
     }
 }
 
-//데이터소스
+
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredPlaces.count
@@ -183,14 +220,60 @@ extension SearchViewController: UITableViewDataSource {
 
         cell.onSelectTapped = {
             print("선택된 장소: \(place.title)")
-            // TODO: 선택 후 일정 화면으로 이동 구현
         }
 
         return cell
     }
 }
 
-// 델리게이트
-extension SearchViewController: UITableViewDelegate {
-    // 필요시 구현
+
+extension SearchViewController: UITableViewDelegate {}
+
+
+extension SearchViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.3) {
+            self.resultsController.view.alpha = 1
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        hideAutocompleteResults()
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        hideAutocompleteResults()
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        hideAutocompleteResults()
+        return true
+    }
+}
+
+
+extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
+        print("✅ 선택된 장소: \(place.name ?? "이름 없음")")
+        hideAutocompleteResults()
+        searchBar.resignFirstResponder()
+        searchBar.text = place.name
+
+        // 선택된 장소 저장 또는 화면 갱신
+        LocalPlaceService.shared.addPlace(place: place)
+    }
+
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: Error) {
+        print("❌ 자동완성 실패: \(error.localizedDescription)")
+    }
+
+    func didRequestAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
+        resultsController.tableView.reloadData()
+    }
+
+    func didUpdateAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
+        resultsController.tableView.reloadData()
+    }
 }
