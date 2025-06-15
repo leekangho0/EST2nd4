@@ -11,9 +11,20 @@ import UIKit
 class RoundedView: UIView {
 
     @IBInspectable var cornerRadius: CGFloat = 8
-
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        configure()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         configure()
     }
     

@@ -10,6 +10,7 @@ import GoogleMaps
 
 class RouteFindingViewController: UIViewController {
     
+    @IBOutlet weak var routeInfoHeaderView: UIView!
     @IBOutlet var mapContainerView: UIView!
     @IBOutlet weak var transportationCollectionView: UICollectionView!
     @IBOutlet weak var currentLocationButton: UIButton!
@@ -22,7 +23,6 @@ class RouteFindingViewController: UIViewController {
     
     private var mapView: GMSMapView!
     
-    private var isLayoutSetupDone = false
     private var selectedTransport: Transport = .car
     
     private let locationManager = CLLocationManager()
@@ -30,6 +30,7 @@ class RouteFindingViewController: UIViewController {
     private lazy var detailVC: RouteDetailViewController? = {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RouteDetailViewController.self)) as? RouteDetailViewController
+        vc?.dragDelegate = self
         return vc
     }()
     
@@ -43,12 +44,18 @@ class RouteFindingViewController: UIViewController {
         embedRouteDetailVC()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        setupRouteDetailContainerViewHeight()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         setupCurrentLocationButton()
         setupLayout()
-        setupRouteDetailContainerViewHeight()
     }
     
     @IBAction func moveToCurrentLocation(_ sender: Any) {
@@ -133,9 +140,17 @@ extension RouteFindingViewController {
         let navController = UINavigationController(rootViewController: detailVC)
 
         addChild(navController)
+        
+        navController.view.translatesAutoresizingMaskIntoConstraints = false
         routeDetailContainerView.addSubview(navController.view)
-        navController.view.frame = routeDetailContainerView.bounds
-        navController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        NSLayoutConstraint.activate([
+            navController.view.topAnchor.constraint(equalTo: routeDetailContainerView.topAnchor),
+            navController.view.bottomAnchor.constraint(equalTo: routeDetailContainerView.bottomAnchor),
+            navController.view.leadingAnchor.constraint(equalTo: routeDetailContainerView.leadingAnchor),
+            navController.view.trailingAnchor.constraint(equalTo: routeDetailContainerView.trailingAnchor)
+        ])
+        
         navController.didMove(toParent: self)
 
         detailVC.didMove(toParent: self)
@@ -145,6 +160,12 @@ extension RouteFindingViewController {
         guard let detailVC else { return }
         
         routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight(forRouteInfoCount: 2)
+    }
+    
+    private func routeDetailContainerViewMinHeight() -> CGFloat {
+        guard let detailVC else { return 0 }
+        
+        return detailVC.viewHeight(forRouteInfoCount: 2)
     }
 }
 
@@ -191,5 +212,50 @@ extension RouteFindingViewController: UICollectionViewDelegate {
         updateSelectedTransport(transport: Transport.allCases[indexPath.item])
         
         transportationCollectionView.reloadData()
+    }
+}
+
+// MARK: - DraggableHeaderViewDelegate
+extension RouteFindingViewController: DraggableHeaderViewDelegate {
+    func draggableHeaderView(_ headerView: UIView, gesture: UIPanGestureRecognizer) {
+        let translationY = gesture.translation(in: headerView).y
+        let threshold: CGFloat = 50
+        let topSpacing: CGFloat = 10
+        
+        let headerBottomY = routeInfoHeaderView.frame.maxY
+        let containerTopY = routeDetailContainerView.frame.minY
+        let containerBottomY = routeDetailContainerView.frame.maxY
+        
+        let maxHeight = containerBottomY - headerBottomY - topSpacing
+        let minHeight = routeDetailContainerViewMinHeight()
+        
+        switch gesture.state {
+        case .changed:
+            let newHeight = routeDetailContainerViewHeightConstraint.constant - translationY
+            if newHeight <= maxHeight && newHeight >= minHeight {
+                routeDetailContainerViewHeightConstraint.constant = newHeight
+            }
+        case .ended:
+            if translationY < -threshold {
+                let heightDifference = containerTopY - headerBottomY - topSpacing
+                routeDetailContainerViewHeightConstraint.constant += heightDifference
+            } else {
+                setupRouteDetailContainerViewHeight()
+            }
+        default:
+            break
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension RouteFindingViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
