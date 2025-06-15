@@ -28,10 +28,10 @@ extension ScheduleEntity {
 extension ScheduleEntity {
 
     @objc(addPlacesObject:)
-    @NSManaged public func addToPlaces(_ value: PlaceEntity)
+    @NSManaged public func addToPlaces(_ value: TravelEntity)
 
     @objc(removePlacesObject:)
-    @NSManaged public func removeFromPlaces(_ value: PlaceEntity)
+    @NSManaged public func removeFromPlaces(_ value: TravelEntity)
 
     @objc(addPlaces:)
     @NSManaged public func addToPlaces(_ values: NSSet)
