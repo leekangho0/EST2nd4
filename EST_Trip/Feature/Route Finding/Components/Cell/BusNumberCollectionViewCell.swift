@@ -45,7 +45,7 @@ class BusNumberCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(busInfo: RouteTestData.BusInfo) {
+    func configure(busInfo: RouteInfo.BusInfo) {
         numberLabel.text = busInfo.name
         contentView.backgroundColor = busInfo.color
     }

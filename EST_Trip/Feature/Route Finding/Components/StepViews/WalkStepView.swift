@@ -13,11 +13,11 @@ class WalkStepView: UIView {
     lazy var roundedView = RoundedView()
     lazy var durationLabel = UILabel()
     
-    init(route: RouteTestData.Route) {
+    init(route: RouteInfo.Route) {
         super.init(frame: .zero)
         
         setupView()
-        configure(duration: route.duration ?? 0)
+        configure(duration: route.durationText())
     }
     
     required init?(coder: NSCoder) {
@@ -63,7 +63,7 @@ class WalkStepView: UIView {
         ])
     }
     
-    private func configure(duration: Int) {
-        durationLabel.text = "\(duration)"
+    private func configure(duration: String) {
+        durationLabel.text = "도보 \(duration)"
     }
 }

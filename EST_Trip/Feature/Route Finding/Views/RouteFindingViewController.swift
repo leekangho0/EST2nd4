@@ -21,12 +21,12 @@ class RouteFindingViewController: UIViewController {
     @IBOutlet weak var routeDetailContainerView: UIView!
     @IBOutlet weak var routeDetailContainerViewHeightConstraint: NSLayoutConstraint!
     
-    private var mapView: GMSMapView!
-    
-    private var selectedTransport: Transport = .car
-    
     private let locationManager = CLLocationManager()
+    private let routeFindingVM = RouteFindingViewModel()
     
+    private var mapView: GMSMapView!
+    private var selectedTransport: Transport = .car
+        
     private lazy var detailVC: RouteDetailViewController? = {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RouteDetailViewController.self)) as? RouteDetailViewController
@@ -42,13 +42,7 @@ class RouteFindingViewController: UIViewController {
         configure()
         //        setupMapView()
         embedRouteDetailVC()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-        setupRouteDetailContainerViewHeight()
+        fetchRoutes()
     }
     
     override func viewDidLayoutSubviews() {
@@ -74,6 +68,43 @@ class RouteFindingViewController: UIViewController {
     private func updateSelectedTransport(transport: Transport) {
         selectedTransport = transport
         detailVC?.selectedTransport = selectedTransport
+    }
+    
+    private func fetchRoutes() {
+        switch selectedTransport {
+        case .car:
+            routeFindingVM.fetchDrivingRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
+                    
+                    DispatchQueue.main.async {
+                        self.setupRouteDetailContainerViewHeight()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        case .transit:
+            break
+        case .walk:
+            routeFindingVM.fetchPedestrianRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
+                    
+                    DispatchQueue.main.async {
+                        self.setupRouteDetailContainerViewHeight()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
 }
 
@@ -210,7 +241,7 @@ extension RouteFindingViewController: UICollectionViewDataSource {
 extension RouteFindingViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         updateSelectedTransport(transport: Transport.allCases[indexPath.item])
-        
+        fetchRoutes()
         transportationCollectionView.reloadData()
     }
 }

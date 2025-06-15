@@ -13,7 +13,7 @@ class LocationStepView: UIView {
     lazy var roundedView = RoundedView()
     lazy var addressLabel = UILabel()
     
-    init(route: RouteTestData.Route) {
+    init(route: RouteInfo.Route) {
         super.init(frame: .zero)
         
         setupView()
@@ -65,7 +65,7 @@ class LocationStepView: UIView {
         ])
     }
     
-    private func configure(route: RouteTestData.Route) {
+    private func configure(route: RouteInfo.Route) {
         titleLabel.text = route.mode.title
         addressLabel.text = route.address
         

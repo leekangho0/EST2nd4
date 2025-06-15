@@ -15,8 +15,10 @@ final class RouteFindingViewModel {
     // [제주 공항 좌표, 제주 롯데시티 호텔 좌표]
     private let testLocation2 = [CLLocationCoordinate2D(latitude: 33.504663, longitude: 126.496481), CLLocationCoordinate2D(latitude: 33.490635, longitude: 126.486440)]
     
+    var routeInfos = [RouteInfo]()
+    
     /// 자동차 경로를 가져옵니다
-    func fetchRoute() {
+    func fetchDrivingRoute(completion: @escaping (Result<Void, Error>) -> Void) {
         Task {
             do {
                 let features = try await RouteFindingNetworkManager.shared.fetchTmapRoutes(
@@ -24,15 +26,19 @@ final class RouteFindingViewModel {
                     to: testLocation2[1]
                 )
                 
-                let _ = parseFeatures(features: features)
+                let routeInfo = parseFeatures(features: features)
+                routeInfos = [routeInfo]
+                
+                completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
     }
     
     /// 보행자 경로를 가져옵니다
-    func fetchPedestrianRoute() {
+    func fetchPedestrianRoute(completion: @escaping (Result<Void, Error>) -> Void) {
         Task {
             do {
                 let features = try await RouteFindingNetworkManager.shared.fetchTmapPedestrianRoute(
@@ -40,9 +46,13 @@ final class RouteFindingViewModel {
                     to: testLocation2[1]
                 )
                 
-                let _ = parseFeatures(features: features)
+                let routeInfo = parseFeatures(features: features)
+                routeInfos = [routeInfo]
+                
+                completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
     }
@@ -66,10 +76,12 @@ final class RouteFindingViewModel {
 
 // MARK: - Tmap API 보행자 경로 데이터 가공
 extension RouteFindingViewModel {
-    private func parseFeatures(features: [TmapRoutesAPIModels.Feature]) -> TmapRoute {
+    private func parseFeatures(features: [TmapRoutesAPIModels.Feature]) -> RouteInfo {
         var locations = [CLLocationCoordinate2D]()
-        var totalTime = 0
+        var totalDuration = 0
         var totalDistance = 0
+        var totalFare = 0
+        var taxiFare = 0
         
         for feature in features {
             let geometry = feature.geometry
@@ -114,27 +126,38 @@ extension RouteFindingViewModel {
             let properties = feature.properties
             
             // 출발지(S)인 경우에만 totalTime과 totalDistance 정보를 포함합니다
-            if properties.pointType == "S",
-               let time = properties.totalTime,
-                let distance = properties.totalDistance {
-                totalTime = time
-                totalDistance = distance
+            if properties.pointType == "S" {
+                if let time = properties.totalTime,
+                   let distance = properties.totalDistance {
+                    totalDuration = time
+                    totalDistance = distance
+                }
+                
+                if let fare = properties.totalFare {
+                    totalFare = fare
+                }
+                
+                if let taxi = properties.taxiFare {
+                    taxiFare = taxi
+                }
             }
         }
         
-        return TmapRoute(
+        return RouteInfo(
+            duration: totalDuration,
             distance: totalDistance,
-            time: totalTime,
-            locations: locations
+            locations: locations,
+            taxiFare: taxiFare,
+            fare: totalFare
         )
     }
 }
 
 // MARK: - Tmap API 보행자 경로 데이터 가공
 extension RouteFindingViewModel {
-    private func parseFeatures(features: [TmapPedestrianRouteAPIModels.Feature]) -> TmapPedestrianRoute {
+    private func parseFeatures(features: [TmapPedestrianRouteAPIModels.Feature]) -> RouteInfo {
         var locations = [CLLocationCoordinate2D]()
-        var totalTime = 0
+        var totalDuration = 0
         var totalDistance = 0
         
         for feature in features {
@@ -179,17 +202,18 @@ extension RouteFindingViewModel {
             
             let properties = feature.properties
             
+            // 출발지(SP)인 경우에만 전체 보행 시간과 거리 정보를 제공함
             if properties.pointType == "SP",
                let time = properties.totalTime,
-                let distance = properties.totalDistance {
-                totalTime = time
+               let distance = properties.totalDistance {
+                totalDuration = time
                 totalDistance = distance
             }
         }
         
-        return TmapPedestrianRoute(
+        return RouteInfo(
+            duration: totalDuration,
             distance: totalDistance,
-            time: totalTime,
             locations: locations
         )
     }

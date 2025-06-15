@@ -31,10 +31,10 @@ class BusStepView: UIView {
     var delegate: BusStepViewDelegate?
     var index = -1
 
-    private var route: RouteTestData.Route?
+    private var route: RouteInfo.Route?
     private let verticalSpacing: CGFloat = 10
     
-    init(route: RouteTestData.Route) {
+    init(route: RouteInfo.Route) {
         super.init(frame: .zero)
         
         self.route = route

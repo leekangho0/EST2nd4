@@ -32,4 +32,16 @@ class RouteInfoTableViewCell: UITableViewCell {
     @IBAction func presentTransitDetailVC(_ sender: Any) {
         delegate?.didTapSelectButton()
     }
+    
+    func configure(_ routeInfo: RouteInfo, isLastIndex: Bool, isTransit: Bool) {
+        durationLabel.text = routeInfo.durationText()
+        distanceLabel.text = routeInfo.distanceText()
+        taxiFareLabel.text = routeInfo.taxiFareText()
+        fareLabel.text = routeInfo.fareText()
+        
+        seperatorView.isHidden = isLastIndex
+        
+        findRouteButton.isHidden = isTransit
+        selectButton.isHidden = !isTransit
+    }
 }
