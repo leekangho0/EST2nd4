@@ -18,6 +18,13 @@ class RoundedView: UIView {
         configure()
     }
     
+    init(cornerRadius: CGFloat) {
+        super.init(frame: .zero)
+        
+        self.cornerRadius = cornerRadius
+        configure()
+    }
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

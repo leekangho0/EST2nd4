@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ScheduleListHeaderView" customModule="EST_Trip" customModuleProvider="target">
+            <connections>
+                <outlet property="addMemoButton" destination="HnY-qs-zOo" id="eRt-2Z-tYa"/>
+                <outlet property="addPlaceButton" destination="Xgw-1L-LCq" id="5Sp-Vj-wcu"/>
+                <outlet property="dateLabel" destination="hgp-64-Tef" id="HzP-wT-DIC"/>
+                <outlet property="dayLabel" destination="VIL-Ew-XHx" id="qgK-xU-e4a"/>
+                <outlet property="editButton" destination="nA0-AO-DW1" id="ZqX-PP-zea"/>
+                <outlet property="view" destination="iN0-l3-epB" id="5Ro-fl-T0H"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="409" height="114"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WIt-XL-2Mt" userLabel="ScheduleListHeaderView" customClass="ScheduleListHeaderView" customModule="EST_Trip" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="17" width="409" height="80"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tV2-qa-QUi">
+                            <rect key="frame" x="0.0" y="0.0" width="409" height="75.666666666666671"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="h79-z4-yNs">
+                                    <rect key="frame" x="0.0" y="0.0" width="409" height="34.333333333333336"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIL-Ew-XHx">
+                                            <rect key="frame" x="0.0" y="6.9999999999999982" width="42.666666666666664" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06.27 / 금" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgp-64-Tef">
+                                            <rect key="frame" x="50.666666666666657" y="6.9999999999999982" width="74" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="4gd-hy-aLM">
+                                            <rect key="frame" x="132.66666666666666" y="17.333333333333336" width="199.99999999999997" height="0.0"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" id="IKV-Xw-JKG"/>
+                                                <constraint firstAttribute="width" constant="200" id="iDU-CX-kEs"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nA0-AO-DW1">
+                                            <rect key="frame" x="340.66666666666669" y="0.0" width="68.333333333333314" height="34.333333333333336"/>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" image="pencil" catalog="system"/>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="aeN-UH-gci">
+                                    <rect key="frame" x="0.0" y="42.333333333333329" width="409" height="33.333333333333329"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xgw-1L-LCq">
+                                            <rect key="frame" x="0.0" y="0.0" width="200.66666666666666" height="33.333333333333336"/>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" title="장소 추가">
+                                                <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
+                                            </buttonConfiguration>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HnY-qs-zOo">
+                                            <rect key="frame" x="208.66666666666663" y="0.0" width="200.33333333333337" height="33.333333333333336"/>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" title="메모 추가">
+                                                <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
+                                            </buttonConfiguration>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="7tB-gI-j1m"/>
+                        <constraint firstItem="tV2-qa-QUi" firstAttribute="top" secondItem="WIt-XL-2Mt" secondAttribute="top" id="eCY-Ep-UvI"/>
+                        <constraint firstItem="tV2-qa-QUi" firstAttribute="leading" secondItem="WIt-XL-2Mt" secondAttribute="leading" id="we6-rx-AxW"/>
+                        <constraint firstAttribute="trailing" secondItem="tV2-qa-QUi" secondAttribute="trailing" id="zcg-eQ-aEA"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="addMemoButton" destination="HnY-qs-zOo" id="q5Q-ag-1Hu"/>
+                        <outlet property="addPlaceButton" destination="Xgw-1L-LCq" id="HxQ-PD-56d"/>
+                        <outlet property="dateLabel" destination="hgp-64-Tef" id="tFo-CS-GCC"/>
+                        <outlet property="dayLabel" destination="VIL-Ew-XHx" id="KHD-Ta-IBA"/>
+                        <outlet property="editButton" destination="nA0-AO-DW1" id="gZG-rE-caF"/>
+                    </connections>
+                </view>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="WIt-XL-2Mt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0s7-he-2XE"/>
+                <constraint firstItem="WIt-XL-2Mt" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hVG-Ur-Tpm"/>
+                <constraint firstItem="WIt-XL-2Mt" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="oHd-eg-9Zh"/>
+                <constraint firstAttribute="trailing" secondItem="WIt-XL-2Mt" secondAttribute="trailing" id="p49-k9-UJy"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-34.351145038167935" y="-250"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="pencil" catalog="system" width="128" height="113"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

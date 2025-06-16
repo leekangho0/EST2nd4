@@ -8,6 +8,8 @@
 	<string>$(GOOGLE_API_KEY2)</string>
 	<key>OdsayAPIKey</key>
 	<string>$(ODSAY_API_KEY)</string>
+	<key>TmapAPIKey</key>
+	<string>$(TMAP_API_KEY)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

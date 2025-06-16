@@ -14,28 +14,14 @@ class RouteDetailViewController: UIViewController {
     @IBOutlet weak var routeInfoTableViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var routeInfoTableViewBottomCosntraint: NSLayoutConstraint!
     
-    struct TestData {
-        let duration: Int
-        let distance: Double
-        var walkDuration: Int = 0
-        var taxiFare: Int = 0
-        let fare: Int
-    }
-    
-    let testDatas = [
-        TestData(duration: 69, distance: 82.5, taxiFare: 25600, fare: 20034),
-        TestData(duration: 30, distance: 82.5, taxiFare: 25600, fare: 20034),
-        TestData(duration: 10, distance: 82.5, taxiFare: 25600, fare: 20034),
-        TestData(duration: 34, distance: 82.5, taxiFare: 25600, fare: 20034),
-        TestData(duration: 120, distance: 82.5, taxiFare: 25600, fare: 20034)
-    ]
-    
-    var selectedTransport: Transport? {
+    var routeInfos = [RouteInfo]() {
         didSet {
-            guard isViewLoaded else { return }
-            routeInfoTableView.reloadData()
+            DispatchQueue.main.async {
+                self.routeInfoTableView.reloadData()
+            }
         }
     }
+    var selectedTransport: Transport?
     var dragDelegate: DraggableHeaderViewDelegate?
     
     override func viewDidLoad() {
@@ -48,8 +34,8 @@ class RouteDetailViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    /// RouteInfoTableViewCell 개수에 따른 viewHeight을 반환합니다.
-    func viewHeight(forRouteInfoCount count: Int) -> CGFloat {
+    /// RouteInfoTableViewCell viewHeight을 반환합니다.
+    func viewHeight() -> CGFloat {
         view.layoutIfNeeded()
         
         // 상단 여백과 하단 여백을 먼저 더함
@@ -57,7 +43,7 @@ class RouteDetailViewController: UIViewController {
         height += routeInfoTableViewBottomCosntraint.constant
         
         // routeInfoTableView의 셀 높이를 더함
-        let lastIndex = min(count, testDatas.count)
+        let lastIndex = min(1, routeInfos.count)
         for index in 0..<lastIndex {
             height += routeInfoTableView.rectForRow(at: IndexPath(row: index, section: 0)).height
         }
@@ -73,28 +59,21 @@ class RouteDetailViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension RouteDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return testDatas.count
+        return routeInfos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RouteInfoTableViewCell.self)) as? RouteInfoTableViewCell else { return UITableViewCell()  }
         
-        let data = testDatas[indexPath.row]
+        let routeInfo = routeInfos[indexPath.row]
+        let isLastIndex = indexPath.row == routeInfos.count - 1
+        let isTransit = selectedTransport == .transit
         
-        cell.durationLabel.text = "\(data.duration)분"
-        cell.distanceLabel.text = "\(data.distance)km"
-        cell.taxiFareLabel.text = "택시 요금 약 \(data.taxiFare)원"
-        cell.fareLabel.text = "운행 요금 약 \(data.fare)원"
-        cell.seperatorView.isHidden = indexPath.row == testDatas.count - 1
-        
-        if let selectedTransport {
-            let isTransit = selectedTransport == .transit
-            cell.findRouteButton.isHidden = isTransit
-            cell.selectButton.isHidden = !isTransit
-        }
-        
-        cell.delegate = self
-        
+        cell.configure(
+                routeInfo,
+                isLastIndex: isLastIndex,
+                isTransit: isTransit
+            )
         return cell
     }
 }
@@ -102,7 +81,7 @@ extension RouteDetailViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension RouteDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == testDatas.count - 1 {
+        if indexPath.row == routeInfos.count - 1 {
             // 구분선 제외, 348:72 비율 적용
             return self.routeInfoTableView.frame.width * 0.2
         } else {
@@ -110,14 +89,12 @@ extension RouteDetailViewController: UITableViewDelegate {
             return self.routeInfoTableView.frame.width * 0.25
         }
     }
-}
-
-// MARK: - RouteInfoTableViewCellDelegate
-extension RouteDetailViewController: RouteInfoTableViewCellDelegate {
-    func didTapSelectButton() {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: String(describing: TransitDetailViewController.self)) as? TransitDetailViewController else { return }
         vc.dragDelegate = self
+        vc.routeInfo = routeInfos[indexPath.row]
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
