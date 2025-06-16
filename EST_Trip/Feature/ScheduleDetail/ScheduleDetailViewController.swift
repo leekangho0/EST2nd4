@@ -7,12 +7,18 @@
 
 import UIKit
 
+protocol ScheduleDetailViewControllerDelegate {
+    func didTapRouteFindingButton()
+}
+
 class ScheduleDetailViewController: UIViewController {
 
     @IBOutlet weak var addTimeButtonLabel: UIButton!
     @IBOutlet weak var addMemoButtonLabel: UIButton!
 
     @IBOutlet weak var routeFindingButtonLabel: UIButton!
+    
+    var delegate: ScheduleDetailViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,5 +46,12 @@ class ScheduleDetailViewController: UIViewController {
         guard let sheet = sheetPresentationController else { return }
         sheet.detents = [.custom(resolver: { _ in 270 })]
         sheet.preferredCornerRadius = 16
+    }
+    
+    @IBAction func findRoute(_ sender: Any) {
+        self.dismiss(animated: false) { [weak self] in
+            // 여기서 protocol 수정 후 데이터 넘겨주세요
+            self?.delegate?.didTapRouteFindingButton()
+        }
     }
 }

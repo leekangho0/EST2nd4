@@ -15,6 +15,7 @@ enum StoryboardType: String {
     case route = "RouteFinding"
     case search = "Search"
     case map = "Map"
+    case scheduleDetail = "ScheduleDetail"
 }
 
 extension StoryboardType {
