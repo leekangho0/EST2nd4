@@ -10,7 +10,7 @@ import UIKit
 class LocationStepView: UIView {
 
     lazy var titleLabel = UILabel()
-    lazy var roundedView = RoundedView()
+    lazy var roundedView = RoundedView(cornerRadius: 2)
     lazy var addressLabel = UILabel()
     
     init(route: RouteInfo.Route) {
@@ -31,7 +31,7 @@ class LocationStepView: UIView {
         titleLabel.textColor = .black
         titleLabel.font = font
         titleLabel.textAlignment = .center
-        titleLabel.minimumScaleFactor = 0.7
+        titleLabel.minimumScaleFactor = 0.5
         
         roundedView.backgroundColor = .init(red: 217, green: 217, blue: 217)
         
@@ -52,7 +52,7 @@ class LocationStepView: UIView {
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             titleLabel.heightAnchor.constraint(equalTo: addressLabel.heightAnchor),
-            titleLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.08),
+            titleLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.1),
             
             roundedView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
             roundedView.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor),

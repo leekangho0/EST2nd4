@@ -99,7 +99,6 @@ class RouteFindingViewController: UIViewController {
                     }
                 }
             }
-            break
         case .walk:
             routeFindingVM.fetchPedestrianRoute { [weak self] result in
                 guard let self else { return }
@@ -205,13 +204,13 @@ extension RouteFindingViewController {
     private func setupRouteDetailContainerViewHeight() {
         guard let detailVC else { return }
         
-        routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight(forRouteInfoCount: 2)
+        routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight()
     }
     
     private func routeDetailContainerViewMinHeight() -> CGFloat {
         guard let detailVC else { return 0 }
         
-        return detailVC.viewHeight(forRouteInfoCount: 2)
+        return detailVC.viewHeight()
     }
 }
 

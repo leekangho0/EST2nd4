@@ -93,8 +93,7 @@ class TransitDetailViewController: UIViewController {
     }
     
     private func stepViewHeight(mode: RouteInfo.Mode) -> CGFloat {
-        let scale = mode == .walk ? 0.15 : 0.13
-        return routeStepStackView.bounds.width * scale
+        return routeStepStackView.bounds.width * 0.15
     }
     
     @IBAction func dismiss(_ sender: Any) {

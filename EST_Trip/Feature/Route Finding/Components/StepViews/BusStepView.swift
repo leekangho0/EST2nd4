@@ -13,8 +13,8 @@ protocol BusStepViewDelegate {
 
 class BusStepView: UIView {
 
-    lazy var imageView = UIImageView()
-    lazy var roundedView = RoundedView()
+    lazy var imageContainerView = UIView()
+    lazy var roundedView = RoundedView(cornerRadius: 2)
     lazy var stopNameLabel = UILabel()
     lazy var busNumberCollectionView = UICollectionView()
     
@@ -70,9 +70,7 @@ class BusStepView: UIView {
     }
 
     private func setupView() {
-        imageView.image = .init(systemName: "bus.fill")
-        imageView.tintColor = .black
-        imageView.contentMode = .scaleAspectFit
+        imageContainerView = busImageView()
         
         roundedView.backgroundColor = .jejuOrange
         
@@ -91,6 +89,7 @@ class BusStepView: UIView {
         
         toggleStopListButton.setBackgroundImage(.init(systemName: "chevron.down"), for: .normal)
         toggleStopListButton.tintColor = .init(red: 126, green: 126, blue: 126)
+        toggleStopListButton.isHidden = true // Google Route API 중간 정류장 미지원으로 hidden
         
         stopNameStackView.axis = .vertical
         stopNameStackView.alignment = .fill
@@ -100,7 +99,7 @@ class BusStepView: UIView {
         stopImageStackView.alignment = .fill
         stopImageStackView.distribution = .fillEqually
         
-        self.addSubview(imageView)
+        self.addSubview(imageContainerView)
         self.addSubview(roundedView)
         self.addSubview(stopNameLabel)
         self.addSubview(busNumberCollectionView)
@@ -144,7 +143,7 @@ class BusStepView: UIView {
     }
     
     private func setupConstraints() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageContainerView.translatesAutoresizingMaskIntoConstraints = false
         roundedView.translatesAutoresizingMaskIntoConstraints = false
         stopNameLabel.translatesAutoresizingMaskIntoConstraints = false
         busNumberCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -155,13 +154,13 @@ class BusStepView: UIView {
         stopImageStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: self.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.08),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.65),
+            imageContainerView.topAnchor.constraint(equalTo: self.topAnchor),
+            imageContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.1),
+            imageContainerView.heightAnchor.constraint(equalTo: imageContainerView.widthAnchor, multiplier: 0.65),
             
-            roundedView.topAnchor.constraint(equalTo: imageView.bottomAnchor),
-            roundedView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            roundedView.topAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
+            roundedView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor),
             roundedView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             roundedView.widthAnchor.constraint(equalToConstant: 2),
             
@@ -169,7 +168,7 @@ class BusStepView: UIView {
             stopNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             stopNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.85),
             
-            busNumberCollectionView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: verticalSpacing),
+            busNumberCollectionView.topAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: verticalSpacing),
             busNumberCollectionView.leadingAnchor.constraint(equalTo: stopNameLabel.leadingAnchor),
             busNumberCollectionView.trailingAnchor.constraint(equalTo: stopNameLabel.trailingAnchor),
             collectionViewHeightConstraint,
@@ -194,10 +193,32 @@ class BusStepView: UIView {
             
             stopImageStackView.topAnchor.constraint(equalTo: stopNameStackView.topAnchor),
 //            stopImageStackView.bottomAnchor.constraint(equalTo: stopNameStackView.bottomAnchor),
-            stopImageStackView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            stopImageStackView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.8),
+            stopImageStackView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor),
+            stopImageStackView.widthAnchor.constraint(equalTo: imageContainerView.widthAnchor, multiplier: 0.8),
             stopImageStackView.heightAnchor.constraint(equalTo: stopNameStackView.heightAnchor)
         ])
+    }
+    
+    private func busImageView() -> UIView {
+        let view = UIView()
+        
+        let imageView = UIImageView()
+        imageView.image = .init(systemName: "bus.fill")
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(imageView)
+        
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
+        ])
+        
+        return view
     }
     
     private func configure() {
@@ -207,8 +228,7 @@ class BusStepView: UIView {
         busCountLabel.text = "\(stop.stopCount)개 정류장 이동"
         
         // 마지막 셀 아래 여유 공간을 만들기 위해 빈 문자열 추가
-        /*
-        var intermediateStops = stop.intermediateStops
+        var intermediateStops = [String]()
         intermediateStops.append(" ")
         
         let labelHeight: CGFloat = 25
@@ -232,7 +252,6 @@ class BusStepView: UIView {
             // 초기에는 접힌 상태이므로 해당 높이를 제외하고 전달
             self.delegate?.didUpdateHeight(index: self.index, height: self.viewHeight() - self.stopNameStackViewHeightConstraint.constant)
         }
-        */
     }
     
     private func intermediateStopLabel(stopName: String, height: CGFloat) -> UILabel {
@@ -281,7 +300,7 @@ class BusStepView: UIView {
         collectionViewHeightConstraint.constant +
         busCountView.frame.height +
         stopNameStackViewHeightConstraint.constant +
-        (verticalSpacing * 3)
+        (verticalSpacing * 4)
         
         return height
     }

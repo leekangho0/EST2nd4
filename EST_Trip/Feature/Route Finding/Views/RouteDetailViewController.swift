@@ -34,8 +34,8 @@ class RouteDetailViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    /// RouteInfoTableViewCell 개수에 따른 viewHeight을 반환합니다.
-    func viewHeight(forRouteInfoCount count: Int) -> CGFloat {
+    /// RouteInfoTableViewCell viewHeight을 반환합니다.
+    func viewHeight() -> CGFloat {
         view.layoutIfNeeded()
         
         // 상단 여백과 하단 여백을 먼저 더함
@@ -43,7 +43,7 @@ class RouteDetailViewController: UIViewController {
         height += routeInfoTableViewBottomCosntraint.constant
         
         // routeInfoTableView의 셀 높이를 더함
-        let lastIndex = min(count, routeInfos.count)
+        let lastIndex = min(1, routeInfos.count)
         for index in 0..<lastIndex {
             height += routeInfoTableView.rectForRow(at: IndexPath(row: index, section: 0)).height
         }

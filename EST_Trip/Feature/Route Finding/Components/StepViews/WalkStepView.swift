@@ -10,14 +10,14 @@ import UIKit
 class WalkStepView: UIView {
     
     lazy var imageView = UIImageView()
-    lazy var roundedView = RoundedView()
+    lazy var roundedView = RoundedView(cornerRadius: 2)
     lazy var durationLabel = UILabel()
     
     init(route: RouteInfo.Route) {
         super.init(frame: .zero)
         
         setupView()
-        configure(duration: route.durationText())
+        configure(duration: route.duration ?? "")
     }
     
     required init?(coder: NSCoder) {
@@ -49,7 +49,7 @@ class WalkStepView: UIView {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.08),
+            imageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.1),
             imageView.heightAnchor.constraint(equalTo: durationLabel.heightAnchor),
             
             roundedView.topAnchor.constraint(equalTo: imageView.bottomAnchor),

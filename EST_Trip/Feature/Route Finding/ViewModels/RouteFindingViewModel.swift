@@ -308,8 +308,6 @@ extension RouteFindingViewModel {
             
             let durationString = route.duration?.filter { $0.isNumber } ?? ""
             
-            dump(routes)
-            
             routeInfos.append(
                 RouteInfo(
                     duration: Int(durationString) ?? 0,
