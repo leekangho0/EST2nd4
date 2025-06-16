@@ -9,10 +9,12 @@
         <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceEntity" inverseName="expense" inverseEntity="PlaceEntity"/>
     </entity>
     <entity name="FlightEntity" representedClassName=".FlightEntity" syncable="YES">
-        <attribute name="airportDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="arrivalAirport" attributeType="String"/>
+        <attribute name="arrivalDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="arrivalTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="departureAirport" attributeType="String"/>
+        <attribute name="departureDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="departureTIme" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flightname" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="endFlight" inverseEntity="TravelEntity"/>

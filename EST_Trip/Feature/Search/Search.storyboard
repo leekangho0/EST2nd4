@@ -24,6 +24,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <color key="textColor" systemColor="labelColor"/>
+                                        </variation>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -38,6 +41,9 @@
                                             <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <color key="tintColor" systemColor="systemGray5Color"/>
+                                        </variation>
                                         <connections>
                                             <action selector="categoryButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Rvs-pW-eRw"/>
                                         </connections>
@@ -50,6 +56,9 @@
                                             <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <color key="tintColor" systemColor="systemGray5Color"/>
+                                        </variation>
                                         <connections>
                                             <action selector="categoryButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="zJ9-qc-pTu"/>
                                         </connections>
@@ -62,6 +71,9 @@
                                             <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <color key="tintColor" systemColor="systemGray5Color"/>
+                                        </variation>
                                         <connections>
                                             <action selector="categoryButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Opf-EQ-Ymk"/>
                                         </connections>
@@ -76,6 +88,9 @@
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <nil key="textColor"/>
+                                        </variation>
                                     </label>
                                 </subviews>
                             </stackView>
@@ -95,6 +110,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="mJU-ck-jeO"/>
                                                     </constraints>
+                                                    <variation key="heightClass=regular-widthClass=regular">
+                                                        <nil key="image"/>
+                                                    </variation>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ey-tO-T9n">
                                                     <rect key="frame" x="315" y="10" width="60" height="34.666666666666664"/>
@@ -106,6 +124,9 @@
                                                     <buttonConfiguration key="configuration" style="filled" title="선택" cornerStyle="capsule">
                                                         <color key="baseForegroundColor" name="DolHareubangGray"/>
                                                     </buttonConfiguration>
+                                                    <variation key="heightClass=regular-widthClass=regular">
+                                                        <color key="tintColor" systemColor="systemGray5Color"/>
+                                                    </variation>
                                                     <connections>
                                                         <action selector="selectButtonTapped:" destination="fzk-5d-lvQ" eventType="touchUpInside" id="4z7-50-y2W"/>
                                                     </connections>
@@ -118,12 +139,18 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
+                                                            <variation key="heightClass=regular-widthClass=regular">
+                                                                <nil key="textColor"/>
+                                                            </variation>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZI-rs-d1L">
                                                             <rect key="frame" x="0.0" y="24.333333333333332" width="240" height="14.333333333333332"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" systemColor="systemGray3Color"/>
                                                             <nil key="highlightedColor"/>
+                                                            <variation key="heightClass=regular-widthClass=regular">
+                                                                <color key="textColor" systemColor="systemGray3Color"/>
+                                                            </variation>
                                                         </label>
                                                     </subviews>
                                                 </stackView>

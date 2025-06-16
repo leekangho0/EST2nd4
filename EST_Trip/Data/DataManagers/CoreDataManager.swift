@@ -65,7 +65,6 @@ final class CoreDataManager {
         }
     
     
-
         func update() {
             saveContext()
         }
