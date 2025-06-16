@@ -49,4 +49,9 @@ enum FeatureFactory {
         let vc = StoryboardType.map.makeViewController(TravelPlanMapViewController.self)
         return vc
     }
+    
+    static func makeScheduleDetail() -> ScheduleDetailViewController {
+        let vc = StoryboardType.scheduleDetail.makeViewController(ScheduleDetailViewController.self)
+        return vc
+    }
 }

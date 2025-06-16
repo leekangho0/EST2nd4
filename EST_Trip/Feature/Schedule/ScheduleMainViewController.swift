@@ -63,8 +63,8 @@ class ScheduleMainViewController: UIViewController {
     }
     
     @objc func mapButtonTapped() {
-        isEditMode.toggle()
-        tableView.isEditing = isEditMode
+        let mapVC = FeatureFactory.makeMap()
+        self.navigationController?.pushViewController(mapVC, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -102,7 +102,10 @@ class ScheduleMainViewController: UIViewController {
     @objc func addPlaceButtonTapped(_ sender: UIButton) {
         let section = sender.tag
         placePicker(for: section)
-        
+/*
+        let searchVC = FeatureFactory.makeSearch()
+        self.navigationController?.pushViewController(searchVC, animated: true)
+        */
         updateTableViewHeight()
     }
     
@@ -220,5 +223,22 @@ extension ScheduleMainViewController: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.frame.width * 0.25
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 여기서 선택된 테이블뷰셀 정보를 넘겨주시면 됩니다
+        let detailVC = FeatureFactory.makeScheduleDetail()
+        detailVC.modalPresentationStyle = .pageSheet
+        detailVC.delegate = self
+        
+        self.present(detailVC, animated: true)
+    }
+}
+
+// MARK: - ScheduleDetailViewControllerDelegate
+extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
+    func didTapRouteFindingButton() {
+        let routeFindingVC = FeatureFactory.makeRoute()
+        self.navigationController?.pushViewController(routeFindingVC, animated: true)
     }
 }
