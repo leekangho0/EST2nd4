@@ -21,12 +21,12 @@ class RouteFindingViewController: UIViewController {
     @IBOutlet weak var routeDetailContainerView: UIView!
     @IBOutlet weak var routeDetailContainerViewHeightConstraint: NSLayoutConstraint!
     
-    private var mapView: GMSMapView!
-    
-    private var selectedTransport: Transport = .car
-    
     private let locationManager = CLLocationManager()
+    private let routeFindingVM = RouteFindingViewModel()
     
+    private var mapView: GMSMapView!
+    private var selectedTransport: Transport = .car
+        
     private lazy var detailVC: RouteDetailViewController? = {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RouteDetailViewController.self)) as? RouteDetailViewController
@@ -40,15 +40,9 @@ class RouteFindingViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
-        //        setupMapView()
+//                setupMapView()
         embedRouteDetailVC()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-        setupRouteDetailContainerViewHeight()
+        fetchRoutes()
     }
     
     override func viewDidLayoutSubviews() {
@@ -74,6 +68,57 @@ class RouteFindingViewController: UIViewController {
     private func updateSelectedTransport(transport: Transport) {
         selectedTransport = transport
         detailVC?.selectedTransport = selectedTransport
+    }
+    
+    private func fetchRoutes() {
+        switch selectedTransport {
+        case .car: 
+            routeFindingVM.fetchDrivingRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        case .transit:
+            routeFindingVM.fetchTransitRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                case .failure(let error):
+                    switch error {
+                    case .distanceTooShort:
+                        break
+                    case .networkError(_):
+                        print(error)
+                    }
+                }
+            }
+        case .walk:
+            routeFindingVM.fetchPedestrianRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    private func updateRouteInfos() {
+        self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
+        
+        DispatchQueue.main.async {
+            self.setupRouteDetailContainerViewHeight()
+        }
     }
 }
 
@@ -159,13 +204,13 @@ extension RouteFindingViewController {
     private func setupRouteDetailContainerViewHeight() {
         guard let detailVC else { return }
         
-        routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight(forRouteInfoCount: 2)
+        routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight()
     }
     
     private func routeDetailContainerViewMinHeight() -> CGFloat {
         guard let detailVC else { return 0 }
         
-        return detailVC.viewHeight(forRouteInfoCount: 2)
+        return detailVC.viewHeight()
     }
 }
 
@@ -210,7 +255,7 @@ extension RouteFindingViewController: UICollectionViewDataSource {
 extension RouteFindingViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         updateSelectedTransport(transport: Transport.allCases[indexPath.item])
-        
+        fetchRoutes()
         transportationCollectionView.reloadData()
     }
 }

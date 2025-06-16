@@ -5,7 +5,7 @@
 //  Created by 홍승아 on 6/10/25.
 //
 
-import Foundation
+import UIKit
 import CoreLocation
 
 final class RouteFindingViewModel {
@@ -15,8 +15,10 @@ final class RouteFindingViewModel {
     // [제주 공항 좌표, 제주 롯데시티 호텔 좌표]
     private let testLocation2 = [CLLocationCoordinate2D(latitude: 33.504663, longitude: 126.496481), CLLocationCoordinate2D(latitude: 33.490635, longitude: 126.486440)]
     
+    var routeInfos = [RouteInfo]()
+    
     /// 자동차 경로를 가져옵니다
-    func fetchRoute() {
+    func fetchDrivingRoute(completion: @escaping (Result<Void, Error>) -> Void) {
         Task {
             do {
                 let features = try await RouteFindingNetworkManager.shared.fetchTmapRoutes(
@@ -24,15 +26,19 @@ final class RouteFindingViewModel {
                     to: testLocation2[1]
                 )
                 
-                let _ = parseFeatures(features: features)
+                let routeInfo = parseFeatures(features: features)
+                routeInfos = [routeInfo]
+                
+                completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
     }
     
     /// 보행자 경로를 가져옵니다
-    func fetchPedestrianRoute() {
+    func fetchPedestrianRoute(completion: @escaping (Result<Void, Error>) -> Void) {
         Task {
             do {
                 let features = try await RouteFindingNetworkManager.shared.fetchTmapPedestrianRoute(
@@ -40,25 +46,35 @@ final class RouteFindingViewModel {
                     to: testLocation2[1]
                 )
                 
-                let _ = parseFeatures(features: features)
+                let routeInfo = parseFeatures(features: features)
+                routeInfos = [routeInfo]
+                
+                completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
     }
     
     /// 대중교통 경로를 가져옵니다
-    func fetchTransitRoute() {
+    func fetchTransitRoute(completion: @escaping (Result<Void, RouteFindingError>) -> Void) {
         Task {
             do {
                 let routes = try await RouteFindingNetworkManager.shared.fetchRoute(
-                    from: testLocation1[0],
-                    to: testLocation1[1]
+                    from: testLocation2[0],
+                    to: testLocation2[1]
                 )
                 
-                let _ = parseRoutes(routes: routes)
+                if let routeInfos = parseRoutes(routes: routes) {
+                    self.routeInfos = routeInfos
+                    completion(.success(()))
+                } else {
+                    completion(.failure(.distanceTooShort))
+                }
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
+                completion(.failure(.networkError(error)))
             }
         }
     }
@@ -66,10 +82,12 @@ final class RouteFindingViewModel {
 
 // MARK: - Tmap API 보행자 경로 데이터 가공
 extension RouteFindingViewModel {
-    private func parseFeatures(features: [TmapRoutesAPIModels.Feature]) -> TmapRoute {
+    private func parseFeatures(features: [TmapRoutesAPIModels.Feature]) -> RouteInfo {
         var locations = [CLLocationCoordinate2D]()
-        var totalTime = 0
+        var totalDuration = 0
         var totalDistance = 0
+        var totalFare = 0
+        var taxiFare = 0
         
         for feature in features {
             let geometry = feature.geometry
@@ -114,27 +132,38 @@ extension RouteFindingViewModel {
             let properties = feature.properties
             
             // 출발지(S)인 경우에만 totalTime과 totalDistance 정보를 포함합니다
-            if properties.pointType == "S",
-               let time = properties.totalTime,
-                let distance = properties.totalDistance {
-                totalTime = time
-                totalDistance = distance
+            if properties.pointType == "S" {
+                if let time = properties.totalTime,
+                   let distance = properties.totalDistance {
+                    totalDuration = time
+                    totalDistance = distance
+                }
+                
+                if let fare = properties.totalFare {
+                    totalFare = fare
+                }
+                
+                if let taxi = properties.taxiFare {
+                    taxiFare = taxi
+                }
             }
         }
         
-        return TmapRoute(
+        return RouteInfo(
+            duration: totalDuration,
             distance: totalDistance,
-            time: totalTime,
-            locations: locations
+            locations: locations,
+            taxiFare: taxiFare,
+            fare: totalFare
         )
     }
 }
 
 // MARK: - Tmap API 보행자 경로 데이터 가공
 extension RouteFindingViewModel {
-    private func parseFeatures(features: [TmapPedestrianRouteAPIModels.Feature]) -> TmapPedestrianRoute {
+    private func parseFeatures(features: [TmapPedestrianRouteAPIModels.Feature]) -> RouteInfo {
         var locations = [CLLocationCoordinate2D]()
-        var totalTime = 0
+        var totalDuration = 0
         var totalDistance = 0
         
         for feature in features {
@@ -179,17 +208,18 @@ extension RouteFindingViewModel {
             
             let properties = feature.properties
             
+            // 출발지(SP)인 경우에만 전체 보행 시간과 거리 정보를 제공함
             if properties.pointType == "SP",
                let time = properties.totalTime,
-                let distance = properties.totalDistance {
-                totalTime = time
+               let distance = properties.totalDistance {
+                totalDuration = time
                 totalDistance = distance
             }
         }
         
-        return TmapPedestrianRoute(
+        return RouteInfo(
+            duration: totalDuration,
             distance: totalDistance,
-            time: totalTime,
             locations: locations
         )
     }
@@ -197,35 +227,97 @@ extension RouteFindingViewModel {
 
 // MARK: - Google Route API로 받은 데이터 가공
 extension RouteFindingViewModel {
-    private func parseRoutes(routes: [GoogleRouteAPIModels.Route]) {
-        for (index, route) in routes.enumerated() {
-            print("🚀 \(index + 1)번째 경로")
+    private func parseRoutes(routes: [GoogleRouteAPIModels.Route]) -> [RouteInfo]? {
+        var routeInfos = [RouteInfo]()
+        
+        for route in routes {
             
-            for (_, leg) in route.legs.enumerated() {
-                for (index, step) in leg.steps.enumerated() {
-                    let indexStep = "✅ Step \(index + 1) "
-                    
+            // 700m 이내면 경로 탐색 불가 처리
+            if route.distanceMeters ?? 0 <= 700 {
+                return nil
+            }
+            
+            var routes = [RouteInfo.Route]()
+            
+            for leg in route.legs {
+                // 출발 정보
+                if let startLocation = leg.startLocation?.latLng {
+                    routes.append(
+                        .init(
+                            mode: .start,
+                            location: CLLocationCoordinate2D(
+                                latitude: startLocation.latitude,
+                                longitude: startLocation.longitude
+                            )
+                        )
+                    )
+                }
+                
+                for step in leg.steps {
                     if step.travelMode == "WALK" {
-                        print("\(indexStep) 🚶🏼‍♂️ 걷기")
-                    } else {
-                        // 제주도는 버스만 이용 가능하므로, 교통수단을 버스로 제한
-                        print("\(indexStep) 🚌 버스")
+                        routes.append(
+                            .init(
+                                mode: .walk,
+                                duration: step.localizedValues?.staticDuration.text,
+                                polyline: step.polyline?.encodedPolyline
+                            )
+                        )
+                    } else if step.travelMode == "TRANSIT" {
                         if let transitDetails = step.transitDetails,
                             let stopDetails = transitDetails.stopDetails {
                             
-                            print("출발 정류장 : \(stopDetails.arrivalStop!.name!)")
-                            print("\(transitDetails.stopCount!) 정류장 이동")
-                            print("도착 정류장 : \(stopDetails.departureStop!.name!)")
+                            // 승차 정보
+                            routes.append(
+                                .init(
+                                    mode: .boarding,
+                                    stop: .init(
+                                        departureName: stopDetails.arrivalStop?.name ?? "-",
+                                        stopCount: (transitDetails.stopCount ?? 1) - 1 , // 출발 정류장 제외
+                                        busInfo: (transitDetails.transitLine.map {
+                                            RouteInfo.BusInfo(name: $0.nameShort ?? "", color: $0.color ?? "")
+                                        })
+                                    ),
+                                    polyline: step.polyline?.encodedPolyline
+                                )
+                            )
+                            
+                            // 하차 정보
+                            routes.append(
+                                .init(
+                                    mode: .alighting,
+                                    address: stopDetails.departureStop?.name ?? "-"
+                                )
+                            )
                         }
                     }
-                    
-                    print("시간 : \(step.localizedValues!.staticDuration.text), 거리 : \(step.localizedValues!.distance.text)")
+                }
+                
+                // 도착 정보
+                if let endLocation = leg.endLocation?.latLng {
+                    routes.append(
+                        .init(
+                            mode: .end,
+                            location: CLLocationCoordinate2D(
+                                latitude: endLocation.latitude,
+                                longitude: endLocation.longitude
+                            )
+                        )
+                    )
                 }
             }
             
-            print("🕒 총 시간 : \(route.duration!), 📍 총 거리 : \(route.distanceMeters!)")
-            print("---------------------------------")
+            let durationString = route.duration?.filter { $0.isNumber } ?? ""
+            
+            routeInfos.append(
+                RouteInfo(
+                    duration: Int(durationString) ?? 0,
+                    distance: route.distanceMeters ?? 0,
+                    routes: routes
+                )
+            )
         }
+        
+        return routeInfos
     }
 }
 

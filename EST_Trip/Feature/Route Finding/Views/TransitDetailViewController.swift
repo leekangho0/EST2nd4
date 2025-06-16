@@ -21,44 +21,9 @@ class TransitDetailViewController: UIViewController {
     
     private var stepViewHeightConstraints = [NSLayoutConstraint]()
     
-    var testData: RouteDetailViewController.TestData?
-    var routes: [RouteTestData.Route] = [
-        .init(mode: .start, address: "제주시 애월읍"),
-        .init(mode: .walk, duration: 10),
-        .init(
-            mode: .boarding,
-            stop: .init(
-                departureName: "강남역 2번출구",
-                destinationName: "논현역",
-                intermediateStops: [
-                    "강남역 1",
-                    "강남역 2",
-                    "강남역 2",
-                    "강남역 3",
-                    "강남역 4",
-                ],
-                busInfos: [
-                    .init(name: "333", color: .green),
-                    .init(name: "155", color: .yellow),
-                    .init(name: "1534", color: .red),
-                    .init(name: "1534", color: .black),
-                    .init(name: "256", color: .blue),
-                    .init(name: "3233", color: .orange),
-                    .init(name: "333 간선", color: .green),
-                    .init(name: "333 지선", color: .orange),
-                    .init(name: "33", color: .green),
-                    .init(name: "3", color: .green),
-                    .init(name: "33", color: .green),
-                    .init(name: "10", color: .orange),
-                    .init(name: "21", color: .green),
-                ]
-            )
-        ),
-        .init(mode: .alighting, address: "ddddd"),
-        .init(mode: .walk, duration: 20),
-        .init(mode: .end, address: "제주시 애월읍"),
-    ]
     var dragDelegate: DraggableHeaderViewDelegate?
+    
+    var routeInfo: RouteInfo?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,15 +40,17 @@ class TransitDetailViewController: UIViewController {
     private func setupView() {
         self.navigationController?.isNavigationBarHidden = true
         
-        guard let testData else { return }
+        guard let routeInfo else { return }
         
-        durationLabel.text = "\(testData.duration)분"
-        distanceLabel.text = "\(testData.distance)km"
-        walkDurationLabel.text = "도보이동 \(testData.walkDuration)분"
-        fareLabel.text = "총 요금 \(testData.fare)원"
+        durationLabel.text = routeInfo.durationText()
+        distanceLabel.text = routeInfo.distanceText()
+        walkDurationLabel.text = routeInfo.walkDurationText()
+        fareLabel.text = routeInfo.fareText()
     }
     
     private func configureRouteStepStackView() {
+        guard let routeInfo, let routes = routeInfo.routes else { return }
+                
         stepViewHeightConstraints = []
         
         var totalHeight: CGFloat = 0
@@ -106,7 +73,7 @@ class TransitDetailViewController: UIViewController {
         self.routeStepStackViewHeightCosntraint.constant = totalHeight
     }
     
-    private func createStepView(route: RouteTestData.Route) -> UIView {
+    private func createStepView(route: RouteInfo.Route) -> UIView {
         switch route.mode {
         case .start, .end, .alighting:
             let stepView = LocationStepView(route: route)
@@ -125,9 +92,8 @@ class TransitDetailViewController: UIViewController {
         }
     }
     
-    private func stepViewHeight(mode: RouteTestData.Mode) -> CGFloat {
-        let scale = mode == .walk ? 0.15 : 0.13
-        return routeStepStackView.bounds.width * scale
+    private func stepViewHeight(mode: RouteInfo.Mode) -> CGFloat {
+        return routeStepStackView.bounds.width * 0.15
     }
     
     @IBAction func dismiss(_ sender: Any) {

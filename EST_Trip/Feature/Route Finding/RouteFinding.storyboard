@@ -194,7 +194,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qtm-22-5aD">
-                                <rect key="frame" x="0.0" y="329" width="402" height="477"/>
+                                <rect key="frame" x="0.0" y="329" width="402" height="359"/>
                                 <color key="backgroundColor" red="0.85490196939999996" green="0.96862745289999996" blue="0.89019608500000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSt-sL-uG8">
@@ -212,10 +212,10 @@
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cTz-cS-HNg" customClass="RoundedView" customModule="EST_Trip" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="796" width="402" height="10"/>
+                                <rect key="frame" x="0.0" y="678" width="402" height="128"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="CEr-ds-z9j"/>
+                                    <constraint firstAttribute="height" constant="128" id="CEr-ds-z9j"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -376,9 +376,6 @@
                                                     <color key="tintColor" red="0.11372549019607843" green="0.11372549019607843" blue="0.11372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" backgroundImage="chevron.right" catalog="system"/>
-                                                    <connections>
-                                                        <action selector="presentTransitDetailVC:" destination="f9S-oy-hFh" eventType="touchUpInside" id="PgZ-rC-O8J"/>
-                                                    </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IM8-NS-Vbv" userLabel="SeperatorView">
                                                     <rect key="frame" x="2" y="71.666666666666671" width="344" height="1"/>

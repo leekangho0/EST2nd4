@@ -148,14 +148,7 @@ extension RouteFindingNetworkManager {
             throw EncodingError.invalidValue(body, .init(codingPath: [], debugDescription: "Failed to encode body"))
         }
         
-        guard var components = URLComponents(string: GoogleAPI.Directions.computeRoutes) else {
-            throw URLError(.badURL)
-        }
-        components.queryItems = [
-            URLQueryItem(name: "key", value: APIKey.googleMaps.value)
-        ]
-
-        guard let url = components.url else {
+        guard let url = URL(string: GoogleAPI.Directions.computeRoutes) else {
             throw URLError(.badURL)
         }
 
@@ -166,11 +159,7 @@ extension RouteFindingNetworkManager {
         request.setValue(APIKey.googleMaps.value, forHTTPHeaderField: "X-Goog-Api-Key")
         // 서버 응답에서 받을 필드를 지정
         request.setValue(
-            "routes.duration," +
-            "routes.distanceMeters," +
-            "routes.polyline.encodedPolyline," +
-            "routes.legs.steps," +
-            "routes.legs.steps.transitDetails"
+            "routes"
             ,forHTTPHeaderField: "X-Goog-FieldMask"
         )
         request.setValue(Bundle.main.bundleIdentifier, forHTTPHeaderField: "X-Ios-Bundle-Identifier")
