@@ -17,6 +17,14 @@ final class RouteFindingViewModel {
     
     var routeInfos = [RouteInfo]()
     
+    var locations: [CLLocationCoordinate2D] {
+        routeInfos.first?.locations ?? []
+    }
+    
+    func routes(index: Int) -> [RouteInfo.Route] {
+        return routeInfos[index].routes ?? []
+    }
+    
     /// 자동차 경로를 가져옵니다
     func fetchDrivingRoute(completion: @escaping (Result<Void, Error>) -> Void) {
         Task {

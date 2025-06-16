@@ -21,16 +21,22 @@ class RouteFindingViewController: UIViewController {
     @IBOutlet weak var routeDetailContainerView: UIView!
     @IBOutlet weak var routeDetailContainerViewHeightConstraint: NSLayoutConstraint!
     
+    private var mapView: GMSMapView!
+    private var startMarker: GMSMarker?
+    private var endMarker: GMSMarker?
+    private var polylines = [GMSPolyline]()
+    
     private let locationManager = CLLocationManager()
     private let routeFindingVM = RouteFindingViewModel()
     
-    private var mapView: GMSMapView!
     private var selectedTransport: Transport = .car
-        
+    
     private lazy var detailVC: RouteDetailViewController? = {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RouteDetailViewController.self)) as? RouteDetailViewController
         vc?.dragDelegate = self
+        vc?.delegate = self
+        
         return vc
     }()
     
@@ -40,9 +46,15 @@ class RouteFindingViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
-//                setupMapView()
+        setupMapView()
         embedRouteDetailVC()
         fetchRoutes()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        moveToCurrentLocation(self)
     }
     
     override func viewDidLayoutSubviews() {
@@ -72,13 +84,16 @@ class RouteFindingViewController: UIViewController {
     
     private func fetchRoutes() {
         switch selectedTransport {
-        case .car: 
+        case .car:
             routeFindingVM.fetchDrivingRoute { [weak self] result in
                 guard let self else { return }
                 
                 switch result {
                 case .success:
                     self.updateRouteInfos()
+                    self.drawRouteFromCoordinates(
+                        routeCoordinates: self.routeFindingVM.locations
+                    )
                 case .failure(let error):
                     print(error)
                 }
@@ -90,6 +105,9 @@ class RouteFindingViewController: UIViewController {
                 switch result {
                 case .success:
                     self.updateRouteInfos()
+                    self.drawRouteFromPolylines(
+                        routes: self.routeFindingVM.routes(index: 0)
+                    )
                 case .failure(let error):
                     switch error {
                     case .distanceTooShort:
@@ -106,6 +124,9 @@ class RouteFindingViewController: UIViewController {
                 switch result {
                 case .success:
                     self.updateRouteInfos()
+                    self.drawRouteFromCoordinates(
+                        routeCoordinates: self.routeFindingVM.locations
+                    )
                 case .failure(let error):
                     print(error)
                 }
@@ -138,7 +159,7 @@ extension RouteFindingViewController {
         transportationCollectionView.isScrollEnabled = false
         
         iconImgeView.transform = CGAffineTransform(rotationAngle: .pi / 2)
-            
+        
         locationManager.delegate = self
         
         navigationController?.navigationBar.titleTextAttributes = [
@@ -147,14 +168,14 @@ extension RouteFindingViewController {
     }
     
     private func setupMapView() {
-//        let camera = GMSCameraPosition.camera(withLatitude: 37.5665, longitude: 126.9780, zoom: 14.0)
         let options = GMSMapViewOptions()
         options.frame = mapContainerView.bounds
-
+        
         mapView = GMSMapView(options: options)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
         mapView.isMyLocationEnabled = true
-
+        
         mapContainerView.addSubview(mapView)
     }
     
@@ -183,12 +204,12 @@ extension RouteFindingViewController {
         guard let detailVC else { return }
         
         let navController = UINavigationController(rootViewController: detailVC)
-
+        
         addChild(navController)
         
         navController.view.translatesAutoresizingMaskIntoConstraints = false
         routeDetailContainerView.addSubview(navController.view)
-
+        
         NSLayoutConstraint.activate([
             navController.view.topAnchor.constraint(equalTo: routeDetailContainerView.topAnchor),
             navController.view.bottomAnchor.constraint(equalTo: routeDetailContainerView.bottomAnchor),
@@ -197,7 +218,7 @@ extension RouteFindingViewController {
         ])
         
         navController.didMove(toParent: self)
-
+        
         detailVC.didMove(toParent: self)
     }
     
@@ -214,11 +235,129 @@ extension RouteFindingViewController {
     }
 }
 
+// MARK: - 경로 그리기
+extension RouteFindingViewController {
+    private func drawRouteFromCoordinates(routeCoordinates: [CLLocationCoordinate2D]) {
+        DispatchQueue.main.async {
+            self.resetMapView()
+            
+            let path = GMSMutablePath()
+            for coordinate in routeCoordinates {
+                path.add(coordinate)
+            }
+            
+            let polyline = GMSPolyline(path: path)
+            
+            polyline.strokeWidth = 5.0 // 선의 두께 (포인트 단위)
+            polyline.strokeColor = .jejuOrange // 선의 색상
+            polyline.geodesic = true // 지오데식 선 (지구의 곡률을 따라 가장 짧은 경로)
+            
+            // 폴리라인을 지도에 추가
+            polyline.map = self.mapView
+            
+            self.polylines.append(polyline)
+            
+            // 경로의 시작점과 끝점에 마커 추가
+            if let startCoordinate = routeCoordinates.first {
+                self.startMarker = GMSMarker(position: startCoordinate)
+                self.startMarker?.title = "출발지"
+                self.startMarker?.icon = GMSMarker.markerImage(with: .hallasanGreen)
+                self.startMarker?.map = self.mapView
+            }
+            
+            if let endCoordinate = routeCoordinates.last {
+                self.endMarker = GMSMarker(position: endCoordinate)
+                self.endMarker?.title = "도착지"
+                self.endMarker?.icon = GMSMarker.markerImage(with: .red)
+                self.endMarker?.map = self.mapView
+            }
+            
+            // 경로 전체가 보이도록 카메라 이동
+            // 모든 경로 좌표를 포함하는 GMSCoordinateBounds 생성
+            let bounds = GMSCoordinateBounds(path: path)
+            let cameraUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50.0) // 패딩 추가
+            
+            self.mapView?.animate(with: cameraUpdate)
+        }
+    }
+    
+    private func drawRouteFromPolylines(routes: [RouteInfo.Route]) {
+        DispatchQueue.main.async {
+            self.resetMapView()
+            
+            var bounds: GMSCoordinateBounds?
+            
+            for route in routes {
+                if let encodedPolyline = route.polyline,
+                   let path = GMSPath(fromEncodedPath: encodedPolyline) {
+                    
+                    let polyline = GMSPolyline(path: path)
+                    polyline.geodesic = true
+                    
+                    if route.mode == .walk {
+                        polyline.strokeWidth = 4.0
+                        
+                        let dashedLineStyles = [
+                            GMSStrokeStyle.solidColor(UIColor.dolHareubangGray), // 실제 선의 색상
+                            GMSStrokeStyle.solidColor(UIColor.clear) // 빈 공간 (투명)
+                        ]
+                        
+                        let lengths: [NSNumber] = [15, 10] // 10포인트 선, 5포인트 공백 반복
+                        
+                        polyline.spans = GMSStyleSpans(polyline.path!, dashedLineStyles, lengths, .geodesic)
+                    } else {
+                        polyline.strokeWidth = 5.0
+                        polyline.strokeColor = .jejuOrange
+                    }
+                    
+                    polyline.map = self.mapView
+                    self.polylines.append(polyline)
+                    
+                    let pathBounds = GMSCoordinateBounds(path: path)
+                    if let currentBounds = bounds {
+                        bounds = currentBounds.includingBounds(pathBounds)
+                    } else {
+                        bounds = pathBounds
+                    }
+                }
+            }
+            
+            if let startCoordinate = routes.first?.location {
+                self.startMarker = GMSMarker(position: startCoordinate)
+                self.startMarker?.title = "출발지"
+                self.startMarker?.icon = GMSMarker.markerImage(with: .hallasanGreen)
+                self.startMarker?.map = self.mapView
+            }
+            
+            if let endCoordinate = routes.last?.location {
+                self.endMarker = GMSMarker(position: endCoordinate)
+                self.endMarker?.title = "도착지"
+                self.endMarker?.icon = GMSMarker.markerImage(with: .red)
+                self.endMarker?.map = self.mapView
+            }
+            
+            if let bounds = bounds {
+                let cameraUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50.0)
+                self.mapView.animate(with: cameraUpdate)
+            }
+        }
+    }
+    
+    private func resetMapView() {
+        startMarker?.map = nil
+        endMarker?.map = nil
+        polylines.forEach {
+            $0.map = nil
+        }
+    }
+}
+
 // MARK: - CLLocationManagerDelegate
 extension RouteFindingViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedWhenInUse {
             locationManager.startUpdatingLocation()
+            moveToCurrentLocation(self)
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
@@ -302,5 +441,14 @@ extension RouteFindingViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+// MARK: - RouteDetailViewControllerDelegate
+extension RouteFindingViewController: RouteDetailViewControllerDelegate {
+    func routeDetailViewController(didSelectCellAt index: Int) {
+        drawRouteFromPolylines(
+            routes: routeFindingVM.routes(index: index)
+        )
     }
 }

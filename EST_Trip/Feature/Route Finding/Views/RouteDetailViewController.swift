@@ -23,6 +23,7 @@ class RouteDetailViewController: UIViewController {
     }
     var selectedTransport: Transport?
     var dragDelegate: DraggableHeaderViewDelegate?
+    var delegate: RouteDetailViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +96,8 @@ extension RouteDetailViewController: UITableViewDelegate {
         guard let vc = storyboard.instantiateViewController(withIdentifier: String(describing: TransitDetailViewController.self)) as? TransitDetailViewController else { return }
         vc.dragDelegate = self
         vc.routeInfo = routeInfos[indexPath.row]
+        
+        delegate?.routeDetailViewController(didSelectCellAt: indexPath.row)
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
