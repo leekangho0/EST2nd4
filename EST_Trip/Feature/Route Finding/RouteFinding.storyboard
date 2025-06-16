@@ -230,11 +230,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="cTz-cS-HNg" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="0UA-VV-zSM"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Qtm-22-5aD" secondAttribute="bottom" constant="118" id="4kV-w4-Wuy"/>
                             <constraint firstItem="hSt-sL-uG8" firstAttribute="top" secondItem="R6Q-kh-TPI" secondAttribute="bottom" constant="16" id="BW5-E8-ucx"/>
                             <constraint firstAttribute="trailing" secondItem="Qtm-22-5aD" secondAttribute="trailing" id="Bsc-A2-D92"/>
                             <constraint firstItem="R6Q-kh-TPI" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Cb2-vC-Vxg"/>
                             <constraint firstItem="R6Q-kh-TPI" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="10" id="Ggn-OU-JEa"/>
-                            <constraint firstItem="cTz-cS-HNg" firstAttribute="top" secondItem="Qtm-22-5aD" secondAttribute="bottom" constant="-10" id="Jec-an-8VP"/>
                             <constraint firstAttribute="trailing" secondItem="cTz-cS-HNg" secondAttribute="trailing" id="Kh7-Z7-YUk"/>
                             <constraint firstItem="Qtm-22-5aD" firstAttribute="top" secondItem="R6Q-kh-TPI" secondAttribute="bottom" id="OzJ-zu-wj1"/>
                             <constraint firstItem="Qtm-22-5aD" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="UIb-74-O2H"/>
@@ -258,6 +258,7 @@
                         <outlet property="endLocationField" destination="Vp0-xn-X3i" id="hbn-MA-rCo"/>
                         <outlet property="iconImgeView" destination="XUy-lF-7tX" id="0yj-x9-MbG"/>
                         <outlet property="mapContainerView" destination="Qtm-22-5aD" id="jhO-Du-ACg"/>
+                        <outlet property="mapContainerViewBottomConstraint" destination="4kV-w4-Wuy" id="XT1-Xg-Vku"/>
                         <outlet property="routeDetailContainerView" destination="cTz-cS-HNg" id="gDN-j1-vDK"/>
                         <outlet property="routeDetailContainerViewHeightConstraint" destination="CEr-ds-z9j" id="o7D-fy-CKF"/>
                         <outlet property="routeInfoHeaderView" destination="R6Q-kh-TPI" id="zCh-0M-lIi"/>

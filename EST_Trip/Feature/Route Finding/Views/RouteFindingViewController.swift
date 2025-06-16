@@ -17,6 +17,8 @@ class RouteFindingViewController: UIViewController {
     
     @IBOutlet weak var routeInfoHeaderView: UIView!
     @IBOutlet var mapContainerView: UIView!
+    @IBOutlet weak var mapContainerViewBottomConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var transportationCollectionView: UICollectionView!
     @IBOutlet weak var currentLocationButton: UIButton!
     @IBOutlet weak var startLocationField: UITextField!
@@ -30,6 +32,8 @@ class RouteFindingViewController: UIViewController {
     private var startMarker: GMSMarker?
     private var endMarker: GMSMarker?
     private var polylines = [GMSPolyline]()
+    
+    private var isMapBottomInit = false
     
     private let locationManager = CLLocationManager()
     private var hasUpdatedRoute = false
@@ -211,6 +215,10 @@ extension RouteFindingViewController {
         guard let detailVC else { return }
         
         routeDetailContainerViewHeightConstraint.constant = detailVC.viewHeight()
+        if !isMapBottomInit {
+            mapContainerViewBottomConstraint.constant = routeDetailContainerViewHeightConstraint.constant
+            isMapBottomInit = true
+        }
     }
     
     private func routeDetailContainerViewMinHeight() -> CGFloat {
