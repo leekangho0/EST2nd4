@@ -23,6 +23,11 @@
 					<string>Default Configuration</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+<<<<<<< HEAD
+=======
+					<key>UISceneStoryboardFile</key>
+					<string>Schedule</string>
+>>>>>>> e8454a5 (여행 일정 리스트 화면 UI 구현)
 				</dict>
 			</array>
 		</dict>
