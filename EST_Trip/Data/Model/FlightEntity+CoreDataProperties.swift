@@ -16,12 +16,14 @@ extension FlightEntity {
         return NSFetchRequest<FlightEntity>(entityName: "Flight")
     }
 
-    @NSManaged public var airportDate: Date?
+    @NSManaged public var id: UUID
+    @NSManaged public var departureDate: Date?
+    @NSManaged public var departureAirport: String?
+    @NSManaged public var departureTime: Date?
+    @NSManaged public var flightname: String?
     @NSManaged public var arrivalAirport: String?
     @NSManaged public var arrivalTime: Date?
-    @NSManaged public var departureAirport: String?
-    @NSManaged public var flightname: String?
-    @NSManaged public var id: UUID
+    @NSManaged public var arrivalDate: Date?
     @NSManaged public var startFlight: TravelEntity?
     @NSManaged public var endFlight: TravelEntity?
 
