@@ -23,8 +23,8 @@ enum FeatureFactory {
         return vc
     }
     
-    static func makePlanner() -> ScheduleViewController {
-        let vc = StoryboardType.schedule.makeViewController(ScheduleViewController.self)
+    static func makePlanner() -> ScheduleMainViewController {
+        let vc = StoryboardType.schedule.makeViewController(ScheduleMainViewController.self)
         return vc
     }
     

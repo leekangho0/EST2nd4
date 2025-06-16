@@ -28,15 +28,16 @@ class ScheduleListHeaderView: UIView {
     }
 
     private func commonInit() {
-        Bundle.main.loadNibNamed("ScheduleListHeaderView", owner: self, options: nil)
-        addSubview(view)
-        view.frame = bounds
-        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        if let view = Bundle.main.loadNibNamed("ScheduleListHeaderView", owner: self, options: nil)?.first as? UIView {
+            addSubview(view)
+            view.frame = bounds
+        }
+        
+        addButtonStyles()
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        addButtonStyles()
     }
 
     private func addButtonStyles() {
