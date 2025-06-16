@@ -19,15 +19,18 @@ class ScheduleMainViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
-    
+
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     
     private let sectionHeight: CGFloat = 80
     
     private var isEditMode = false
     
+    @IBOutlet weak var titleLabel: UILabel!
+
     var schedulePlaces: [[PlaceModel]] = [[], [], []]
-    
+    var headerTitles: [String] = ["", "", ""]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +41,7 @@ class ScheduleMainViewController: UIViewController {
             action: #selector(mapButtonTapped)
         )
         navigationItem.rightBarButtonItem = mapButton
-        
+
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
@@ -69,7 +72,6 @@ class ScheduleMainViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         // scrollView contentSize 조정
 //        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentView.frame.height)
         
@@ -98,7 +100,7 @@ class ScheduleMainViewController: UIViewController {
         tableView.reloadSections(IndexSet(integer: section), with: .automatic)
         tableView.layoutIfNeeded()
     }
-    
+
     @objc func addPlaceButtonTapped(_ sender: UIButton) {
         /*
         let section = sender.tag
@@ -127,6 +129,49 @@ extension ScheduleMainViewController {
         tableViewHeightConstraint.constant = max(tableView.contentSize.height, defaultHeight)
     }
 
+    @IBAction func editButtonTapped(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Schedule", bundle: nil)
+            guard let editVC = storyboard.instantiateViewController(withIdentifier: "EditMenuViewController") as? EditMenuViewController else {
+                return
+            }
+
+            // 새 제목이 입력되면 실행할 코드
+            editVC.onTitleUpdate = { [weak self] newTitle in
+                print("입력된 새 제목: \(newTitle)")
+                self?.titleLabel.text = newTitle
+            }
+
+            // 모달 시트 스타일 설정
+            if let sheet = editVC.sheetPresentationController {
+                sheet.detents = [.custom { _ in 280 }]
+                sheet.prefersGrabberVisible = true
+                sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+                sheet.preferredCornerRadius = 20
+            }
+
+            present(editVC, animated: true)
+
+    }
+    
+
+//    @objc func editButtonTapped(_ sender: UIButton) {
+//        let section = sender.tag
+//
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        guard let editVC = storyboard.instantiateViewController(identifier: "EditMenuViewController") as? EditMenuViewController else { return }
+//
+//        // 여행 제목 변경 콜백 설정
+//        editVC.onTitleUpdate = { [weak self] newTitle in
+//            print("입력된 새 제목: \(newTitle)")
+//            self?.titleLabel.setTitle(newTitle, for: .normal)
+//        }
+//
+//        editVC.modalPresentationStyle = .pageSheet
+//        if let sheet = editVC.sheetPresentationController {
+//            sheet.detents = [.medium()]
+//        }
+//        present(editVC, animated: true)
+//    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -244,3 +289,4 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
         self.navigationController?.pushViewController(routeFindingVC, animated: true)
     }
 }
+

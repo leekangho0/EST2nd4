@@ -17,6 +17,8 @@ class ScheduleListHeaderView: UIView {
     @IBOutlet weak var addPlaceButton: UIButton!
     @IBOutlet weak var addMemoButton: UIButton!
 
+    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()

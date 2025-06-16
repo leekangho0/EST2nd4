@@ -116,23 +116,26 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="G89-9i-z0l">
                                                                 <rect key="frame" x="0.0" y="0.0" width="160.33333333333334" height="36"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="제주 여행" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bII-7B-lGl">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="제주 여행" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bII-7B-lGl" userLabel="titleLabel">
                                                                         <rect key="frame" x="0.0" y="0.0" width="110.33333333333333" height="36"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="30"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jF2-rn-76g">
+                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jF2-rn-76g" userLabel="editButton">
                                                                         <rect key="frame" x="110.33333333333334" y="2" width="50" height="32"/>
                                                                         <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <state key="normal" title="Button"/>
                                                                         <buttonConfiguration key="configuration" style="plain" title="편집">
                                                                             <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="15"/>
                                                                         </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="editButtonTapped:" destination="Kt2-W2-D71" eventType="touchUpInside" id="YwX-ht-Y04"/>
+                                                                        </connections>
                                                                     </button>
                                                                 </subviews>
                                                             </stackView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2025.06.27 - 06.29" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3PR-zG-Cvi">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2025.06.27 - 06.29" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3PR-zG-Cvi" userLabel="dataLabel">
                                                                 <rect key="frame" x="0.0" y="44" width="163.66666666666666" height="21.666666666666671"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -395,6 +398,7 @@
                         <outlet property="scrollView" destination="Crz-hA-oBO" id="INy-BB-TIc"/>
                         <outlet property="tableView" destination="al8-3Z-vvS" id="466-3k-B0A"/>
                         <outlet property="tableViewHeightConstraint" destination="tTG-AD-6iJ" id="XLl-XV-Eyc"/>
+                        <outlet property="titleLabel" destination="bII-7B-lGl" id="Vob-Vf-dMq"/>
                         <outletCollection property="toggleButtons" destination="WQi-j8-v1x" collectionClass="NSMutableArray" id="ZGs-cR-5Rf"/>
                         <outletCollection property="toggleButtons" destination="pH2-Lw-fqk" collectionClass="NSMutableArray" id="rQL-kW-sTF"/>
                     </connections>
@@ -402,6 +406,78 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PdY-UC-LIo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="921.37404580152668" y="-37.323943661971832"/>
+        </scene>
+        <!--Edit Menu View Controller-->
+        <scene sceneID="7Xz-kX-qk1">
+            <objects>
+                <viewController storyboardIdentifier="EditMenuViewController" id="QSc-HW-oOh" customClass="EditMenuViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rjq-pS-FtG">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="편집" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0h-Bf-z1A">
+                                <rect key="frame" x="46" y="30" width="29.666666666666671" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="n8I-jo-rzz">
+                                <rect key="frame" x="38" y="80.333333333333314" width="137.66666666666666" height="154"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZeX-YM-acc">
+                                        <rect key="frame" x="0.0" y="0.0" width="137.66666666666666" height="38"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="여행 제목 등록">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="titleEditButtonTapped:" destination="QSc-HW-oOh" eventType="touchUpInside" id="Ice-Is-MWA"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Sq-wH-zNa">
+                                        <rect key="frame" x="0.0" y="58.000000000000014" width="137.66666666666666" height="38"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="여행 날짜 수정">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="dateEditButtonTapped:" destination="QSc-HW-oOh" eventType="touchUpInside" id="hDQ-qF-T1W"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kWR-LI-dJz">
+                                        <rect key="frame" x="0.0" y="116" width="98.333333333333329" height="38"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="여행 삭제">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tripDeleteButtonTapped:" destination="QSc-HW-oOh" eventType="touchUpInside" id="opM-Iz-mGy"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="gq5-23-2jW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="J0h-Bf-z1A" firstAttribute="top" secondItem="Rjq-pS-FtG" secondAttribute="top" constant="30" id="23K-HX-N8u"/>
+                            <constraint firstItem="n8I-jo-rzz" firstAttribute="top" secondItem="J0h-Bf-z1A" secondAttribute="bottom" constant="30" id="Azw-sp-wLB"/>
+                            <constraint firstItem="J0h-Bf-z1A" firstAttribute="leading" secondItem="Rjq-pS-FtG" secondAttribute="leading" constant="46" id="ghp-Yk-wxf"/>
+                            <constraint firstItem="n8I-jo-rzz" firstAttribute="leading" secondItem="Rjq-pS-FtG" secondAttribute="leading" constant="38" id="jGK-nv-dB0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dateEditButton" destination="1Sq-wH-zNa" id="gN1-pH-GoB"/>
+                        <outlet property="titleEditButton" destination="ZeX-YM-acc" id="gxV-8s-70s"/>
+                        <outlet property="tripDeleteButton" destination="kWR-LI-dJz" id="osT-Ae-8T3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6mM-nP-NUf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1811" y="-37"/>
         </scene>
     </scenes>
     <resources>
