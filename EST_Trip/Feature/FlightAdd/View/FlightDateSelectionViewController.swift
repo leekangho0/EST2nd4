@@ -60,8 +60,8 @@ class FlightDateSelectionViewController: UIViewController {
             let nextStr = formatter.string(from: Calendar.current.date(byAdding: .day, value: 1, to: departureDate)!
             )
 
-            firstDateButton.setTitle(todayStr, for: .normal)
-            secondDateButton.setTitle(nextStr, for: .normal)
+            firstDateButton.setTitle("\(todayStr) 당일", for: .normal)
+            secondDateButton.setTitle("\(nextStr) 익일", for: .normal)
         } else {
             let date = travelDate
             let formatter = DateFormatter()

@@ -233,3 +233,11 @@ extension FlightAddViewController {
         navigationController?.popViewController(animated: true)
     }
 }
+
+extension FlightAddViewController {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
