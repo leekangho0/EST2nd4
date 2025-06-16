@@ -24,13 +24,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="searchBarEditingChanged:" destination="Y6W-OH-hqX" eventType="editingDidEnd" id="KPH-sN-Uwu"/>
-                                        </connections>
                                     </textField>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Il-Ild">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bJW-Il-Ild">
                                 <rect key="frame" x="16" y="166" width="172" height="33.333333333333343"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TbD-yq-VSj">
@@ -100,7 +97,10 @@
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ey-tO-T9n">
-                                                    <rect key="frame" x="315" y="10" width="63" height="34.666666666666664"/>
+                                                    <rect key="frame" x="315" y="10" width="60" height="34.666666666666664"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="60" id="WFP-33-L0B"/>
+                                                    </constraints>
                                                     <color key="tintColor" systemColor="systemGray5Color"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="filled" title="선택" cornerStyle="capsule">
@@ -126,15 +126,11 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="240" id="Ua8-ct-IlD"/>
-                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="7S3-sM-bxq" secondAttribute="bottom" id="HZJ-xS-c20"/>
-                                                <constraint firstItem="6ey-tO-T9n" firstAttribute="top" secondItem="TdD-dq-Mju" secondAttribute="topMargin" constant="-1" id="KLm-6N-rGZ"/>
-                                                <constraint firstAttribute="trailing" secondItem="6ey-tO-T9n" secondAttribute="trailing" constant="15" id="RWL-VQ-BiN"/>
+                                                <constraint firstAttribute="trailing" secondItem="6ey-tO-T9n" secondAttribute="trailing" constant="18" id="RWL-VQ-BiN"/>
                                                 <constraint firstItem="7S3-sM-bxq" firstAttribute="leading" secondItem="TdD-dq-Mju" secondAttribute="leading" constant="9" id="Vx6-yS-Y6Q"/>
                                                 <constraint firstItem="HIs-Xb-NfB" firstAttribute="leading" secondItem="7S3-sM-bxq" secondAttribute="trailing" constant="6" id="Y5N-oB-APy"/>
                                                 <constraint firstItem="HIs-Xb-NfB" firstAttribute="top" secondItem="TdD-dq-Mju" secondAttribute="top" constant="6" id="YUh-fd-F4a"/>
