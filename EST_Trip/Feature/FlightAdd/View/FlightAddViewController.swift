@@ -49,6 +49,16 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         setupNavigationBar()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        let flight: [FlightEntity] = CoreDataManager.shared.fetch(FlightEntity.self)
+        flight.forEach { data in
+            print("저장된 데이터 확인 :",data)
+            print("저장된 공항",data.departureAirport ?? "")
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -224,8 +234,15 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
 extension FlightAddViewController {
     @objc func completeTap(_ sender: Any) {
+        if !viewModel.isFlightVaild() {
+            let alert = UIAlertController(title: "비어있는 항목이 있습니다", message: "모든 항목을 입력해주세요", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        print("CoreData 저장 직전 상태: \(viewModel.flight)")
+        viewModel.saveToCoreData()
         let vc = FeatureFactory.makePlanner()
-
         navigationController?.pushViewController(vc, animated: true)
     }
 

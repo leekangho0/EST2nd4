@@ -449,7 +449,7 @@
                                 <rect key="frame" x="0.0" y="656" width="393" height="196"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="rEX-7H-595">
-                                        <rect key="frame" x="32" y="0.0" width="329" height="134"/>
+                                        <rect key="frame" x="32" y="16" width="329" height="134"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="항공편 이용일 선택" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pm9-Jy-59y">
                                                 <rect key="frame" x="0.0" y="0.0" width="329" height="18"/>
@@ -497,9 +497,9 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="rEX-7H-595" firstAttribute="top" secondItem="Ghe-xk-0Hp" secondAttribute="top" id="UNz-bs-7gU"/>
                                     <constraint firstItem="rEX-7H-595" firstAttribute="leading" secondItem="Ghe-xk-0Hp" secondAttribute="leading" constant="32" id="YKB-TG-AI4"/>
                                     <constraint firstAttribute="height" constant="196" id="aQH-ot-ctG"/>
+                                    <constraint firstItem="rEX-7H-595" firstAttribute="top" secondItem="Ghe-xk-0Hp" secondAttribute="top" constant="16" id="hCw-ch-Idt"/>
                                     <constraint firstAttribute="trailing" secondItem="rEX-7H-595" secondAttribute="trailing" constant="32" id="zVo-GY-FdF"/>
                                 </constraints>
                             </view>

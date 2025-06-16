@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ExpenseEntity" representedClassName=".ExpenseEntity" syncable="YES">
         <attribute name="amount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="category" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -14,7 +14,7 @@
         <attribute name="arrivalTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="departureAirport" attributeType="String"/>
         <attribute name="departureDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="departureTIme" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="departureTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flightname" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="endFlight" inverseEntity="TravelEntity"/>

@@ -66,3 +66,28 @@ final class FlightAddViewModel {
         }
     }
 }
+
+extension FlightAddViewModel {
+    func isFlightVaild() -> Bool {
+        return !flight.flightName.isEmpty &&
+        flight.departureDate != nil &&
+        flight.departureTime != nil &&
+        flight.arrivalDate != nil &&
+        flight.arrivalTime != nil &&
+        flight.departureAirport != nil &&
+        flight.arrivalAirport != nil
+    }
+
+    func saveToCoreData() {
+        CoreDataManager.shared.insert(FlightEntity.self) { entity in
+            entity.id = UUID()
+            entity.flightname = flight.flightName
+            entity.departureDate = flight.departureDate
+            entity.departureTime = flight.departureTime
+            entity.arrivalDate = flight.departureDate
+            entity.arrivalTime = flight.arrivalTime
+            entity.departureAirport = flight.departureAirport
+            entity.arrivalAirport = flight.arrivalAirport
+        }
+    }
+}

@@ -50,7 +50,7 @@ final class DateCell: UICollectionViewCell {
             dateLabel.textColor = UIColor.white
         } else if isInRange {
             circleBackgroundView.isHidden = false
-            circleBackgroundView.backgroundColor = UIColor.canolaSand
+            circleBackgroundView.backgroundColor = UIColor.canolaSandCalendar
         } else {
             circleBackgroundView.isHidden = true
         }
