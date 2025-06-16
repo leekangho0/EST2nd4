@@ -100,12 +100,14 @@ class ScheduleMainViewController: UIViewController {
     }
     
     @objc func addPlaceButtonTapped(_ sender: UIButton) {
+        /*
         let section = sender.tag
         placePicker(for: section)
-/*
+        */
+
         let searchVC = FeatureFactory.makeSearch()
         self.navigationController?.pushViewController(searchVC, animated: true)
-        */
+        
         updateTableViewHeight()
     }
     
