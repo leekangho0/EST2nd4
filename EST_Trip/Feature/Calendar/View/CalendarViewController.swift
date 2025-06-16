@@ -57,17 +57,6 @@ final class CalendarViewController: UIViewController {
 
             setDateButton.setAttributedTitle(attributed, for: .normal)
             dateSelectionView.isHidden = false
-        } else if let start = travelDate.startDate {
-            let startText = formatter1.string(from: start)
-            let fullText = "\(startText) / 당일 일정으로 등록완료"
-
-            let attributed = NSAttributedString(string: fullText, attributes: [
-                .font: UIFont.systemFont(ofSize: 13, weight: .bold),
-                .foregroundColor: UIColor.white
-            ])
-
-            setDateButton.setAttributedTitle(attributed, for: .normal)
-            dateSelectionView.isHidden = false
         } else {
             dateSelectionView.isHidden = true
         }

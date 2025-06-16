@@ -86,7 +86,7 @@ final class CalendarViewModel {
                     return
                 }
 
-                let annotation = calendar.isDateInToday(date) ? "오늘" : nil
+                let annotation = calendar.isDateInToday(date) ? "오늘" : " "
 
                 if annotation == "오늘" {
                     todayIndexPath = IndexPath(item: dates.count, section: sectionIndex)
