@@ -17,11 +17,14 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var header: UIView!
 
+    @IBOutlet weak var userName: UILabel!
+
     @IBOutlet weak var futureTripButton: UIButton!
     @IBOutlet weak var pastTripButton: UIButton!
 
     @IBOutlet weak var tableView: UITableView!
 
+    // 더미 데이터
     let trips = [
         Trip(title: "6월", startDate: Date(year: 2025, month: 6, day: 13), endDate: Date(year: 2025, month: 6, day: 15)),
         Trip(title: "7월 여름휴가입니다아아아", startDate: Date(year: 2025, month: 7, day: 10), endDate: Date(year: 2025, month: 7, day: 12)),
@@ -39,13 +42,30 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadTrips()
-
         tableView.dataSource = self
 
+        loadTrips()
         currentTrip = futureTrip
 
         header.backgroundColor = UIColor.dolHareubangLightGray.withAlphaComponent(0.2)
+    }
+
+    @IBAction func editNameButton(_ sender: Any) {
+        guard let editUsernameVC = self.storyboard?.instantiateViewController(withIdentifier: "EditUsernameViewController") as? EditUsernameViewController else { return }
+
+        editUsernameVC.userNameEntered = { [weak self] text in
+            self?.userName.text = text
+        }
+
+        if userName.text == "사용자명" {
+            editUsernameVC.currentName = ""
+        } else {
+            editUsernameVC.currentName = userName.text
+        }
+
+        editUsernameVC.modalPresentationStyle = .overFullScreen
+        editUsernameVC.modalTransitionStyle = .crossDissolve
+        self.present(editUsernameVC, animated: true)
     }
 
     @IBAction func plusButtonTapped(_ sender: Any) {
