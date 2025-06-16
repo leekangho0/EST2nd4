@@ -40,7 +40,7 @@ class RouteFindingViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
-        //        setupMapView()
+//                setupMapView()
         embedRouteDetailVC()
         fetchRoutes()
     }
@@ -72,22 +72,33 @@ class RouteFindingViewController: UIViewController {
     
     private func fetchRoutes() {
         switch selectedTransport {
-        case .car:
+        case .car: 
             routeFindingVM.fetchDrivingRoute { [weak self] result in
                 guard let self else { return }
                 
                 switch result {
                 case .success:
-                    self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
-                    
-                    DispatchQueue.main.async {
-                        self.setupRouteDetailContainerViewHeight()
-                    }
+                    self.updateRouteInfos()
                 case .failure(let error):
                     print(error)
                 }
             }
         case .transit:
+            routeFindingVM.fetchTransitRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                case .failure(let error):
+                    switch error {
+                    case .distanceTooShort:
+                        break
+                    case .networkError(_):
+                        print(error)
+                    }
+                }
+            }
             break
         case .walk:
             routeFindingVM.fetchPedestrianRoute { [weak self] result in
@@ -95,15 +106,19 @@ class RouteFindingViewController: UIViewController {
                 
                 switch result {
                 case .success:
-                    self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
-                    
-                    DispatchQueue.main.async {
-                        self.setupRouteDetailContainerViewHeight()
-                    }
+                    self.updateRouteInfos()
                 case .failure(let error):
                     print(error)
                 }
             }
+        }
+    }
+    
+    private func updateRouteInfos() {
+        self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
+        
+        DispatchQueue.main.async {
+            self.setupRouteDetailContainerViewHeight()
         }
     }
 }

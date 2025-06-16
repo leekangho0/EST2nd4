@@ -11,40 +11,31 @@ import CoreLocation
 struct RouteInfo {
     let duration: Int // 총 걸린시간
     let distance: Int // 총 거리
-    let locations: [CLLocationCoordinate2D] // 경로 좌표
+    var locations: [CLLocationCoordinate2D]? = nil // 경로 좌표
     var taxiFare: Int? = nil // 택시요금
     var fare: Int? = nil // 요금
     var walkDuration: Int? = nil // 총 도보시간
-    let routes: [Route]? = nil // 대중교통 상세경로 최상위 노드
+    var routes: [Route]? = nil // 대중교통 상세경로 최상위 노드
     
     struct Route {
         let mode: Mode // 타입 (ex. 걷기, 승차, 하차, 출발, 도착)
-        var duration: Int? // 걸린 시간 (ex. 도보 20분 이동)
+        var duration: String? // 걸린 시간 (ex. 도보 20분 이동)
         var address: String? // 승/하차 일때 주소 정보 및 하차시 정류장 정보 (ex. 출발 - 제주도 제주시, 하차 - 제주공항 )
         var stop: Stop? // 승차시 정류장 및 버스 정보
-        
-        func durationText() -> String {
-            guard let seconds = self.duration else { return "" }
-            let hours = seconds / 3600
-            let minutes = (seconds % 3600) / 60
-            
-            if hours > 0 {
-                return "\(hours)시간 \(minutes)분"
-            } else {
-                return "\(minutes)분"
-            }
-        }
+        var location: CLLocationCoordinate2D? // 출/도착 좌표
+        var polyline: String?
     }
     
     struct Stop {
         let departureName: String // 승차 정류장 이름
-        let intermediateStops: [String]  // 중간 정류장 목록
-        let busInfos: [BusInfo] // 버스 정보
+//        let intermediateStops: [String]  // 중간 정류장 목록
+        let stopCount: Int
+        let busInfo: BusInfo? // 버스 정보
     }
     
     struct BusInfo {
         let name: String // 버스 번호
-        let color: UIColor // 버스 노선 색상
+        let color: String // 버스 노선 색상
     }
     
     enum Mode {

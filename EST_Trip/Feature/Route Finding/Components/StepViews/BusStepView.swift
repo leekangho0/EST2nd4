@@ -203,9 +203,11 @@ class BusStepView: UIView {
     private func configure() {
         guard let route, let stop = route.stop else { return }
         stopNameLabel.text = stop.departureName
-        busCountLabel.text = "\(stop.intermediateStops.count)개 정류장 이동"
+//        busCountLabel.text = "\(stop.intermediateStops.count)개 정류장 이동"
+        busCountLabel.text = "\(stop.stopCount)개 정류장 이동"
         
         // 마지막 셀 아래 여유 공간을 만들기 위해 빈 문자열 추가
+        /*
         var intermediateStops = stop.intermediateStops
         intermediateStops.append(" ")
         
@@ -230,6 +232,7 @@ class BusStepView: UIView {
             // 초기에는 접힌 상태이므로 해당 높이를 제외하고 전달
             self.delegate?.didUpdateHeight(index: self.index, height: self.viewHeight() - self.stopNameStackViewHeightConstraint.constant)
         }
+        */
     }
     
     private func intermediateStopLabel(stopName: String, height: CGFloat) -> UILabel {
@@ -287,12 +290,13 @@ class BusStepView: UIView {
 // MARK: - UICollectionViewDataSource
 extension BusStepView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return route?.stop?.busInfos.count ?? 0
+//        return route?.stop?.busInfo.count ?? 0
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BusNumberCollectionViewCell.self), for: indexPath) as? BusNumberCollectionViewCell,
-                let busInfo = route?.stop?.busInfos[indexPath.item] else {
+                let busInfo = route?.stop?.busInfo else {
             return UICollectionViewCell()
         }
         

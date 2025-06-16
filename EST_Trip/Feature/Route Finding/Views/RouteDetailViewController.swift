@@ -68,8 +68,6 @@ extension RouteDetailViewController: UITableViewDataSource {
         let routeInfo = routeInfos[indexPath.row]
         let isLastIndex = indexPath.row == routeInfos.count - 1
         let isTransit = selectedTransport == .transit
-                
-        cell.delegate = self
         
         cell.configure(
                 routeInfo,
@@ -91,14 +89,12 @@ extension RouteDetailViewController: UITableViewDelegate {
             return self.routeInfoTableView.frame.width * 0.25
         }
     }
-}
-
-// MARK: - RouteInfoTableViewCellDelegate
-extension RouteDetailViewController: RouteInfoTableViewCellDelegate {
-    func didTapSelectButton() {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: String(describing: TransitDetailViewController.self)) as? TransitDetailViewController else { return }
         vc.dragDelegate = self
+        vc.routeInfo = routeInfos[indexPath.row]
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
