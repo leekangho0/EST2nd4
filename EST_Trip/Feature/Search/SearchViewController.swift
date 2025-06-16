@@ -5,6 +5,11 @@
 //  Created by 권도현 on 6/9/25.
 //
 
+//
+//  SearchViewController.swift
+//  EST_Trip
+//
+
 import UIKit
 import GooglePlaces
 
@@ -106,7 +111,7 @@ class SearchViewController: UIViewController {
             emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
 
-        // 자동완성 결과 테이블 뷰 설정
+        // 자동완성 결과 테이블 추가
         addChild(resultsController)
         view.addSubview(resultsController.view)
         resultsController.didMove(toParent: self)
@@ -127,8 +132,25 @@ class SearchViewController: UIViewController {
         searchBar.delegate = nil
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        print("화면 방향 또는 사이즈 클래스가 변경됨")
+
+        // iPad split view나 orientation 대응을 위한 UI 업데이트 필요 시 여기에 작성
+        updateLayoutForCurrentTrait()
+    }
+
+    private func updateLayoutForCurrentTrait() {
+        if traitCollection.horizontalSizeClass == .regular {
+            // iPad 모드 대응: 예를 들어 버튼 폰트 크기 늘리기 등
+            [tourButton, foodButton, cafeButton].forEach { $0.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold) }
+        } else {
+            [tourButton, foodButton, cafeButton].forEach { $0.titleLabel?.font = .systemFont(ofSize: 14) }
+        }
+    }
+
     private func setupSelectButtonAppearance() {
-        // 버튼 공통 외형 설정
+        // 버튼 외형 공통 설정
     }
 
     @IBAction func categoryButtonTapped(_ sender: UIButton) {
@@ -153,9 +175,9 @@ class SearchViewController: UIViewController {
             selectedCategory = category
             resetCategoryButtons()
 
-            var config = button.configuration
-            config?.baseBackgroundColor = UIColor(named: "JejuOrange")
-            config?.baseForegroundColor = .white
+            var config = button.configuration ?? UIButton.Configuration.filled()
+            config.baseBackgroundColor = UIColor(named: "JejuOrange")
+            config.baseForegroundColor = .white
             button.configuration = config
         }
     }
@@ -163,9 +185,9 @@ class SearchViewController: UIViewController {
     private func resetCategoryButtons() {
         let buttons = [tourButton, foodButton, cafeButton]
         buttons.forEach { btn in
-            var config = btn?.configuration
-            config?.baseBackgroundColor = .systemGray5
-            config?.baseForegroundColor = .black
+            var config = btn?.configuration ?? UIButton.Configuration.filled()
+            config.baseBackgroundColor = .systemGray5
+            config.baseForegroundColor = .black
             btn?.configuration = config
         }
     }
@@ -229,7 +251,6 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {}
 
-
 extension SearchViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
@@ -253,15 +274,12 @@ extension SearchViewController: UITextFieldDelegate {
     }
 }
 
-
 extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
         print("✅ 선택된 장소: \(place.name ?? "이름 없음")")
         hideAutocompleteResults()
         searchBar.resignFirstResponder()
         searchBar.text = place.name
-
-        // 선택된 장소 저장 또는 화면 갱신
         LocalPlaceService.shared.addPlace(place: place)
     }
 
