@@ -10,6 +10,11 @@ import GoogleMaps
 
 class RouteFindingViewController: UIViewController {
     
+    struct Place {
+        var name: String
+        var location: CLLocationCoordinate2D
+    }
+    
     @IBOutlet weak var routeInfoHeaderView: UIView!
     @IBOutlet var mapContainerView: UIView!
     @IBOutlet weak var transportationCollectionView: UICollectionView!
@@ -27,6 +32,8 @@ class RouteFindingViewController: UIViewController {
     private var polylines = [GMSPolyline]()
     
     private let locationManager = CLLocationManager()
+    private var hasUpdatedRoute = false
+    
     private let routeFindingVM = RouteFindingViewModel()
     
     private var selectedTransport: Transport = .car
@@ -40,7 +47,7 @@ class RouteFindingViewController: UIViewController {
         return vc
     }()
     
-    var place: PlaceEntity?
+    var place: Place?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,13 +55,8 @@ class RouteFindingViewController: UIViewController {
         configure()
         setupMapView()
         embedRouteDetailVC()
-        fetchRoutes()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        moveToCurrentLocation(self)
+        checkAuthorization()
     }
     
     override func viewDidLayoutSubviews() {
@@ -80,63 +82,27 @@ class RouteFindingViewController: UIViewController {
     @IBAction func dismiss(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func swapLocations(_ sender: Any) {
+        routeFindingVM.swapLocations()
+        
+        let startLocationName = startLocationField.text
+        let endLocationName = endLocationField.text
+        
+        startLocationField.text = endLocationName
+        endLocationField.text = startLocationName
+        
+        startLocationField.textColor = textColor(text: startLocationField.text)
+        endLocationField.textColor = textColor(text: endLocationField.text)
+        
+        fetchRoutes()
+    }
+    
     private func updateSelectedTransport(transport: Transport) {
         selectedTransport = transport
         detailVC?.selectedTransport = selectedTransport
     }
-    
-    private func fetchRoutes() {
-        switch selectedTransport {
-        case .car:
-            routeFindingVM.fetchDrivingRoute { [weak self] result in
-                guard let self else { return }
-                
-                switch result {
-                case .success:
-                    self.updateRouteInfos()
-                    self.drawRouteFromCoordinates(
-                        routeCoordinates: self.routeFindingVM.locations
-                    )
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        case .transit:
-            routeFindingVM.fetchTransitRoute { [weak self] result in
-                guard let self else { return }
-                
-                switch result {
-                case .success:
-                    self.updateRouteInfos()
-                    self.drawRouteFromPolylines(
-                        routes: self.routeFindingVM.routes(index: 0)
-                    )
-                case .failure(let error):
-                    switch error {
-                    case .distanceTooShort:
-                        break
-                    case .networkError(_):
-                        print(error)
-                    }
-                }
-            }
-        case .walk:
-            routeFindingVM.fetchPedestrianRoute { [weak self] result in
-                guard let self else { return }
-                
-                switch result {
-                case .success:
-                    self.updateRouteInfos()
-                    self.drawRouteFromCoordinates(
-                        routeCoordinates: self.routeFindingVM.locations
-                    )
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
-    
+        
     private func updateRouteInfos() {
         self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
         
@@ -154,10 +120,10 @@ extension RouteFindingViewController {
         currentLocationButton.layer.shadowOffset = CGSize(width: 0, height: 2)
         currentLocationButton.layer.shadowRadius = 4
         
-        startLocationField.textColor = .init(red: 217, green: 217, blue: 217)
         startLocationField.text = "현위치"
+        startLocationField.textColor = textColor(text: startLocationField.text)
         
-        endLocationField.text = place?.name ?? "우진해장국"
+        endLocationField.text = place?.name ?? "-"
         
         transportationCollectionView.isScrollEnabled = false
         
@@ -168,6 +134,14 @@ extension RouteFindingViewController {
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.black
         ]
+    }
+    
+    private func textColor(text: String?) -> UIColor {
+        if text == "현위치" {
+            return .init(red: 217, green: 217, blue: 217)
+        } else {
+            return .label
+        }
     }
     
     private func setupMapView() {
@@ -235,6 +209,61 @@ extension RouteFindingViewController {
         guard let detailVC else { return 0 }
         
         return detailVC.viewHeight()
+    }
+}
+
+// MARK: - Fetch Datas
+extension RouteFindingViewController {
+    private func fetchRoutes() {
+        switch selectedTransport {
+        case .car:
+            routeFindingVM.fetchDrivingRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                    self.drawRouteFromCoordinates(
+                        routeCoordinates: self.routeFindingVM.locations
+                    )
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        case .transit:
+            routeFindingVM.fetchTransitRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                    self.drawRouteFromPolylines(
+                        routes: self.routeFindingVM.routes(index: 0)
+                    )
+                case .failure(let error):
+                    switch error {
+                    case .distanceTooShort:
+                        break
+                    case .networkError(_):
+                        print(error)
+                    }
+                }
+            }
+        case .walk:
+            routeFindingVM.fetchPedestrianRoute { [weak self] result in
+                guard let self else { return }
+                
+                switch result {
+                case .success:
+                    self.updateRouteInfos()
+                    self.drawRouteFromCoordinates(
+                        routeCoordinates: self.routeFindingVM.locations
+                    )
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
 }
 
@@ -357,10 +386,20 @@ extension RouteFindingViewController {
 
 // MARK: - CLLocationManagerDelegate
 extension RouteFindingViewController: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedWhenInUse {
+    func checkAuthorization() {
+        switch locationManager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
             locationManager.startUpdatingLocation()
-            moveToCurrentLocation(self)
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        default:
+            break
+        }
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways {
+            locationManager.startUpdatingLocation()
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
@@ -370,6 +409,18 @@ extension RouteFindingViewController: CLLocationManagerDelegate {
         let error = error as NSError
         guard error.code != CLError.Code.locationUnknown.rawValue else { return }
         print("❌ \(error)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard !hasUpdatedRoute,
+              let currentLocation = locations.last?.coordinate,
+              let place = place else { return }
+        
+        routeFindingVM.updateLocation(currentLocation, for: .start)
+        routeFindingVM.updateLocation(place.location, for: .end)
+        fetchRoutes()
+        
+        hasUpdatedRoute = true
     }
 }
 
@@ -444,6 +495,31 @@ extension RouteFindingViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let searchPlaceVC = SearchPlaceViewController()
+        searchPlaceVC.onPlaceSelected = { [weak self] name, location in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                textField.text = name
+                textField.textColor = .label
+            }
+            
+            switch textField {
+            case self.startLocationField:
+                self.routeFindingVM.updateLocation(location, for: .start)
+            case self.endLocationField:
+                self.routeFindingVM.updateLocation(location, for: .end)
+            default:
+                break
+            }
+            
+            fetchRoutes()
+        }
+        
+        self.navigationController?.pushViewController(searchPlaceVC, animated: true)
     }
 }
 

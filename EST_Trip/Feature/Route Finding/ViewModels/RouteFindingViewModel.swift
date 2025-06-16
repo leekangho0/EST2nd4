@@ -10,10 +10,9 @@ import CoreLocation
 
 final class RouteFindingViewModel {
     
-    // [논현역 좌표, 서울숲역 좌표]
-    private let testLocation1 = [CLLocationCoordinate2D(latitude: 37.510745, longitude: 127.021890), CLLocationCoordinate2D(latitude: 37.544172, longitude: 126.486440)]
-    // [제주 공항 좌표, 제주 롯데시티 호텔 좌표]
-    private let testLocation2 = [CLLocationCoordinate2D(latitude: 33.504663, longitude: 126.496481), CLLocationCoordinate2D(latitude: 33.490635, longitude: 126.486440)]
+    enum LocationType {
+        case start, end
+    }
     
     var routeInfos = [RouteInfo]()
     
@@ -21,17 +20,43 @@ final class RouteFindingViewModel {
         routeInfos.first?.locations ?? []
     }
     
+    var startLocation: CLLocationCoordinate2D?
+    var endLocation: CLLocationCoordinate2D?
+    
     func routes(index: Int) -> [RouteInfo.Route] {
         return routeInfos[index].routes ?? []
     }
     
+    func updateLocation(_ location: CLLocationCoordinate2D, for type: LocationType) {
+        switch type {
+        case .start:
+            startLocation = location
+        case .end:
+            endLocation = location
+        }
+    }
+    
+    func swapLocations() {
+        let startLocation = startLocation
+        let endLocation = endLocation
+        
+        self.startLocation = endLocation
+        self.endLocation = startLocation
+    }
+    
     /// 자동차 경로를 가져옵니다
-    func fetchDrivingRoute(completion: @escaping (Result<Void, Error>) -> Void) {
+    func fetchDrivingRoute(completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard let startLocation, let endLocation else {
+            print("❌ Location Data Nil Error")
+            return
+        }
+        
         Task {
             do {
                 let features = try await RouteFindingNetworkManager.shared.fetchTmapRoutes(
-                    from: testLocation2[0],
-                    to: testLocation2[1]
+                    from: startLocation,
+                    to: endLocation
                 )
                 
                 let routeInfo = parseFeatures(features: features)
@@ -47,11 +72,16 @@ final class RouteFindingViewModel {
     
     /// 보행자 경로를 가져옵니다
     func fetchPedestrianRoute(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let startLocation, let endLocation else {
+            print("❌ Location Data Nil Error")
+            return
+        }
+        
         Task {
             do {
                 let features = try await RouteFindingNetworkManager.shared.fetchTmapPedestrianRoute(
-                    from: testLocation2[0],
-                    to: testLocation2[1]
+                    from: startLocation,
+                    to: endLocation
                 )
                 
                 let routeInfo = parseFeatures(features: features)
@@ -67,11 +97,16 @@ final class RouteFindingViewModel {
     
     /// 대중교통 경로를 가져옵니다
     func fetchTransitRoute(completion: @escaping (Result<Void, RouteFindingError>) -> Void) {
+        guard let startLocation, let endLocation else {
+            print("❌ Location Data Nil Error")
+            return
+        }
+        
         Task {
             do {
                 let routes = try await RouteFindingNetworkManager.shared.fetchRoute(
-                    from: testLocation2[0],
-                    to: testLocation2[1]
+                    from: startLocation,
+                    to: endLocation
                 )
                 
                 if let routeInfos = parseRoutes(routes: routes) {
