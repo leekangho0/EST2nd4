@@ -77,6 +77,9 @@ class RouteFindingViewController: UIViewController {
         }
     }
     
+    @IBAction func dismiss(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     private func updateSelectedTransport(transport: Transport) {
         selectedTransport = transport
         detailVC?.selectedTransport = selectedTransport
