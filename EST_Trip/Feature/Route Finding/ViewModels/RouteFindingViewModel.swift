@@ -45,7 +45,7 @@ final class RouteFindingViewModel {
     }
     
     /// 자동차 경로를 가져옵니다
-    func fetchDrivingRoute(completion: @escaping (Result<Void, Error>) -> Void
+    func fetchDrivingRoute(completion: @escaping (Result<Void, RouteFindingError>) -> Void
     ) {
         guard let startLocation, let endLocation else {
             print("❌ Location Data Nil Error")
@@ -65,13 +65,13 @@ final class RouteFindingViewModel {
                 completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
-                completion(.failure(error))
+                completion(.failure(.networkError(error)))
             }
         }
     }
     
     /// 보행자 경로를 가져옵니다
-    func fetchPedestrianRoute(completion: @escaping (Result<Void, Error>) -> Void) {
+    func fetchPedestrianRoute(completion: @escaping (Result<Void, RouteFindingError>) -> Void) {
         guard let startLocation, let endLocation else {
             print("❌ Location Data Nil Error")
             return
@@ -90,7 +90,7 @@ final class RouteFindingViewModel {
                 completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
-                completion(.failure(error))
+                completion(.failure(.networkError(error)))
             }
         }
     }
@@ -104,17 +104,27 @@ final class RouteFindingViewModel {
         
         Task {
             do {
+                // 도보 거리가 700m 이내인지 확인
+                let features = try await RouteFindingNetworkManager.shared.fetchTmapPedestrianRoute(
+                    from: startLocation,
+                    to: endLocation
+                )
+                
+                let routeInfo = parseFeatures(features: features)
+                
+                if routeInfo.distance <= 700 {
+                    completion(.failure(.distanceTooShort))
+                }
+                
+                // 대중교통 정보 불러오기
                 let routes = try await RouteFindingNetworkManager.shared.fetchRoute(
                     from: startLocation,
                     to: endLocation
                 )
                 
-                if let routeInfos = parseRoutes(routes: routes) {
-                    self.routeInfos = routeInfos
-                    completion(.success(()))
-                } else {
-                    completion(.failure(.distanceTooShort))
-                }
+                let routeInfos = parseRoutes(routes: routes)
+                self.routeInfos = routeInfos
+                completion(.success(()))
             } catch {
                 print("🚨 오류 발생: \(error.localizedDescription)")
                 completion(.failure(.networkError(error)))
@@ -270,15 +280,10 @@ extension RouteFindingViewModel {
 
 // MARK: - Google Route API로 받은 데이터 가공
 extension RouteFindingViewModel {
-    private func parseRoutes(routes: [GoogleRouteAPIModels.Route]) -> [RouteInfo]? {
+    private func parseRoutes(routes: [GoogleRouteAPIModels.Route]) -> [RouteInfo] {
         var routeInfos = [RouteInfo]()
         
         for route in routes {
-            
-            // 700m 이내면 경로 탐색 불가 처리
-            if route.distanceMeters ?? 0 <= 700 {
-                return nil
-            }
             
             var routes = [RouteInfo.Route]()
             

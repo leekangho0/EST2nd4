@@ -24,6 +24,7 @@ class RouteDetailViewController: UIViewController {
     var selectedTransport: Transport?
     var dragDelegate: DraggableHeaderViewDelegate?
     var delegate: RouteDetailViewControllerDelegate?
+    var warningMessage: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,11 +71,15 @@ extension RouteDetailViewController: UITableViewDataSource {
         let isLastIndex = indexPath.row == routeInfos.count - 1
         let isTransit = selectedTransport == .transit
         
-        cell.configure(
+        if routeInfos.count == 1, let warningMessage {
+            cell.configure(warningMessage)
+        } else {
+            cell.configure(
                 routeInfo,
                 isLastIndex: isLastIndex,
                 isTransit: isTransit
             )
+        }
         return cell
     }
 }

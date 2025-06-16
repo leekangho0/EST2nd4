@@ -15,16 +15,27 @@ class RouteInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var fareLabel: UILabel!
     @IBOutlet weak var seperatorView: UIView!
 
-    @IBOutlet weak var findRouteButton: UIButton!
     @IBOutlet weak var selectButton: UIButton!
+    
+    lazy var warningLabel = UILabel()
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
-
-    @IBAction func presentTransitDetailVC(_ sender: Any) {
         
+        setupView()
+    }
+    
+    private func setupView() {
+        self.addSubview(warningLabel)
+        
+        warningLabel.frame = self.contentView.frame
+        warningLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        warningLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        warningLabel.textColor = .darkGray
+        warningLabel.textAlignment = .center
+        
+        warningLabel.isHidden = true
     }
     
     func configure(_ routeInfo: RouteInfo, isLastIndex: Bool, isTransit: Bool) {
@@ -34,8 +45,22 @@ class RouteInfoTableViewCell: UITableViewCell {
         fareLabel.text = routeInfo.fareText()
         
         seperatorView.isHidden = isLastIndex
-        
-        findRouteButton.isHidden = isTransit
         selectButton.isHidden = !isTransit
+        
+        warningLabel.isHidden = true
+    }
+    
+    func configure(_ warningMessage: String) {
+        warningLabel.text = warningMessage
+        
+        durationLabel.text = ""
+        distanceLabel.text = ""
+        taxiFareLabel.text = ""
+        fareLabel.text = ""
+        
+        seperatorView.isHidden = true
+        selectButton.isHidden = true
+        
+        warningLabel.isHidden = false
     }
 }

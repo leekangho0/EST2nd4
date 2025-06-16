@@ -55,7 +55,6 @@ class RouteFindingViewController: UIViewController {
         configure()
         setupMapView()
         embedRouteDetailVC()
-        
         checkAuthorization()
     }
     
@@ -105,6 +104,15 @@ class RouteFindingViewController: UIViewController {
         
     private func updateRouteInfos() {
         self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
+        
+        DispatchQueue.main.async {
+            self.setupRouteDetailContainerViewHeight()
+        }
+    }
+    
+    private func updateWarningRouteInfo(_ localizedDescription: String) {
+        self.detailVC?.warningMessage = localizedDescription
+        self.detailVC?.routeInfos = [RouteInfo(duration: 0, distance: 0)]
         
         DispatchQueue.main.async {
             self.setupRouteDetailContainerViewHeight()
@@ -227,7 +235,7 @@ extension RouteFindingViewController {
                         routeCoordinates: self.routeFindingVM.locations
                     )
                 case .failure(let error):
-                    print(error)
+                    self.updateWarningRouteInfo(error.message)
                 }
             }
         case .transit:
@@ -241,12 +249,7 @@ extension RouteFindingViewController {
                         routes: self.routeFindingVM.routes(index: 0)
                     )
                 case .failure(let error):
-                    switch error {
-                    case .distanceTooShort:
-                        break
-                    case .networkError(_):
-                        print(error)
-                    }
+                    self.updateWarningRouteInfo(error.message)
                 }
             }
         case .walk:
@@ -260,7 +263,7 @@ extension RouteFindingViewController {
                         routeCoordinates: self.routeFindingVM.locations
                     )
                 case .failure(let error):
-                    print(error)
+                    self.updateWarningRouteInfo(error.message)
                 }
             }
         }
