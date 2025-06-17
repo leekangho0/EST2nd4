@@ -12,10 +12,9 @@ class EditUsernameViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var modal: UIView!
     @IBOutlet weak var usernameTextfield: UITextField!
-    @IBOutlet weak var confirmButtonLable: UIButton!
+    @IBOutlet weak var confirmButtonLabel: UIButton!
 
     @IBAction func cancelButton(_ sender: Any) {
-        self.modalTransitionStyle = .crossDissolve
         dismiss(animated: true, completion: nil)
     }
 
@@ -26,7 +25,6 @@ class EditUsernameViewController: UIViewController, UITextFieldDelegate {
         guard let text = usernameTextfield.text, !text.isEmpty else { return }
         userNameEntered?(text)
 
-        self.modalTransitionStyle = .crossDissolve
         dismiss(animated: true, completion: nil)
     }
 
@@ -35,12 +33,13 @@ class EditUsernameViewController: UIViewController, UITextFieldDelegate {
 
         usernameTextfield.delegate = self
 
-        confirmButtonLable.isEnabled = false
+        confirmButtonLabel.isEnabled = false
         usernameTextfield.text = currentName
         usernameTextfield.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
 
         background.backgroundColor = UIColor.dolHareubangGray.withAlphaComponent(0.7)
         modal.layer.cornerRadius = 8
+        modal.layer.masksToBounds = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -51,7 +50,7 @@ class EditUsernameViewController: UIViewController, UITextFieldDelegate {
 
     @objc func textFieldDidChange(_ textField: UITextField) {
         let isTextEmpty = usernameTextfield.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
-        confirmButtonLable.isEnabled = !isTextEmpty
+        confirmButtonLabel.isEnabled = !isTextEmpty
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -66,7 +65,7 @@ class EditUsernameViewController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        confirmButton(confirmButtonLable!)
+        confirmButton(confirmButtonLabel!)
         return true
     }
 }

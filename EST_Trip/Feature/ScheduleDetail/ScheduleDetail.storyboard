@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -163,48 +164,52 @@
                                             <constraint firstItem="mhj-7q-QTj" firstAttribute="leading" secondItem="TY7-tj-I7J" secondAttribute="leading" id="t6i-aS-qe8"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="Cz5-Rb-dwr">
-                                        <rect key="frame" x="20" y="119.33333333333337" width="99" height="63"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="sAP-Nk-e2I">
+                                        <rect key="frame" x="33.000000000000007" y="119.33333333333337" width="74.666666666666686" height="63"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GLI-GD-Qmp">
-                                                <rect key="frame" x="0.0" y="0.0" width="99" height="25"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSJ-H0-NnJ">
+                                                <rect key="frame" x="0.0" y="0.0" width="74.666666666666671" height="25"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="09o-OB-8zw"/>
+                                                    <constraint firstAttribute="height" constant="25" id="UoN-ZN-UjA"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" image="clock" catalog="system" subtitle=" 시간 추가">
-                                                    <fontDescription key="subtitleFontDescription" type="system" weight="semibold" pointSize="14"/>
-                                                </buttonConfiguration>
+                                                <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title=" 시간 추가" image="clock" catalog="system"/>
+                                                <connections>
+                                                    <action selector="addTimeButtonTapped:" destination="hqn-eS-0eZ" eventType="touchUpInside" id="lYd-MX-h7K"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vba-AH-b9y">
-                                                <rect key="frame" x="0.0" y="38" width="99" height="25"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BIG-dQ-sBt">
+                                                <rect key="frame" x="0.0" y="38" width="74.666666666666671" height="25"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="k27-1A-5Bo"/>
+                                                    <constraint firstAttribute="height" constant="25" id="Ia9-9c-Bs2"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" image="doc.text" catalog="system" subtitle=" 메모 추가">
-                                                    <fontDescription key="subtitleFontDescription" type="system" weight="semibold" pointSize="14"/>
-                                                </buttonConfiguration>
+                                                <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title=" 메모 추가" image="doc.text" catalog="system"/>
+                                                <connections>
+                                                    <action selector="addMemoButtonTapped:" destination="hqn-eS-0eZ" eventType="touchUpInside" id="K7F-N1-YQv"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="GLI-GD-Qmp" firstAttribute="top" secondItem="Cz5-Rb-dwr" secondAttribute="top" id="AeR-G4-ZDV"/>
-                                            <constraint firstItem="GLI-GD-Qmp" firstAttribute="leading" secondItem="Cz5-Rb-dwr" secondAttribute="leading" id="OB8-6i-3EG"/>
-                                            <constraint firstAttribute="trailing" secondItem="vba-AH-b9y" secondAttribute="trailing" id="XN3-f2-B4r"/>
-                                            <constraint firstAttribute="bottom" secondItem="vba-AH-b9y" secondAttribute="bottom" id="bWq-t9-66H"/>
-                                            <constraint firstItem="vba-AH-b9y" firstAttribute="leading" secondItem="Cz5-Rb-dwr" secondAttribute="leading" id="fYJ-7e-gWf"/>
-                                            <constraint firstAttribute="trailing" secondItem="GLI-GD-Qmp" secondAttribute="trailing" id="q5b-3D-qv1"/>
+                                            <constraint firstItem="nSJ-H0-NnJ" firstAttribute="leading" secondItem="sAP-Nk-e2I" secondAttribute="leading" id="3Ll-ve-AJA"/>
+                                            <constraint firstItem="nSJ-H0-NnJ" firstAttribute="top" secondItem="sAP-Nk-e2I" secondAttribute="top" id="9eh-A3-VUc"/>
+                                            <constraint firstItem="BIG-dQ-sBt" firstAttribute="leading" secondItem="sAP-Nk-e2I" secondAttribute="leading" id="FGj-wk-yyz"/>
+                                            <constraint firstAttribute="bottom" secondItem="BIG-dQ-sBt" secondAttribute="bottom" id="Q6v-gd-3Zn"/>
+                                            <constraint firstAttribute="trailing" secondItem="nSJ-H0-NnJ" secondAttribute="trailing" id="W1s-PW-v68"/>
+                                            <constraint firstAttribute="trailing" secondItem="BIG-dQ-sBt" secondAttribute="trailing" id="vNh-e1-SFr"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="302" id="4fJ-fH-Lsq"/>
-                                    <constraint firstItem="Cz5-Rb-dwr" firstAttribute="leading" secondItem="IwU-Ns-wuk" secondAttribute="leading" constant="20" id="5Vh-SM-Um6"/>
-                                    <constraint firstItem="Cz5-Rb-dwr" firstAttribute="top" secondItem="2lE-8H-s8Y" secondAttribute="bottom" constant="20" id="8du-Fs-eIk"/>
                                     <constraint firstAttribute="trailing" secondItem="TY7-tj-I7J" secondAttribute="trailing" constant="33" id="8xU-Mr-anG"/>
                                     <constraint firstItem="TY7-tj-I7J" firstAttribute="top" secondItem="IwU-Ns-wuk" secondAttribute="top" constant="40" id="DFU-Rm-XFM"/>
                                     <constraint firstItem="TY7-tj-I7J" firstAttribute="leading" secondItem="IwU-Ns-wuk" secondAttribute="leading" constant="33" id="LvM-lB-H08"/>
+                                    <constraint firstItem="sAP-Nk-e2I" firstAttribute="leading" secondItem="IwU-Ns-wuk" secondAttribute="leading" constant="33" id="bN8-8R-omT"/>
+                                    <constraint firstItem="sAP-Nk-e2I" firstAttribute="top" secondItem="2lE-8H-s8Y" secondAttribute="bottom" constant="20" id="gL1-lH-YOq"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -217,14 +222,74 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="addMemoButtonLabel" destination="vba-AH-b9y" id="3E5-KE-80t"/>
-                        <outlet property="addTimeButtonLabel" destination="GLI-GD-Qmp" id="RhI-7J-UON"/>
-                        <outlet property="routeFindingButtonLabel" destination="mhj-7q-QTj" id="05R-Ee-xvI"/>
+                        <outlet property="addMemoButton" destination="BIG-dQ-sBt" id="dqn-pP-hmk"/>
+                        <outlet property="addTimeButton" destination="nSJ-H0-NnJ" id="aVg-sN-L6G"/>
+                        <outlet property="routeFindingButton" destination="mhj-7q-QTj" id="eg6-oh-q0X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uC3-Hc-gfd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="795" y="-35"/>
+        </scene>
+        <!--Add Time View Controller-->
+        <scene sceneID="pJa-74-AyS">
+            <objects>
+                <viewController storyboardIdentifier="AddTimeViewController" id="1i4-BN-5vp" customClass="AddTimeViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PLM-HO-3MM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cGf-9M-Upl">
+                                <rect key="frame" x="49.666666666666657" y="286" width="294" height="280.33333333333326"/>
+                                <subviews>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="zbM-15-4ra">
+                                        <rect key="frame" x="0.0" y="16" width="294" height="215"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="215" id="hLB-b8-KAQ"/>
+                                            <constraint firstAttribute="width" constant="294" id="hxS-qG-OPM"/>
+                                        </constraints>
+                                        <locale key="locale" localeIdentifier="ko_KR"/>
+                                    </datePicker>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGJ-vx-wkg">
+                                        <rect key="frame" x="121" y="231" width="52" height="33.333333333333314"/>
+                                        <color key="tintColor" name="JejuOcean"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="확인">
+                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="confirmButtonTapped:" destination="1i4-BN-5vp" eventType="touchUpInside" id="4mJ-Ef-QM1"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="IGJ-vx-wkg" secondAttribute="bottom" constant="16" id="0aG-mx-A0G"/>
+                                    <constraint firstItem="zbM-15-4ra" firstAttribute="centerX" secondItem="cGf-9M-Upl" secondAttribute="centerX" id="C5Z-O3-7kM"/>
+                                    <constraint firstItem="zbM-15-4ra" firstAttribute="leading" secondItem="cGf-9M-Upl" secondAttribute="leading" id="Ixd-uH-czZ"/>
+                                    <constraint firstItem="IGJ-vx-wkg" firstAttribute="top" secondItem="zbM-15-4ra" secondAttribute="bottom" id="QWN-Qu-kz1"/>
+                                    <constraint firstItem="zbM-15-4ra" firstAttribute="top" secondItem="cGf-9M-Upl" secondAttribute="top" constant="16" id="kGD-uf-uyD"/>
+                                    <constraint firstAttribute="trailing" secondItem="zbM-15-4ra" secondAttribute="trailing" id="vij-Rt-9wD"/>
+                                    <constraint firstItem="IGJ-vx-wkg" firstAttribute="centerX" secondItem="cGf-9M-Upl" secondAttribute="centerX" id="wHt-9K-Mi3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tw7-sR-6sS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="cGf-9M-Upl" firstAttribute="centerY" secondItem="PLM-HO-3MM" secondAttribute="centerY" id="9iG-fb-fAZ"/>
+                            <constraint firstItem="cGf-9M-Upl" firstAttribute="centerX" secondItem="PLM-HO-3MM" secondAttribute="centerX" id="D3l-c9-OPI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundView" destination="cGf-9M-Upl" id="yfO-Vb-aCO"/>
+                        <outlet property="containerView" destination="cGf-9M-Upl" id="qOZ-Oj-6DF"/>
+                        <outlet property="datePicker" destination="zbM-15-4ra" id="q0W-xF-Lvf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ifj-i7-8Cc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1494" y="-35"/>
         </scene>
     </scenes>
     <resources>
@@ -232,11 +297,17 @@
         <image name="clock" catalog="system" width="128" height="123"/>
         <image name="doc.text" catalog="system" width="115" height="128"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
+        <namedColor name="JejuOcean">
+            <color red="0.23921568627450981" green="0.6470588235294118" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
