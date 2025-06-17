@@ -57,5 +57,5 @@ enum FeatureFactory {
     static func makeScheduleDetail() -> ScheduleDetailViewController {
         let vc = StoryboardType.scheduleDetail.makeViewController(ScheduleDetailViewController.self)
         return vc
-
+    }
 }

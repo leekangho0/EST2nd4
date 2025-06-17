@@ -35,7 +35,8 @@ class ScheduleMainViewController: UIViewController {
     }
 
     @objc func mapButtonTapped() {
-        let mapVC = FeatureFactory.makeMap()
+        
+        let mapVC = FeatureFactory.makeMap(TravelPlanMapViewModel(travel: TravelEntity.sample(context: CoreDataManager.shared.context)))
         self.navigationController?.pushViewController(mapVC, animated: true)
     }
 
