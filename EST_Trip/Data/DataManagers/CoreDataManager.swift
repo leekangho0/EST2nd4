@@ -31,8 +31,8 @@ final class CoreDataManager {
 
         do {
             try context.save()
-        } catch {
-            print("❌ CoreData Save Error: \(error.localizedDescription)")
+        } catch let error as NSError {
+            print("❌ CoreData Save Error: \(error.localizedDescription), \(error.userInfo)")
         }
     }
     

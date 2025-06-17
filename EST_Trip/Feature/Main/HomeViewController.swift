@@ -45,7 +45,6 @@ class MainViewController: UIViewController {
 
         // 코어데이터에서 데이터 로드
 		fetchTrips()
-        // futureTrip/ pastTrip 나누는 메서드로 보입니다, 명칭 수정하면 더 좋을 것 같아요!
         loadTrips()
         currentTrip = futureTrip
 
@@ -91,7 +90,7 @@ class MainViewController: UIViewController {
             travel.endDate = endDate
         }
         // 여기까지 임시코드입니다. 추후 삭제필요!
-
+        fetchTrips()
         let vc = FeatureFactory.makeCalendar()
         navigationController?.pushViewController(vc, animated: true)
     }
