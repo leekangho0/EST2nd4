@@ -177,6 +177,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="Y6W-OH-hqX" id="dAl-fC-MUD"/>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="z8G-JO-hIw"/>
                                 </connections>
                             </tableView>
                         </subviews>

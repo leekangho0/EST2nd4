@@ -1,0 +1,12 @@
+//
+//  SearchViewControllerDelegate.swift
+//  EST_Trip
+//
+//  Created by 권도현 on 6/16/25.
+//
+
+import UIKit
+
+protocol SearchViewControllerDelegate: AnyObject {
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: Place, forSection section: Int)
+}

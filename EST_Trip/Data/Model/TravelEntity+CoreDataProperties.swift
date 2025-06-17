@@ -18,7 +18,6 @@ extension TravelEntity {
 
     @NSManaged public var endDate: Date?
     @NSManaged public var id: UUID
-    @NSManaged public var isBookmarked: Bool
     @NSManaged public var startDate: Date?
     @NSManaged public var title: String?
     @NSManaged public var startFlight: FlightEntity?

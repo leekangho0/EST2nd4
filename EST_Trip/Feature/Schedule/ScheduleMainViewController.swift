@@ -102,15 +102,11 @@ class ScheduleMainViewController: UIViewController {
     }
 
     @objc func addPlaceButtonTapped(_ sender: UIButton) {
-        /*
         let section = sender.tag
-        placePicker(for: section)
-        */
-
         let searchVC = FeatureFactory.makeSearch()
+        searchVC.selectedSection = section
+        searchVC.delegate = self  // 꼭 delegate 지정
         self.navigationController?.pushViewController(searchVC, animated: true)
-        
-        updateTableViewHeight()
     }
     
     @objc func editPlaceButtonTapped(_ sender: UIButton) {
@@ -287,6 +283,20 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
     func didTapRouteFindingButton() {
         let routeFindingVC = FeatureFactory.makeRoute()
         self.navigationController?.pushViewController(routeFindingVC, animated: true)
+    }
+}
+
+extension ScheduleMainViewController: SearchViewControllerDelegate {
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: Place, forSection section: Int) {
+        
+        let placeModel = PlaceModel(
+            name: place.title,
+            category: place.category.rawValue,  
+            address: place.subtitle
+        )
+        schedulePlaces[section].append(placeModel)
+        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+        updateTableViewHeight()
     }
 }
 
