@@ -45,11 +45,15 @@ enum FeatureFactory {
         return vc
     }
     
-    static func makeMap() -> TravelPlanMapViewController {
+    static func makeMap(_ viewModel: TravelPlanMapViewModel) -> TravelPlanMapViewController {
         let vc = StoryboardType.map.makeViewController(TravelPlanMapViewController.self)
+        vc.viewModel = viewModel
         return vc
     }
-    
+        static func makePlanMap() -> PlanSheetViewController {
+        StoryboardType.map.makeViewController(PlanSheetViewController.self)
+
+    }
     static func makeScheduleDetail() -> ScheduleDetailViewController {
         let vc = StoryboardType.scheduleDetail.makeViewController(ScheduleDetailViewController.self)
         return vc

@@ -11,49 +11,99 @@ import GooglePlaces
 
 /// Manages the configuration options view for the demo app.
 class TravelPlanMapViewController: UIViewController {
-    
-    let travel = Travel.makeJejuTrip()
-    
-    var schedules: [Schedule] {
-        travel.schedules
-    }
-    
-    var firstPlace: PlaceDTO? {
-        schedules.first?.places.first
-    }
-    
+
     // MARK: - Properties
     @IBOutlet weak var mapView: GMSMapView!
+    private var bottomSheetVC: PlanSheetViewController!
+    
+    var viewModel: TravelPlanMapViewModel!
+    
+    // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 메소드 분리
-        // ViewDIdload life cycle
+        embed()
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
         
-        if let firstPlace {
-            let camera = GMSCameraPosition.camera(withLatitude: firstPlace.latitude, longitude: firstPlace.longittude, zoom: 14)
-            mapView.camera = camera
-        }
+        bottomSheetVC.days = Days.sample
+    }
+  
+    private func embed() {
+        self.bottomSheetVC = FeatureFactory.makePlanMap()
         
-        let places = travel.schedules.flatMap { $0.places }
+        addChild(self.bottomSheetVC)
+        self.view.addSubview(bottomSheetVC.view)
         
+        // Sheet 높이 지정
+        let height: CGFloat = 250
+        let yPosition = view.bounds.height - height
+        bottomSheetVC.view.frame = CGRect(x: 0, y: yPosition, width: view.bounds.width, height: height)
         
-        let markers = places.map(GMSMarker.make(from:))
+        self.bottomSheetVC.didMove(toParent: self)
         
-        markers.forEach { marker in
-            marker.map = mapView
-        }
-        
+        self.bottomSheetVC.delegate = self
+    }
+    
+    private func drawPolyLine() {
         // 경로 그리기
-        let path = GMSMutablePath()
-        for place in places {
-            path.add(CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longittude))
-        }
-
-        let polyline = GMSPolyline(path: path)
-        polyline.strokeColor = .systemBlue
-        polyline.strokeWidth = 3.0
+        let (polyline, path) = viewModel.drawPolyLine()
+        
         polyline.map = mapView
+        
+        // Camera Update Zoom out
+        let mapBounds = GMSCoordinateBounds(path: path)
+        let cameraUpdate = GMSCameraUpdate.fit(mapBounds)
+        mapView.moveCamera(cameraUpdate)
+    }
+    
+    private func setCamera(_ position: CLLocationCoordinate2D, zoom: Float = 10) {
+        let camera = GMSCameraPosition.camera(withLatitude: position.latitude, longitude: position.longitude, zoom: zoom)
+        mapView.animate(to: camera)
+    }
+}
+
+extension TravelPlanMapViewController: PlanSheetDelegate {
+    func sheet(_ view: PlanSheetViewController, didSelectDayAt item: Days) {
+        print("day selected")
+        
+        drawMarker(item.places)
+    }
+    
+    func sheet(_ view: PlanSheetViewController, didSelectPlaceAt item: PlaceDetail) {
+        
+        if let marker = viewModel.selectMarker(item) {
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.25)
+            setCamera(marker.position)
+            mapView.selectedMarker = marker
+            CATransaction.commit()
+        }
+    }
+    
+    private func drawMarker(_ item: [PlaceDetail]) {
+        self.mapView.clear()
+        
+        viewModel.drawMarkers(item)
+        
+        viewModel.currentMarker.enumerated().forEach { index, marker in
+            marker.map = self.mapView
+            marker.icon = GMSMarker.createNumberedMarkerImage(number: index)
+        }
+        
+        if let first = viewModel.currentMarker.first {
+            setCamera(first.position)
+        }
+        
+        drawPolyLine()
+    }
+}
+
+extension TravelPlanMapViewController: GMSMapViewDelegate {
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        return false
     }
 }

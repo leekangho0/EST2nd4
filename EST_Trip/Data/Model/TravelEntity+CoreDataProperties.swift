@@ -23,7 +23,6 @@ extension TravelEntity {
     @NSManaged public var startFlight: FlightEntity?
     @NSManaged public var endFlight: FlightEntity?
     @NSManaged public var schedules: NSSet?
-
 }
 
 // MARK: Generated accessors for schedules

@@ -20,3 +20,11 @@ extension Reusable {
 extension UIStoryboard: Reusable { }
 
 extension UIViewController: Reusable { }
+
+extension UICollectionViewCell: Reusable { }
+
+extension UICollectionView {
+    func dequeueReusableCell<T: Reusable>(type: T.Type, for indexPath: IndexPath) -> T {
+        dequeueReusableCell(withReuseIdentifier: T.reusableID, for: indexPath) as! T
+    }
+}

@@ -31,7 +31,7 @@ extension ScheduleViewController {
     }
     
     @objc func onMap(_ sender: Any) {
-        let vc = FeatureFactory.makeMap()
+        let vc = FeatureFactory.makeMap(TravelPlanMapViewModel(travel: TravelEntity.sample(context: CoreDataManager.shared.context)))
         
         navigationController?.pushViewController(vc, animated: true)
     }

@@ -10,7 +10,6 @@
 		36F409AA2DF4839000BD8C7B /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 36F409A92DF4839000BD8C7B /* GoogleMaps */; };
 		B74CA2D72DF69174006CE350 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = B74CA2D62DF69174006CE350 /* Moya */; };
 		B74CA2DA2DF69181006CE350 /* GooglePlacesSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B74CA2D92DF69181006CE350 /* GooglePlacesSwift */; };
-		B74CA2DC2DF6918A006CE350 /* GoogleNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = B74CA2DB2DF6918A006CE350 /* GoogleNavigation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +60,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B74CA2D72DF69174006CE350 /* Moya in Frameworks */,
-				B74CA2DC2DF6918A006CE350 /* GoogleNavigation in Frameworks */,
 				36F409AA2DF4839000BD8C7B /* GoogleMaps in Frameworks */,
 				B74CA2DA2DF69181006CE350 /* GooglePlacesSwift in Frameworks */,
 			);
@@ -127,7 +125,6 @@
 				36F409A92DF4839000BD8C7B /* GoogleMaps */,
 				B74CA2D62DF69174006CE350 /* Moya */,
 				B74CA2D92DF69181006CE350 /* GooglePlacesSwift */,
-				B74CA2DB2DF6918A006CE350 /* GoogleNavigation */,
 			);
 			productName = EST_Trip;
 			productReference = B76EE9562DF0AF9200290F80 /* EST_Trip.app */;
@@ -187,7 +184,6 @@
 			packageReferences = (
 				36F409A42DF4785700BD8C7B /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 				B74CA2D32DF690AF006CE350 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
-				B74CA2D42DF69103006CE350 /* XCRemoteSwiftPackageReference "ios-navigation-sdk" */,
 				B74CA2D52DF69174006CE350 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -530,14 +526,6 @@
 				minimumVersion = 10.0.0;
 			};
 		};
-		B74CA2D42DF69103006CE350 /* XCRemoteSwiftPackageReference "ios-navigation-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googlemaps/ios-navigation-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
-			};
-		};
 		B74CA2D52DF69174006CE350 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -563,11 +551,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B74CA2D32DF690AF006CE350 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
 			productName = GooglePlacesSwift;
-		};
-		B74CA2DB2DF6918A006CE350 /* GoogleNavigation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B74CA2D42DF69103006CE350 /* XCRemoteSwiftPackageReference "ios-navigation-sdk" */;
-			productName = GoogleNavigation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

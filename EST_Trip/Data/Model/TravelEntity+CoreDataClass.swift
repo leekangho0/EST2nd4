@@ -13,3 +13,14 @@ import CoreData
 public class TravelEntity: NSManagedObject {
 
 }
+
+extension TravelEntity {
+    static func sample(context: NSManagedObjectContext) -> TravelEntity {
+        let entity = TravelEntity(context: context)
+        
+        entity.endDate = .now
+        entity.startDate = .now
+     
+        return entity
+    }
+}
