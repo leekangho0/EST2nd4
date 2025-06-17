@@ -13,7 +13,7 @@ extension PlaceDTO {
         entity.name = name
         entity.latitude = latitude
         entity.address = address
-        entity.category = category.type.rawValue
+        entity.categoryType = category?.type ?? .travel
 //        entity.photo = photo
     }
 }

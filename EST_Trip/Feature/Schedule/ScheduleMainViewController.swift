@@ -180,7 +180,7 @@ extension ScheduleMainViewController: UITableViewDataSource{
         let headerView = ScheduleListHeaderView()
         
         headerView.dayLabel.text = "Day \(section + 1)"
-        headerView.dateLabel.text = viewModel.headerTitle(section: section)
+//        headerView.dateLabel.text = viewModel.headerTitle(section: section)
         headerView.addPlaceButton.tag = section
         
         headerView.addPlaceButton.addTarget(self, action: #selector(addPlaceButtonTapped(_:)), for: .touchUpInside)
@@ -266,8 +266,7 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
 
 // MARK: - SearchViewControllerDelegate
 extension ScheduleMainViewController: SearchViewControllerDelegate {
-    func searchViewController(_ controller: SearchViewController, didSelectPlace place: Place, forSection section: Int) {
-        
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: PlaceDTO, forSection section: Int) {
         tableView.reloadSections(IndexSet(integer: section), with: .automatic)
         updateTableViewHeight()
     }
@@ -276,32 +275,29 @@ extension ScheduleMainViewController: SearchViewControllerDelegate {
 // MARK: - EditMenuViewControllerDelegate
 extension ScheduleMainViewController: EditMenuViewControllerDelegate {
     func didUpdateTitle(_ newTitle: String) {
-        scheduleVM.updateTravelTitle(newTitle)
-        DispatchQueue.main.async {
-            self.configureTitleLabel(newTitle)
-        }
+        viewModel.updateTitle(newTitle)
     }
     
     func didUpdateDate() {
         let calendarVC = FeatureFactory.makeCalendar()
         calendarVC.isEditMode = true
         calendarVC.completion = { [weak self] startDate, endDate in
-            guard let self else { return }
-            
-            if let startDate, let endDate {
-                self.scheduleVM.updateTravelDate(startDate: startDate, endDate: endDate)
-            }
-            
-            DispatchQueue.main.async {
-                self.configureDateLabel(startDate: startDate, endDate: endDate)
-            }
+//            guard let self else { return }
+//            
+//            if let startDate, let endDate {
+//                self.viewModel.updateTravelDate(startDate: startDate, endDate: endDate)
+//            }
+//            
+//            DispatchQueue.main.async {
+//                self.configureDateLabel(startDate: startDate, endDate: endDate)
+//            }
         }
         
         navigationController?.pushViewController(calendarVC, animated: true)
     }
     
     func didDeleteTravel() {
-        scheduleVM.deleteTravel()
+        viewModel.delteTravel()
         backButtonTapped()
     }
 }

@@ -10,10 +10,10 @@ import CoreData
 
 class ScheduleViewModel {
     private let scheduleProvider: ScheduleProvider
+    private let travelProvider: TravelProvider
+    
     let travel: TravelEntity
     
-    var scheduleCount: Int {
-        return schedules.count
     var schedules: [ScheduleEntity] = []
     var headerTitles: [String] = ["", "", ""]
     
@@ -29,9 +29,14 @@ class ScheduleViewModel {
         schedules.count
     }
     
-    init(travel: TravelEntity, scheduleProvider: ScheduleProvider) {
+    init(
+        travel: TravelEntity,
+        scheduleProvider: ScheduleProvider,
+        travelProvider: TravelProvider
+    ) {
         self.travel = travel
         self.scheduleProvider = scheduleProvider
+        self.travelProvider = travelProvider
     }
     
     func bind(reloadAction: @escaping () -> Void) {
@@ -54,6 +59,14 @@ class ScheduleViewModel {
     func headerTitle(section: Int) -> String? {
         return schedules[section].date?.toString()
     }
+    
+    func delteTravel() {
+        travelProvider.delete(entity: travel)
+    }
+    
+    func updateTitle(_ text: String) {
+        travelProvider.updateTitle(text, entity: travel)
+    }
 }
 
 extension ScheduleViewModel: ScheduleProviderDelegate {
@@ -62,36 +75,3 @@ extension ScheduleViewModel: ScheduleProviderDelegate {
         self.reloadClosure?()
     }
 }
-//
-//// MARK: - Travle CRUD
-//extension ScheduleViewModel {
-//    
-//    func deleteTravle() {
-//        
-//    }
-//    
-//    func updateTravle() {
-//        
-//    }
-//    
-//    func fetchTravle() {
-//        let travle = CoreDataManager.shared.fetch(TravelEntity.self)
-//        print("✅ 불러오기 완료")
-//        dump(travle)
-//    }
-//}
-//
-//// MARK: - Place CRUD
-//extension ScheduleViewModel {
-//    func addPlace() {
-//        
-//    }
-//    
-//    func removePlace() {
-//        
-//    }
-//    
-//    func updatePlace() {
-//        
-//    }
-//}

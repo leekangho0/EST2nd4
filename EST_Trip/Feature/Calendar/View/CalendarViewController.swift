@@ -159,15 +159,10 @@ extension CalendarViewController {
             completion?(viewModel.travelDate.startDate, viewModel.travelDate.endDate)
             self.navigationController?.popViewController(animated: true)
         } else {
-            let vc = FeatureFactory.makeFlight()
-            
-            let travel = Travel(
-                startDate: viewModel.travelDate.startDate,
-                endDate: viewModel.travelDate.endDate
-            )
-            vc.travel = travel
-            
-            navigationController?.pushViewController(vc, animated: true)
+            if let travel = viewModel.createTravel() {
+                let vc = FeatureFactory.makeFlight(travel: travel)
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
 }

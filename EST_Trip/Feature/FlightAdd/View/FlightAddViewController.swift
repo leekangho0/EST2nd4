@@ -95,7 +95,11 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         rightButton.setTitle("완료", for: .normal)
         rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         let customRightBarButton = UIBarButtonItem(customView: rightButton)
-        navigationItem.rightBarButtonItem = customRightBarButton
+        
+        let skipButton = UIBarButtonItem(title: "스킵", style: .plain, target: self, action: #selector(skipTap))
+//        navigationItem.rightBarButtonItem = customRightBarButton
+        
+        navigationItem.rightBarButtonItems = [skipButton, customRightBarButton]
 
         rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
     }
@@ -236,6 +240,12 @@ extension FlightAddViewController {
 
     @objc func onBack(_ sender: Any) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func skipTap(_ sender: Any) {
+        let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

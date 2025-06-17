@@ -37,20 +37,20 @@ struct Travel {
         self.endFlight = endFlight
     }
     
-    init(entity: TravelEntity) {
-        self.id = entity.id
-        self.title = entity.title ?? "-"
-        self.startDate = entity.startDate
-        self.endDate = entity.endDate
-        self.startFlight = FlightDTO(entity: entity.startFlight)
-        self.endFlight = FlightDTO(entity: entity.endFlight)
-        
-        if let scheduleEntities = entity.schedules as? Set<ScheduleEntity> {
-            self.schedules = scheduleEntities
-                .sorted { $0.date ?? Date() < $1.date ?? Date() }
-                .map { Schedule(entity: $0) }
-        }
-    }
+//    init(entity: TravelEntity) {
+//        self.id = entity.id
+//        self.title = entity.title ?? "-"
+//        self.startDate = entity.startDate
+//        self.endDate = entity.endDate
+//        self.startFlight = FlightDTO(entity: entity.startFlight)
+//        self.endFlight = FlightDTO(entity: entity.endFlight)
+//        
+//        if let scheduleEntities = entity.schedules as? Set<ScheduleEntity> {
+//            self.schedules = scheduleEntities
+//                .sorted { $0.date ?? Date() < $1.date ?? Date() }
+//                .map { Schedule(entity: $0) }
+//        }
+//    }
 }
 
 struct Schedule {
@@ -71,20 +71,20 @@ struct Schedule {
         self.places = places
     }
     
-    init(entity: ScheduleEntity) {
-        self.id = entity.id
-        self.date = entity.date
-        self.travelID = entity.travelId
-        var places = [PlaceDTO]()
-        
-        if let placeEntities = entity.places as? Set<PlaceEntity> {
-            places = placeEntities
-                .sorted { $0.index < $1.index }
-                .map { PlaceDTO(entity: $0) }
-        }
-        
-        self.places = places
-    }
+//    init(entity: ScheduleEntity) {
+//        self.id = entity.id
+//        self.date = entity.date
+//        self.travelID = entity.travelId
+//        var places = [PlaceDTO]()
+//        
+//        if let placeEntities = entity.places as? Set<PlaceEntity> {
+//            places = placeEntities
+//                .sorted { $0.index < $1.index }
+//                .map { PlaceDTO(entity: $0) }
+//        }
+//        
+//        self.places = places
+//    }
 }
 
 struct PlaceDTO {
@@ -127,20 +127,20 @@ struct PlaceDTO {
         self.arrivalTime = arrivalTime
     }
     
-    init(entity: PlaceEntity) {
-        self.id = entity.id
-        self.scheduleID = entity.scheduleID
-        self.name = entity.name
-        self.latitude = entity.latitude
-        self.longitude = entity.longitude
-        self.address = entity.address
-//        self.category =
-        self.memo = entity.memo
-//        self.expense =
-//        self.photo =
-        self.arrivalTime = entity.arrivalTime
-        self.index = Int(entity.index)
-    }
+//    init(entity: PlaceEntity) {
+//        self.id = entity.id
+//        self.scheduleID = entity.scheduleID
+//        self.name = entity.name
+//        self.latitude = entity.latitude
+//        self.longitude = entity.longitude
+//        self.address = entity.address
+////        self.category =
+//        self.memo = entity.memo
+////        self.expense =
+////        self.photo =
+//        self.arrivalTime = entity.arrivalTime
+//        self.index = Int(entity.index)
+//    }
 }
 
 struct Expense {

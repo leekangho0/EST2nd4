@@ -118,3 +118,9 @@ extension TravelProvider {
         }
     }
 }
+
+extension TravelProvider {
+    func updateTitle(_ text: String, entity: TravelEntity) {
+        storageProvider.update(\TravelEntity.title, value: text, for: entity)
+    }
+}
