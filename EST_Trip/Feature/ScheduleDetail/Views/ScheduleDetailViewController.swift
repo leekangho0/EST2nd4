@@ -104,6 +104,7 @@ class ScheduleDetailViewController: UIViewController {
         nameLabel.text = place.name
         categoryLabel.text = ""
         addressLabel.text = place.address
+        categoryLabel.text = place.category?.name
         
         if let arrivalTime = place.arrivalTime {
             addTimeButton.setTitle(arrivalTime.timeToString(), for: .normal)

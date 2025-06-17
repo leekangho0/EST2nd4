@@ -262,7 +262,8 @@ extension ScheduleViewModel {
                     longitude: place.longitude,
                     name: place.name,
                     scheduleID: scheduleID,
-                    index: Int16(placeCount(section: section))
+                    index: Int16(placeCount(section: section)),
+                    category: place.category?.type.rawValue
                 )
 
                 // 4. 추가

@@ -33,6 +33,12 @@ class SearchViewController: UIViewController {
     private lazy var autocompleteDataSource: GMSAutocompleteTableDataSource = {
         let source = GMSAutocompleteTableDataSource()
         source.delegate = self
+        let filter = GMSAutocompleteFilter()
+    
+        filter.countries = ["KR"] // 국가 코드 지정
+        filter.regionCode = "KR" // 검색 지역 한정
+        
+        source.autocompleteFilter = filter
         return source
     }()
 
@@ -285,13 +291,40 @@ extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
         
         hideAutocompleteResults()
         searchBar.resignFirstResponder()
-
+        
+        var address = place.formattedAddress
+        
+        if let components = place.addressComponents {
+            var city: String?
+            var local: String?
+            var dong: String?
+            
+            for component in components {
+                if component.types.contains("administrative_area_level_1") {
+                    city = component.shortName // 예: 서울특별시
+                } else if component.types.contains("sublocality_level_2") {
+                    dong = component.shortName // 예: 상봉동
+                } else if component.types.contains("locality") {
+                    local = component.shortName
+                }
+            }
+            
+            if let city = city, let dong = dong {
+                address = "\(city) \(dong)"
+            } else if let city = city, let local = local {
+                address = "\(city) \(local)"
+            }
+        }
+        
+        let categoryType = CategoryType.from(placeTypes: place.types ?? [] )
+        
         let place = PlaceDTO(
             id: UUID(),
             name: place.name,
             latitude: place.coordinate.latitude,
             longitude: place.coordinate.longitude,
-            address: place.formattedAddress
+            address: address,
+            category: CategoryDTO(type: categoryType, name: categoryType.name)
         )
         
         self.delegate?.searchViewController(self, didSelectPlace: place, forSection: selectedSection ?? 0)

@@ -290,7 +290,7 @@
                                                                                             <nil key="textColor"/>
                                                                                             <nil key="highlightedColor"/>
                                                                                         </label>
-                                                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lbC-1z-CCL">
+                                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="lbC-1z-CCL">
                                                                                             <rect key="frame" x="0.0" y="29.333333333333339" width="260" height="13.666666666666668"/>
                                                                                             <subviews>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="맛집" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOu-tp-gFw" userLabel="CategoryLabel">
@@ -300,13 +300,13 @@
                                                                                                     <nil key="highlightedColor"/>
                                                                                                 </label>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="·" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Qm-YH-iTL" userLabel="DotLabel">
-                                                                                                    <rect key="frame" x="24.333333333333329" y="0.0" width="5" height="13.666666666666666"/>
+                                                                                                    <rect key="frame" x="29.333333333333329" y="0.0" width="5" height="13.666666666666666"/>
                                                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.40431016156462585" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                     <nil key="highlightedColor"/>
                                                                                                 </label>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="제주 제주시 서사로 11" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzu-Z7-mPC" userLabel="AddressLabel">
-                                                                                                    <rect key="frame" x="29.333333333333329" y="0.0" width="230.66666666666669" height="13.666666666666666"/>
+                                                                                                    <rect key="frame" x="39.333333333333329" y="0.0" width="220.66666666666669" height="13.666666666666666"/>
                                                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.40431016156462585" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                     <nil key="highlightedColor"/>

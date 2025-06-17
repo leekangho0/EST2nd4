@@ -134,7 +134,9 @@ struct PlaceDTO {
         self.latitude = entity.latitude
         self.longitude = entity.longitude
         self.address = entity.address
-//        self.category =
+        
+        let categoryType = CategoryType(rawValue: entity.category) ?? .etc
+        self.category = CategoryDTO(type: categoryType, name: categoryType.name)
         self.memo = entity.memo
 //        self.expense =
 //        self.photo =
