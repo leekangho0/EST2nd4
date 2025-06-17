@@ -55,27 +55,27 @@ final class CoreDataManager {
     
     
     func fetch<T: NSManagedObject>(_ type: T.Type, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> [T] {
-            let request = NSFetchRequest<T>(entityName: String(describing: type))
-            request.predicate = predicate
-            request.sortDescriptors = sortDescriptors
-
-            do {
-                return try context.fetch(request)
-            } catch {
-                print("Failed to fetch \(type): \(error)")
-                return []
-            }
+        let request = NSFetchRequest<T>(entityName: String(describing: type))
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Failed to fetch \(type): \(error)")
+            return []
         }
+    }
     
     
-        func update() {
-            saveContext()
-        }
-
-        func delete<T: NSManagedObject>(_ object: T) {
-            context.delete(object)
-            saveContext()
-        }
+    func update() {
+        saveContext()
+    }
+    
+    func delete<T: NSManagedObject>(_ object: T) {
+        context.delete(object)
+        saveContext()
+    }
     
 }
 

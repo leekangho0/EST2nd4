@@ -32,7 +32,7 @@ class TravelPlanMapViewController: UIViewController {
         // ViewDIdload life cycle
         
         if let firstPlace {
-            let camera = GMSCameraPosition.camera(withLatitude: firstPlace.latitude, longitude: firstPlace.longittude, zoom: 14)
+            let camera = GMSCameraPosition.camera(withLatitude: firstPlace.latitude, longitude: firstPlace.longitude, zoom: 14)
             mapView.camera = camera
         }
         
@@ -48,7 +48,7 @@ class TravelPlanMapViewController: UIViewController {
         // 경로 그리기
         let path = GMSMutablePath()
         for place in places {
-            path.add(CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longittude))
+            path.add(CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude))
         }
 
         let polyline = GMSPolyline(path: path)

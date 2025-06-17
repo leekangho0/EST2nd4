@@ -29,28 +29,23 @@
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="h79-z4-yNs">
                             <rect key="frame" x="0.0" y="0.0" width="409" height="62.666666666666664"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIL-Ew-XHx">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" text="Day 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIL-Ew-XHx">
                                     <rect key="frame" x="0.0" y="21.333333333333336" width="42.666666666666664" height="20.333333333333336"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06.27 / 금" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgp-64-Tef">
-                                    <rect key="frame" x="50.666666666666657" y="21.333333333333336" width="74" height="20.333333333333336"/>
+                                    <rect key="frame" x="50.666666666666657" y="21.333333333333336" width="287.66666666666674" height="20.333333333333336"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="4gd-hy-aLM">
-                                    <rect key="frame" x="132.66666666666666" y="31.333333333333332" width="199.99999999999997" height="0.0"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" id="IKV-Xw-JKG"/>
-                                        <constraint firstAttribute="width" constant="200" id="iDU-CX-kEs"/>
-                                    </constraints>
-                                </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nA0-AO-DW1">
-                                    <rect key="frame" x="340.66666666666669" y="14.333333333333332" width="68.333333333333314" height="34.333333333333343"/>
+                                    <rect key="frame" x="346.33333333333331" y="0.0" width="62.666666666666686" height="62.666666666666664"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="nA0-AO-DW1" secondAttribute="height" multiplier="1:1" id="Nsr-x6-F85"/>
+                                    </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" image="pencil" catalog="system"/>

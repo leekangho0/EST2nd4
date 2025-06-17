@@ -228,6 +228,7 @@ extension FlightAddViewController {
         viewModel.saveToCoreData()
         let vc = FeatureFactory.makePlanner()
         vc.travel = viewModel.updateTravle(travle: travel)
+        vc.shouldCreate = true
         
         navigationController?.pushViewController(vc, animated: true)
     }

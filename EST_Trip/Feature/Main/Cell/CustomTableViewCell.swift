@@ -58,4 +58,12 @@ extension Date {
         formatter.dateFormat = format
         return formatter.string(from: self)
     }
+    
+    func monthDaytoString(format: String = "MM.dd") -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.timeZone = .current
+        formatter.dateFormat = format
+        return formatter.string(from: self)
+    }
 }

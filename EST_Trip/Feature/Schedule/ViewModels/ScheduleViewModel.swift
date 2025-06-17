@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import CoreData
 
 class ScheduleViewModel {
+    private var travle: Travel?
+    
     var schedules: [Schedule] = []
-    var headerTitles: [String] = ["", "", ""]
     
     var scheduleCount: Int {
         return schedules.count
@@ -24,13 +26,60 @@ class ScheduleViewModel {
     }
     
     func dateToString(section: Int) -> String {
-        return schedules[section].date.toString()
+        return schedules[section].date?.toString() ?? "-"
+    }
+}
+
+// MARK: - Set up Datas
+extension ScheduleViewModel {
+    func setTravel(_ travel: Travel?) {
+        self.travle = travel
+        schedules = travel?.schedules.map { schedule in
+            var sortedSchedule = schedule
+            sortedSchedule.places.sort { ($0.index ?? 0) < ($1.index ?? 0) }
+            return sortedSchedule
+        } ?? []
+    }
+    
+    func addSchedule(_ schedule: ScheduleEntity) {
+        if let date = schedule.date,
+           let travelId = schedule.travelId {
+            schedules.append(
+                Schedule(
+                    id: schedule.id,
+                    date: date,
+                    travelID: travelId,
+                    places: []
+                )
+            )
+        }
+    }
+    
+    func addPlace(to section: Int, _ place: PlaceDTO) {
+        schedules[section].places.append(place)
+    }
+    
+    func insertPlace(to section: Int, at index: Int, _ place: PlaceDTO) {
+        schedules[section].places.insert(place, at: index)
+    }
+    
+    func removePlace(from section: Int, _ placeID: UUID) {
+        if let index = schedules[section].places.firstIndex(where: { $0.id == placeID }) {
+            schedules[section].places.remove(at: index)
+        }
+    }
+    
+    func movePlace(moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//        let place = schedules[sourceIndexPath.section].places.remove(at: sourceIndexPath.row)
+//        schedules[destinationIndexPath.section].places.insert(place, at: destinationIndexPath.row)
     }
 }
 
 // MARK: - Travle CRUD
 extension ScheduleViewModel {
-    func createTravle(_ travle: Travel?) {
+    func createTravle(_ travle: Travel?, completion: () -> Void ) {
+        self.travle = travle
+        
         guard let travle else {
             print("❌ Travle Nil Data Error")
             return
@@ -47,16 +96,19 @@ extension ScheduleViewModel {
                 let dates = startDate.datesUntil(endDate)
                 
                 dates.forEach {
-                    entity
-                        .addToSchedules(
-                            ScheduleEntity(
-                                context: CoreDataManager.shared.context,
-                                date: $0,
-                                travelId: travle.id,
-                                places: []
-                            )
-                        )
+                    let schedule = ScheduleEntity(
+                        context: CoreDataManager.shared.context,
+                        date: $0,
+                        travelId: travle.id,
+                        places: []
+                    )
+                    
+                    entity.addToSchedules(schedule)
+                    
+                    self.addSchedule(schedule)
                 }
+                
+                completion()
             }
        }
     }
@@ -68,25 +120,250 @@ extension ScheduleViewModel {
     func updateTravle() {
         
     }
-    
-    func fetchTravle() {
-        let travle = CoreDataManager.shared.fetch(TravelEntity.self)
-        print("✅ 불러오기 완료")
-        dump(travle)
-    }
 }
 
 // MARK: - Place CRUD
 extension ScheduleViewModel {
-    func addPlace() {
+    func addPlace(to section: Int, place: PlaceDTO, completion: () -> Void) {
+        guard let travle else { print("❌ Travle Nil Data Error"); return }
         
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        
+        do {
+            // 1. TravelEntity 찾기
+            if let travelEntity = try context.fetch(fetchRequest).first {
+                
+                // 2. schedules에서 원하는 ScheduleEntity 찾기
+                let scheduleID = schedules[section].id
+                
+                guard let scheduleEntities = travelEntity.schedules as? Set<ScheduleEntity>,
+                      let matchedSchedule = scheduleEntities.first(where: { $0.id == scheduleID }) else {
+                    print("❌ ScheduleEntity not found")
+                    return
+                }
+
+                // 3. PlaceEntity 생성
+                let placeEntity = PlaceEntity(
+                    context: context,
+                    id: place.id,
+                    address: place.address,
+                    latitude: place.latitude,
+                    longitude: place.longitude,
+                    name: place.name,
+                    scheduleID: scheduleID,
+                    index: Int16(placeCount(section: section))
+                )
+
+                // 4. 추가
+                matchedSchedule.addToPlaces(placeEntity)
+
+                // 5. 저장
+                CoreDataManager.shared.saveContext()
+                
+                // 6. ViewModel에 데이터 업데이트
+                addPlace(to: section, place)
+                completion()
+                print("✅ Place added to schedule")
+            } else {
+                print("❌ TravelEntity not found")
+            }
+        } catch {
+            print("❌ Fetch error: \(error)")
+        }
     }
     
-    func removePlace() {
+    func insertPlace(to section: Int, at index: Int, place: PlaceDTO, completion: (() -> Void)? = nil) {
+        guard let travle else { print("❌ Travle Nil Data Error"); return }
         
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        
+        do {
+            // 1. TravelEntity 찾기
+            if let travelEntity = try context.fetch(fetchRequest).first {
+                
+                // 2. schedules에서 원하는 ScheduleEntity 찾기
+                let scheduleID = schedules[section].id
+                
+                guard let scheduleEntities = travelEntity.schedules as? Set<ScheduleEntity>,
+                      let matchedSchedule = scheduleEntities.first(where: { $0.id == scheduleID }) else {
+                    print("❌ ScheduleEntity not found")
+                    return
+                }
+                
+                // 3. schedule에 해당하는 PlaceEntity 불러오기
+                guard let placeEntities = matchedSchedule.places as? Set<PlaceEntity> else {
+                    print("❌ PlaceEntity to update not found")
+                    return
+                }
+                
+                // 4. Update index
+                for place in placeEntities {
+                    if place.index >= index {
+                        place.index += 1
+                    }
+                 }
+                
+                // 5. PlaceEntity 추가
+                let placeEntity = PlaceEntity(
+                    context: context,
+                    id: place.id,
+                    address: place.address,
+                    latitude: place.latitude,
+                    longitude: place.longitude,
+                    name: place.name,
+                    scheduleID: scheduleID,
+                    index: Int16(index + 1) // index는 1부터 시작
+                )
+                
+                matchedSchedule.addToPlaces(placeEntity)
+
+                // 6. Data 저장
+                CoreDataManager.shared.saveContext()
+                
+                // 7. Update self
+                insertPlace(to: section, at: index, place)
+                completion?()
+                print("✅ Place inserted to schedule")
+            } else {
+                print("❌ TravelEntity not found")
+            }
+        } catch {
+            print("❌ Fetch error: \(error)")
+        }
     }
     
-    func updatePlace() {
+    func deletePlace(from section: Int, _ index: Int, completion: (() -> Void)? = nil) {
+        guard let travle else {
+            print("❌ Travle Nil Data Error")
+            return
+        }
+
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
         
+        do {
+            // 1. TravelEntity 찾기
+            if let travelEntity = try context.fetch(fetchRequest).first {
+                
+                // 2. schedules에서 원하는 ScheduleEntity 찾기
+                let scheduleID = schedules[section].id
+                guard let scheduleEntities = travelEntity.schedules as? Set<ScheduleEntity>,
+                      let matchedSchedule = scheduleEntities.first(where: { $0.id == scheduleID }) else {
+                    print("❌ ScheduleEntity not found")
+                    return
+                }
+                
+                // 3. matchedSchedule에 있는 places에서 삭제할 PlaceEntity 찾기
+                let placeID = place(section: section, index: index).id
+                
+                guard let placeEntities = matchedSchedule.places as? Set<PlaceEntity>,
+                      let placeToRemove = placeEntities.first(where: { $0.id == placeID }) else {
+                    print("❌ PlaceEntity to remove not found")
+                    return
+                }
+                
+                // 4. PlaceEntity 삭제
+                matchedSchedule.removeFromPlaces(placeToRemove)
+                context.delete(placeToRemove)
+                
+                // 5. 저장
+                CoreDataManager.shared.saveContext()
+                
+                // 6. ViewModel에 데이터도 업데이트 (배열 등에서 제거)
+                removePlace(from: section, placeID)
+                completion?()
+                print("✅ Place removed from schedule")
+                
+            } else {
+                print("❌ TravelEntity not found")
+            }
+        } catch {
+            print("❌ Fetch error: \(error)")
+        }
+    }
+    
+    func updatePlace(moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)? = nil) {
+        guard let travle else {
+            print("❌ Travle Nil Data Error")
+            return
+        }
+        
+        let oldSection = sourceIndexPath.section
+        let oldIndex = sourceIndexPath.row
+        
+        let newSection = destinationIndexPath.section
+        let newIndex = destinationIndexPath.row
+        
+        let updatedPlace = place(section: oldSection, index: oldIndex)
+        
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        
+        do {
+            // 1. TravelEntity 찾기
+            if let travelEntity = try context.fetch(fetchRequest).first {
+                // 2. schedules에서 원하는 ScheduleEntity 찾기
+                // 2-1. section이 다를 경우
+                if oldSection != newSection {
+                    deletePlace(from: oldSection, oldIndex)
+                    insertPlace(to: newSection, at: newIndex, place: updatedPlace)
+                }
+                // 2-2. section이 같을 경우
+                else {
+                    let scheduleID = schedules[newSection].id
+                    
+                    guard let scheduleEntities = travelEntity.schedules as? Set<ScheduleEntity>,
+                          let matchedSchedule = scheduleEntities.first(where: { $0.id == scheduleID }) else {
+                        print("❌ ScheduleEntity not found")
+                        return
+                    }
+                    
+                    // 3. matchedSchedule.places에서 수정할 PlaceEntity 찾기
+                    guard let placeEntities = matchedSchedule.places as? Set<PlaceEntity>,
+                            let placeToUpdate = placeEntities.first(where: { $0.id == updatedPlace.id }) else {
+                        print("❌ PlaceEntity to update not found")
+                        return
+                    }
+                    
+                    for place in placeEntities {
+                         if place == placeToUpdate { continue } // 자기 자신 제외
+                         
+                         if oldIndex < newIndex {
+                             // index가 oldIndex < index <= newIndex 인 것들은 1씩 감소
+                             if place.index > oldIndex && place.index <= newIndex {
+                                 place.index -= 1
+                             }
+                         } else {
+                             // index가 newIndex <= index < oldIndex 인 것들은 1씩 증가
+                             if place.index >= newIndex && place.index < oldIndex {
+                                 place.index += 1
+                             }
+                         }
+                     }
+                    
+                    // 자기 자신은 마지막에 Update
+                    placeToUpdate.index = Int16(newIndex)
+                }
+                
+                // 5. 저장
+                CoreDataManager.shared.saveContext()
+                
+                // 6. ViewModel 데이터 업데이트
+                movePlace(moveRowAt: sourceIndexPath, to: destinationIndexPath)
+                
+                completion?()
+                print("✅ Place updated in schedule")
+            } else {
+                print("❌ TravelEntity not found")
+            }
+        } catch {
+            print("❌ Fetch error: \(error)")
+        }
     }
 }

@@ -14,24 +14,37 @@ class ScheduleMainViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
-
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
 
     private let sectionHeight: CGFloat = 80
 
     private var isEditMode = false
 
-    @IBOutlet weak var titleLabel: UILabel!
-
     private let scheduleVM = ScheduleViewModel()
 
     var travel: Travel?
+    var shouldCreate = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupView()
-        scheduleVM.createTravle(travel)
+        configure()
+        
+        if shouldCreate {
+            scheduleVM.createTravle(travel) { [weak self] in
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
+        } else {
+            scheduleVM.setTravel(travel)
+            tableView.reloadData()
+        }
     }
 
     @objc func mapButtonTapped() {
@@ -124,6 +137,16 @@ extension ScheduleMainViewController {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    private func configure() {
+        guard let travel,
+              let startDate = travel.startDate?.toString(),
+              let endDate = travel.endDate?.monthDaytoString() else { return }
+        
+        titleLabel.text = travel.title
+        dateLabel.text = "\(startDate) - \(endDate)"
+        
     }
 
     private func updateTableViewHeight() {
@@ -229,23 +252,11 @@ extension ScheduleMainViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
+    
     func tableView(_ tableView: UITableView,
                    moveRowAt sourceIndexPath: IndexPath,
                    to destinationIndexPath: IndexPath) {
-        // 여기서 편집 로직 구현해주세요
-
-        /* 예시 코드 입니다
-        // 1. source 섹션의 배열에서 아이템 꺼내고 제거
-        var fromSectionItems = schedulePlaces[sourceIndexPath.section]
-        let movedItem = fromSectionItems.remove(at: sourceIndexPath.row)
-        schedulePlaces[sourceIndexPath.section] = fromSectionItems
-
-        // 2. destination 섹션의 배열에 아이템 삽입
-        var toSectionItems = schedulePlaces[destinationIndexPath.section]
-        toSectionItems.insert(movedItem, at: destinationIndexPath.row)
-        schedulePlaces[destinationIndexPath.section] = toSectionItems
-         */
+        scheduleVM.updatePlace(moveRowAt: sourceIndexPath, to: destinationIndexPath)
     }
 
     // 삭제
@@ -256,13 +267,20 @@ extension ScheduleMainViewController: UITableViewDataSource{
 
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // 여기서 삭제 로직 구현해주세요
 
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (_, _, completionHandler) in
-
+            
+            self.scheduleVM.deletePlace(from: indexPath.section, indexPath.row) { [weak self] in
+                DispatchQueue.main.async {
+                    self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+            }
         }
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeActions.performsFirstActionWithFullSwipe = false
 
-        return UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeActions
     }
 }
 
@@ -295,13 +313,16 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
 }
 
 extension ScheduleMainViewController: SearchViewControllerDelegate {
-    func searchViewController(_ controller: SearchViewController, didSelectPlace place: Place, forSection section: Int) {
-
-
-
-
-        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
-        updateTableViewHeight()
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: PlaceDTO, forSection section: Int) {
+        
+        scheduleVM.addPlace(to: section, place: place) { [weak self] in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+                self.updateTableViewHeight()
+            }
+        }
     }
 }
 

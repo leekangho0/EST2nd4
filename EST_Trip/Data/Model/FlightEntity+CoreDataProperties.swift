@@ -48,6 +48,18 @@ extension FlightEntity {
         self.arrivalTime = arrivalTime
         self.arrivalDate = arrivalDate
     }
+    
+    func toFlight() -> FlightDTO {
+        FlightDTO(
+            airline: self.flightname,
+            departureDate: self.departureDate,
+            departureTime: self.departureTime,
+            arrivalTime: self.arrivalTime,
+            departureAirport: self.departureAirport,
+            arrivalAirport: self.arrivalAirport,
+            arrivalDate: self.arrivalDate
+        )
+    }
 }
 
 extension FlightEntity : Identifiable {
