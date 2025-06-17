@@ -8,8 +8,8 @@
 import UIKit
 
 protocol PlanSheetDelegate: AnyObject {
-    func sheet(_ view: PlanSheetViewController, didSelectDayAt item: Days)
-    func sheet(_ view: PlanSheetViewController, didSelectPlaceAt item: PlaceDetail)
+    func sheet(_ view: PlanSheetViewController, didSelectDayAt item: ScheduleEntity)
+    func sheet(_ view: PlanSheetViewController, didSelectPlaceAt item: PlaceEntity)
 }
 
 final class PlanSheetViewController: UIViewController {
@@ -20,7 +20,7 @@ final class PlanSheetViewController: UIViewController {
     
     private var shouldFirstSelection = true
     
-    var days: [Days] = [] {
+    var days: [ScheduleEntity] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.dayCollectionView.reloadData()
@@ -40,14 +40,14 @@ final class PlanSheetViewController: UIViewController {
         }
     }
     
-    private var currentPlaces: [PlaceDetail] {
+    private var currentPlaces: [PlaceEntity] {
         !days.isEmpty
-        ? days[currentDayIndex].places
+        ? days[currentDayIndex].orderedPlaces
         : []
     }
     
     // 똑같은 Place일 경우, event 보내지 않음
-    private var currentPlace: PlaceDetail? {
+    private var currentPlace: PlaceEntity? {
         didSet {
             if let currentPlace, currentPlace != oldValue {
                 self.delegate?.sheet(self, didSelectPlaceAt: currentPlace)
@@ -150,7 +150,7 @@ extension PlanSheetViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(type: PlaceDetailCollectionViewCell.self, for: indexPath)
             let item = currentPlaces[indexPath.item]
             cell.nameLabel.text = item.name
-            cell.ratingLabel.text = "별점 \(item.rating) - (\(item.reviews))"
+            cell.ratingLabel.text = "별점 \(item.categoryType.name) - " //(\(item.reviews))"
             return cell
         } else {
             fatalError()

@@ -50,6 +50,17 @@ final class ScheduleProvider: NSObject {
     func notify() {
         delegate?.scheduleProviderDidUpdate(frc.fetchedObjects ?? [])
     }
+    
+    // MARK: Create
+    
+    func addPlace(_ item: GooglePlaceDTO, entity: ScheduleEntity) {
+        storageProvider.insert(PlaceEntity.self) { newEntity in
+            item.apply(newEntity)
+            
+            // relationship
+            newEntity.schedule = entity
+        }
+    }
 }
 
 extension ScheduleProvider: NSFetchedResultsControllerDelegate {

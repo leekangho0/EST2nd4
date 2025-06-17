@@ -47,28 +47,3 @@ class LocalPlaceService {
         CoreDataManager.shared.delete(place)
     }
 }
-
-
-extension CategoryType {
-    static func from(placeTypes: [String]) -> CategoryType {
-           for type in placeTypes {
-               switch type {
-               case "lodging":
-                   return .accmodation
-               case "cafe", "bakery":
-                   return .cafe
-               case "restaurant", "meal_takeaway", "meal_delivery":
-                   return .restaurant
-               case "bus_station", "subway_station", "train_station", "transit_station", "airport", "taxi_stand":
-                   return .transportation
-               case "tourist_attraction", "point_of_interest", "natural_feature", "park":
-                   return .travel
-               case "shopping_mall", "clothing_store", "department_store", "store", "supermarket", "convenience_store":
-                   return .shopping
-               default:
-                   continue
-               }
-           }
-           return .etc
-       }
-}

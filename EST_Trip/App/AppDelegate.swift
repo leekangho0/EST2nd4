@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 import GoogleMaps
 import GooglePlaces
+import GooglePlacesSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Google Maps API 키 설정
         GMSServices.provideAPIKey(APIKey.googleMaps.value)
         GMSPlacesClient.provideAPIKey(APIKey.googleMaps2.value)
+        PlacesClient.provideAPIKey("AIzaSyA-Np_V4ZE-tlBrT90CauogNp8FRZUtUFA")
         
         return true
     }

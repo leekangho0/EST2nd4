@@ -8,6 +8,9 @@
 
 import UIKit
 import GooglePlaces
+import GooglePlacesSwift
+
+
 
 class SearchViewController: UIViewController {
 
@@ -19,19 +22,15 @@ class SearchViewController: UIViewController {
 
     weak var delegate: SearchViewControllerDelegate?
     
-    var allPlaces: [Place] = [
-        Place(imageName: "beach", title: "협재 해수욕장", subtitle: "관광 · 제주 제주시 협재리", category: .관광),
-        Place(imageName: "mountain", title: "한라산", subtitle: "관광 · 제주 제주시", category: .관광),
-        Place(imageName: "restaurant", title: "흑돼지 맛집", subtitle: "맛집 · 제주 제주시", category: .맛집),
-        Place(imageName: "cafe", title: "예쁜카페", subtitle: "카페 · 제주 제주시", category: .카페)
-    ]
-
-    var filteredPlaces: [Place] = []
-    var selectedCategory: Category?
-    var selectedSection: Int?
+    var viewModel: SearchViewModel!
 
     private lazy var autocompleteDataSource: GMSAutocompleteTableDataSource = {
         let source = GMSAutocompleteTableDataSource()
+        let filter = GMSAutocompleteFilter()
+        filter.countries = ["KR"]
+        filter.regionCode = "KR"
+        filter.locationRestriction = GMSPlaceCircularLocationOption(Jeju.northEast.coordinate2d, 600)
+        source.autocompleteFilter = filter
         source.delegate = self
         return source
     }()
@@ -88,13 +87,48 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        bind()
+        layout()
+    }
+    
+    private func bind() {
         tableView.dataSource = self
         tableView.delegate = self
 
         searchBar.delegate = self
         searchBar.addTarget(self, action: #selector(searchTextChanged(_:)), for: .editingChanged)
-
-        filteredPlaces = allPlaces
+        
+        viewModel.onReload = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+        
+        viewModel.onError = { [weak self] error in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "에러", message: error.localizedDescription, preferredStyle: .alert)
+                self?.present(alert, animated: true) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        alert.dismiss(animated: true)
+                    }
+                }
+            }
+        }
+        
+        viewModel.onPlace = { [weak self] item in
+            guard let self else { return }
+            self.deliverPlace(item)
+        }
+    }
+    
+    private func deliverPlace(_ item: GooglePlaceDTO) {
+        DispatchQueue.main.async { [self] in
+            self.delegate?.searchViewController(self, didSelectPlace: item, for: self.viewModel.section)
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func layout() {
         setupSelectButtonAppearance()
 
         [tourButton, foodButton, cafeButton].forEach { button in
@@ -109,7 +143,11 @@ class SearchViewController: UIViewController {
             emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-
+        
+        embed()
+    }
+    
+    private func embed() {
         // 자동완성 결과 테이블 추가
         addChild(resultsController)
         view.addSubview(resultsController.view)
@@ -126,11 +164,14 @@ class SearchViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         hideAutocompleteResults()
         autocompleteDataSource.delegate = nil
         searchBar.delegate = nil
     }
 
+    // MARK: Trait
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         print("화면 방향 또는 사이즈 클래스가 변경됨")
@@ -155,30 +196,34 @@ class SearchViewController: UIViewController {
     @IBAction func categoryButtonTapped(_ sender: UIButton) {
         switch sender {
         case tourButton:
-            toggleCategory(.관광, sender)
+            toggleCategory(.travel, sender)
         case foodButton:
-            toggleCategory(.맛집, sender)
+            toggleCategory(.restaurant, sender)
         case cafeButton:
-            toggleCategory(.카페, sender)
+            toggleCategory(.cafe, sender)
         default:
             break
         }
-        filterPlaces(allPlaces)
     }
 
-    private func toggleCategory(_ category: Category, _ button: UIButton) {
-        if selectedCategory == category {
-            selectedCategory = nil
-            resetCategoryButtons()
+    private func toggleCategory(_ category: CategoryType, _ button: UIButton) {
+        resetCategoryButtons()
+        if viewModel.selectedCategory == category {
+            viewModel.selectedCategory = nil
         } else {
-            selectedCategory = category
-            resetCategoryButtons()
-
-            var config = button.configuration ?? UIButton.Configuration.filled()
-            config.baseBackgroundColor = UIColor(named: "JejuOrange")
-            config.baseForegroundColor = .white
-            button.configuration = config
+            viewModel.selectedCategory = category
+            selectButton(button: button)
+            
+            // category가 선택되면, 주변 검색으로 검색
+            viewModel.loadByCategory()
         }
+    }
+    
+    private func selectButton(button: UIButton) {
+        var config = button.configuration ?? UIButton.Configuration.filled()
+        config.baseBackgroundColor = UIColor(named: "JejuOrange")
+        config.baseForegroundColor = .white
+        button.configuration = config
     }
 
     private func resetCategoryButtons() {
@@ -209,41 +254,22 @@ class SearchViewController: UIViewController {
         }
         autocompleteDataSource.clearResults()
     }
-
-    private func filterPlaces(_ place: [Place]) {
-        let searchText = searchBar.text?.lowercased() ?? ""
-
-        filteredPlaces = allPlaces.filter { place in
-            let matchesCategory = selectedCategory == nil || place.category == selectedCategory
-            let matchesSearch = searchText.isEmpty || place.title.lowercased().contains(searchText)
-            return matchesCategory && matchesSearch
-        }
-
-        emptyView.isHidden = !filteredPlaces.isEmpty
-        tableView.isHidden = filteredPlaces.isEmpty
-        tableView.reloadData()
-    }
 }
 
 
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredPlaces.count
+        return viewModel.numberOfRowsInSection
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as? placeCell else {
-            return UITableViewCell()
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
 
-        let place = filteredPlaces[indexPath.row]
-        cell.configure(with: place)
+        cell.configure(with: viewModel.item(for: indexPath))
 
         cell.onSelectTapped = { [weak self] in
-            guard let self = self,
-                  let section = self.selectedSection else { return }
-//            self.delegate?.searchViewController(self, didSelectPlace: place, forSection: section)
-            self.navigationController?.popViewController(animated: true)
+            guard let self else { return }
+            self.deliverPlace(viewModel.item(for: indexPath))
         }
 
         return cell
@@ -269,9 +295,14 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
 
+    // 장소 검색
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         hideAutocompleteResults()
+        
+        if let text = textField.text, !text.isEmpty {
+            viewModel.loadFromText(text: text.trimmingCharacters(in: .whitespacesAndNewlines))
+        }
         return true
     }
 }
@@ -279,23 +310,13 @@ extension SearchViewController: UITextFieldDelegate {
 extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
         print("✅ 선택된 장소: \(place.name ?? "이름 없음")")
-//        print(place)
-//        searchBar.text = place.name
-//        LocalPlaceService.shared.addPlace(place: place)
         
         hideAutocompleteResults()
         searchBar.resignFirstResponder()
-
-        let place = PlaceDTO(
-            id: UUID(),
-            name: place.name,
-            latitude: place.coordinate.latitude,
-            longitude: place.coordinate.longitude,
-            address: place.formattedAddress
-        )
         
-        self.delegate?.searchViewController(self, didSelectPlace: place, forSection: selectedSection ?? 0)
-        self.navigationController?.popViewController(animated: true)
+        if let id = place.placeID {
+            viewModel.load(by: id)
+        }
     }
 
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: Error) {

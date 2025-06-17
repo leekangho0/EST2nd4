@@ -44,8 +44,9 @@ enum FeatureFactory {
         return vc
     }
     
-    static func makeSearch() -> SearchViewController {
+    static func makeSearch(section: Int) -> SearchViewController {
         let vc = StoryboardType.search.makeViewController(SearchViewController.self)
+        vc.viewModel = SearchViewModel(service: RemotePlaceService(), section: section)
         return vc
     }
 

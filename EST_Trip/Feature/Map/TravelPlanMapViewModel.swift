@@ -17,13 +17,13 @@ class TravelPlanMapViewModel {
         self.schedules = travel.orderedSchdules
     }
     
-    func selectMarker(_ item: PlaceDetail) -> GMSMarker? {
+    func selectMarker(_ item: PlaceEntity) -> GMSMarker? {
         return currentMarker.first(where: { marker in
             marker.position.latitude == item.latitude && marker.position.longitude == item.longitude
         })
     }
     
-    func drawMarkers(_ places: [PlaceDetail]) {
+    func drawMarkers(_ places: [PlaceEntity]) {
         self.currentMarker = places.map { place in
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
@@ -56,27 +56,28 @@ class TravelPlanMapViewModel {
 }
 
 struct PlaceDetail: Equatable {
-    let name: String
+    let placeID: String
+    let name: String?
     let reviews: Int
     let rating: Double
-    let imageURL: URL
+    let imageURL: Data?
     let latitude: Double
     let longitude: Double
 }
 
 extension PlaceDetail {
     static let sample1: [PlaceDetail] = [
-        PlaceDetail(name: "오하이오", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.4580, longitude: 126.9405),
-        PlaceDetail(name: "돌하르방", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.3625, longitude: 126.5331),
-        PlaceDetail(name: "한라산", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.5223, longitude:126.7745 ),
-        PlaceDetail(name: "오설록", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.2490, longitude:126.5587 ),
+        PlaceDetail(placeID: UUID().uuidString, name: "오하이오", reviews: 3, rating: 4, imageURL: nil, latitude: 33.4580, longitude: 126.9405),
+        PlaceDetail(placeID: UUID().uuidString, name: "돌하르방", reviews: 3, rating: 4, imageURL: nil, latitude: 33.3625, longitude: 126.5331),
+        PlaceDetail(placeID: UUID().uuidString, name: "한라산", reviews: 3, rating: 4, imageURL: nil, latitude: 33.5223, longitude:126.7745 ),
+        PlaceDetail(placeID: UUID().uuidString, name: "오설록", reviews: 3, rating: 4, imageURL: nil, latitude: 33.2490, longitude:126.5587 ),
     ]
     
     static let sample2: [PlaceDetail] = [
-        PlaceDetail(name: "구름비", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.3945, longitude: 126.2395),
-        PlaceDetail(name: "카페", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.4248, longitude: 126.9275),
-        PlaceDetail(name: "전망좋은", reviews: 3, rating: 4, imageURL: anyURL(), latitude:33.3245, longitude:126.8347 ),
-        PlaceDetail(name: "베이커리", reviews: 3, rating: 4, imageURL: anyURL(), latitude: 33.5173, longitude: 126.6528),
+        PlaceDetail(placeID: UUID().uuidString, name: "구름비", reviews: 3, rating: 4, imageURL: nil, latitude: 33.3945, longitude: 126.2395),
+        PlaceDetail(placeID: UUID().uuidString, name: "카페", reviews: 3, rating: 4, imageURL: nil, latitude: 33.4248, longitude: 126.9275),
+        PlaceDetail(placeID: UUID().uuidString, name: "전망좋은", reviews: 3, rating: 4, imageURL: nil, latitude:33.3245, longitude:126.8347 ),
+        PlaceDetail(placeID: UUID().uuidString, name: "베이커리", reviews: 3, rating: 4, imageURL: nil, latitude: 33.5173, longitude: 126.6528),
     ]
     
     private static func anyURL() -> URL {

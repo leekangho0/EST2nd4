@@ -23,91 +23,177 @@ enum Jeju {
         }
     }
 }
-//
-//final class RemotePlaceService {
-//    struct SearchPlace {
-//        let id: String
-//        let displayName: AttributedString
-//        let distance: String
-//    }
-//    
-//    @MainActor
-//    static let client = PlacesClient.shared
-//    
-//    func nearBySearch(coordinate: CLLocationCoordinate2D, radius: Double) {
+
+final class RemotePlaceService {
+    struct SearchPlace {
+        let id: String
+        let displayName: AttributedString
+        let distance: String
+    }
+    
+    @MainActor
+    let client = PlacesClient.shared
+    
+    enum Filter {
+        static let defaultProperties: [PlaceProperty] = [.displayName, .placeID, .photos, .coordinate, .formattedAddress, .numberOfUserRatings, .rating, .types]
+        static let country = "KR"
+    }
+    
+    func autoComplete(text: String, category: CategoryType? = nil, center: (Double, Double)) async throws -> [AutocompleteSuggestion] {
+        let bound = RectangularCoordinateRegion(northEast: Jeju.northEast.coordinate2d, southWest: Jeju.southWest.coordinate2d)!
+        let filter = AutocompleteFilter(
+            types: Set(category?.list() ?? []),
+            countries: [Filter.country],
+            coordinateRegionRestriction: bound,
+            regionCode: Filter.country
+        )
+        
+        let request = AutocompleteRequest(
+            query: text,
+            sessionToken: nil,
+            filter: filter,
+            inputOffset: 0)
+        let result = await client.fetchAutocompleteSuggestions(with: request)
+        
+        switch result {
+        case let .success(suggestions):
+            return suggestions
+        case let .failure(error):
+            throw error
+        }
+    }
+    
+    func fetchPlace(by id: String) async throws -> Place {
+        let request = FetchPlaceRequest(placeID: id, placeProperties: [.displayName, .placeID, .photos, .coordinate, .formattedAddress, .numberOfUserRatings, .rating, .types])
+        
+        let result = await client.fetchPlace(with: request)
+        
+        switch result {
+        case .success(let place):
+            dump(place)
+            return place
+        case .failure(let error):
+            throw error
+        }
+    }
+    
+    func fetch(by photo: Photo) async throws -> UIImage {
+        let request = FetchPhotoRequest(photo: photo, maxSize: CGSize(width: 300, height: 300))
+        switch await client.fetchPhoto(with: request) {
+        case let .success(image):
+            return image
+        case let .failure(error):
+            throw error
+        }
+    }
+    
+    func fetch(by text: String, category: CategoryType?) async throws -> [Place] {
+//        let bound = RectangularCoordinateRegion(northEast: Jeju.northEast.coordinate2d, southWest: Jeju.southWest.coordinate2d)!
 //        
-//    }
-//    
-//    func fetchPhoto(id: String) {
-//        
-//    }
-//    
-//    func textSearch(_ text: String, latitude: Double, longitude: Double, radius: Double) {
-//        let restriction = CircularCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: radius)
-//        
-//        let searchByTextRequest = SearchByTextRequest(
-//            textQuery: "pizza in New York",
-//            placeProperties: [ .name, .placeID ],
-//            locationRestriction: restriction,
-//            includedType: .restaurant,
-//            maxResultCount: 5,
-//            minRating: 3.5,
-//            priceLevels: [ .moderate, .inexpensive ],
-//            isStrictTypeFiltering: true
-//        )
-//    }
-//    
-//    func textSearch(_ text: String, radius: Double) {
-//        
-//        let restriction = RectangularCoordinateRegion(
-//            northEast: Jeju.northEast.coordinate2d,
-//            southWest: Jeju.southWest.coordinate2d
-//        )
-//        
-//        let searchByTextRequest = SearchByTextRequest(
-//            textQuery: text,
-//            placeProperties: [ .name, .placeID ],
-//            locationRestriction: restriction,
-//            includedType: .restaurant,
-//            maxResultCount: 5,
-//            minRating: 3.5,
-//            priceLevels: [ .moderate, .inexpensive ],
-//            isStrictTypeFiltering: true
-//        )
-//        
-//        //        switch await placesClient.searchByText(with: searchByTextRequest) {
-//        //        case .success(let places):
-//        //          // Handle places
-//        //        case .failure(let placesError):
-//        //          // Handle error
-//        //        }
-//    }
-//    
-//    func autoComplete(_ text: String, latitude: Double, longitude: Double, radius: Double) async throws -> [SearchPlace] {
-//        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//        let restriction = CircularCoordinateRegion(center: center, radius: radius)
-//        let filter = AutocompleteFilter(coordinateRegionRestriction: restriction)
-//        let request = AutocompleteRequest(query: text, sessionToken: nil, filter: filter)
-//        
-//        var searchPlace: [SearchPlace] = []
-//        switch await PlacesClient.shared.fetchAutocompleteSuggestions(with: request) {
-//        case .success(let suggestions):
-//            for suggestion in suggestions {
-//                switch suggestion {
-//                case .place(let data):
-//                    searchPlace.append(
-//                        SearchPlace(
-//                            id: data.placeID,
-//                            displayName: data.attributedFullText,
-//                            distance: data.distance?.description ?? "unknown"
-//                        )
-//                    )
-//                @unknown default:
-//                    fatalError()
-//                }
-//            }
-//        case .failure(let error):
-//            throw error
-//        }
-//    }
-//}
+        let center = CircularCoordinateRegion(center: Jeju.northEast.coordinate2d, radius: 600)
+        let request = SearchByTextRequest(
+            textQuery: text,
+            placeProperties: Filter.defaultProperties,
+            locationRestriction: center,
+            includedType: category?.single(),
+            maxResultCount: 10, minRating: 2.5,
+            rankPreference: .distance,
+            regionCode: Filter.country,
+            isStrictTypeFiltering: false)
+        
+        switch await client.searchByText(with: request) {
+        case let .success(places):
+            return places
+        case let .failure(error):
+            throw error
+        }
+    }
+    
+    func fetchNearBy() async throws -> [Place] {
+        let center = CircularCoordinateRegion(center: Jeju.northEast.coordinate2d, radius: 600)
+        
+        let request = SearchNearbyRequest(
+            locationRestriction: center,
+            placeProperties: Filter.defaultProperties,
+            includedTypes: [.cafe],
+            maxResultCount: 10,
+            rankPreference: .popularity,
+            regionCode: Filter.country
+        )
+        
+        switch await client.searchNearby(with: request) {
+        case let .success(places):
+            return places
+        case let .failure(error):
+            throw error
+        }
+    }
+}
+
+extension CategoryType {
+    func single() -> PlaceType? {
+        switch self {
+        case .accmodation:
+            return .lodging
+        case .cafe:
+            return .cafe
+        case .restaurant:
+            return .restaurant
+        case .transportation:
+            return .transitStation
+        case .travel:
+            return .touristAttraction
+        case .shopping:
+            return .shoppingMall
+        case .etc:
+            return nil
+        }
+    }
+    
+    func list() -> [PlaceType] {
+        switch self {
+        case .accmodation:
+            return [.lodging]
+        case .cafe:
+            return [.cafe, .bakery]
+        case .restaurant:
+            return [.restaurant, .mealTakeaway, .mealDelivery]
+        case .transportation:
+            return [.busStation, .subwayStation, .trainStation, .transitStation, .airport, .taxiStand]
+        case .travel:
+            return [
+                .touristAttraction, .pointOfInterest, .naturalFeature, .park
+            ]
+        case .shopping:
+            return [
+                .shoppingMall, .clothingStore, .departmentStore, .store, .supermarket, .convenienceStore
+            ]
+        case .etc:
+            return []
+        }
+    }
+}
+
+extension CategoryType {
+    static func from(placeTypes: [String]) -> CategoryType {
+           for type in placeTypes {
+               switch type {
+               case "lodging":
+                   return .accmodation
+               case "cafe", "bakery":
+                   return .cafe
+               case "restaurant", "meal_takeaway", "meal_delivery":
+                   return .restaurant
+               case "bus_station", "subway_station", "train_station", "transit_station", "airport", "taxi_stand":
+                   return .transportation
+               case "tourist_attraction", "point_of_interest", "natural_feature", "park":
+                   return .travel
+               case "shopping_mall", "clothing_store", "department_store", "store", "supermarket", "convenience_store":
+                   return .shopping
+               default:
+                   continue
+               }
+           }
+           return .etc
+       }
+}
