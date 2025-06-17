@@ -66,4 +66,16 @@ extension Date {
         formatter.dateFormat = format
         return formatter.string(from: self)
     }
+    
+    func timeToString(suffix: String? = nil) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "H시 m분"
+        let timeString = formatter.string(from: self)
+        
+        if let suffix = suffix {
+            return "\(timeString) \(suffix)"
+        } else {
+            return timeString
+        }
+    }
 }

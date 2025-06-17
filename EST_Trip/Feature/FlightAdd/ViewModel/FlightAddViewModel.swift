@@ -94,7 +94,13 @@ extension FlightAddViewModel {
     func updateTravel(travel: Travel?) -> Travel? {
         var travel = travel
         
-        travel?.startFlight = FlightDTO(
+        travel?.startFlight = flightDTO()
+        
+        return travel
+    }
+    
+    func flightDTO() -> FlightDTO {
+        FlightDTO(
             airline: flight.flightName,
             departureDate: flight.departureDate,
             departureTime: flight.departureDate,
@@ -103,7 +109,5 @@ extension FlightAddViewModel {
             arrivalAirport: flight.arrivalAirport,
             arrivalDate: flight.arrivalDate
         )
-        
-        return travel
     }
 }

@@ -56,4 +56,8 @@ final class CalendarSelectionStore {
     func reset() {
         travelDate = TravelDate()
     }
+    
+    func setTravelDate(_ travelDate: TravelDate) {
+        self.travelDate = travelDate
+    }
 }

@@ -225,9 +225,9 @@ struct FlightDTO {
         self.arrivalDate = entity?.arrivalDate
     }
     
-    func toEntity(context: NSManagedObjectContext) -> FlightEntity {
+    func toEntity() -> FlightEntity {
         return FlightEntity(
-            context: context,
+            context: CoreDataManager.shared.context,
             departureDate: self.departureDate,
             departureAirport: self.departureAirport,
             departureTime: self.departureTime,

@@ -102,7 +102,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Crz-hA-oBO">
-                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cAS-S8-hYm" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
@@ -159,25 +159,30 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="w6k-g2-Qdd">
-                                                                <rect key="frame" x="0.0" y="0.0" width="153.66666666666666" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="40"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQi-j8-v1x">
                                                                         <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="40"/>
-                                                                        <color key="backgroundColor" red="0.85098039215686272" green="0.85098039215686272" blue="0.85098039215686272" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                                        <color key="backgroundColor" name="DolHareubangLightGray"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="q93-Mz-oWR"/>
                                                                         </constraints>
-                                                                        <color key="tintColor" red="0.4941176471" green="0.4941176471" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                                        <state key="normal" title="Button"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                        <color key="tintColor" name="DolHareubangGray"/>
+                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                        <state key="normal" title="+ 항공편">
+                                                                            <color key="titleColor" name="DolHareubangGray"/>
+                                                                        </state>
                                                                         <buttonConfiguration key="configuration" style="plain" title="+ 항공편">
                                                                             <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                            <color key="baseForegroundColor" name="DolHareubangGray"/>
                                                                         </buttonConfiguration>
                                                                         <connections>
-                                                                            <action selector="toggleButtonTapped:" destination="Kt2-W2-D71" eventType="touchUpInside" id="aGB-1R-r1c"/>
+                                                                            <action selector="addFlight:" destination="Kt2-W2-D71" eventType="touchUpInside" id="alA-VP-gPn"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pH2-Lw-fqk">
-                                                                        <rect key="frame" x="87.666666666666671" y="0.0" width="66.000000000000014" height="40"/>
+                                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pH2-Lw-fqk">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="66" height="40"/>
                                                                         <color key="backgroundColor" red="0.85098039219999999" green="0.85098039219999999" blue="0.85098039219999999" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="Kil-BL-4kX"/>
@@ -212,10 +217,10 @@
                                                 </constraints>
                                             </view>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="al8-3Z-vvS">
-                                                <rect key="frame" x="20" y="176.66666666666669" width="353" height="490.00000000000006"/>
+                                                <rect key="frame" x="20" y="176.66666666666669" width="353" height="550"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="490" id="tTG-AD-6iJ"/>
+                                                    <constraint firstAttribute="height" constant="550" id="tTG-AD-6iJ"/>
                                                 </constraints>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ScheduleListCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ScheduleListCell" rowHeight="87" id="aw7-28-tvf" customClass="ScheduleListCell" customModule="EST_Trip" customModuleProvider="target">
@@ -239,7 +244,7 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="48.666666666666664" height="67"/>
                                                                             <subviews>
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNX-DH-MKJ">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="48.666666666666664" height="50"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="48.666666666666664" height="67"/>
                                                                                     <subviews>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vhg-qW-qTp">
                                                                                             <rect key="frame" x="12" y="0.0" width="25" height="25"/>
@@ -259,8 +264,8 @@
                                                                                         <constraint firstItem="Vhg-qW-qTp" firstAttribute="top" secondItem="rNX-DH-MKJ" secondAttribute="top" id="eQv-ds-AKd"/>
                                                                                     </constraints>
                                                                                 </view>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" text="3.28km" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCW-uh-NHk" customClass="PaddingLabel" customModule="EST_Trip" customModuleProvider="target">
-                                                                                    <rect key="frame" x="0.0" y="50" width="48.666666666666664" height="17"/>
+                                                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" text="3.28km" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCW-uh-NHk" customClass="PaddingLabel" customModule="EST_Trip" customModuleProvider="target">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="48.666666666666664" height="0.0"/>
                                                                                     <color key="backgroundColor" red="0.85098039215686272" green="0.85098039215686272" blue="0.85098039215686272" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                     <nil key="textColor"/>
@@ -385,7 +390,7 @@
                         <constraints>
                             <constraint firstItem="Crz-hA-oBO" firstAttribute="top" secondItem="b2Y-Sv-ROF" secondAttribute="top" id="0bQ-lT-sMO"/>
                             <constraint firstItem="Crz-hA-oBO" firstAttribute="trailing" secondItem="b2Y-Sv-ROF" secondAttribute="trailing" id="1vR-0i-cAw"/>
-                            <constraint firstItem="Crz-hA-oBO" firstAttribute="bottom" secondItem="b2Y-Sv-ROF" secondAttribute="bottom" id="ikH-La-niu"/>
+                            <constraint firstItem="Crz-hA-oBO" firstAttribute="bottom" secondItem="pcr-kb-e78" secondAttribute="bottom" id="ikH-La-niu"/>
                             <constraint firstItem="cAS-S8-hYm" firstAttribute="height" secondItem="pcr-kb-e78" secondAttribute="height" priority="250" id="qja-q7-9hE"/>
                             <constraint firstItem="Crz-hA-oBO" firstAttribute="leading" secondItem="b2Y-Sv-ROF" secondAttribute="leading" id="rcr-Zb-3Ma"/>
                         </constraints>
@@ -667,7 +672,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

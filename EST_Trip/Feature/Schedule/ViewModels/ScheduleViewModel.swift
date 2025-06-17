@@ -21,6 +21,30 @@ class ScheduleViewModel {
         return schedules.count
     }
     
+    var startFlightAirport: String? {
+        return travel?.startFlight?.arrivalAirport
+    }
+    
+    var startFlightArrivalTime: String? {
+        return travel?.startFlight?.arrivalTime?.timeToString(suffix: "도착")
+    }
+    
+    var endFlightAirport: String? {
+        return travel?.endFlight?.departureAirport
+    }
+    
+    var endFlightDepartureTime: String? {
+        return travel?.endFlight?.departureTime?.timeToString(suffix: "출발")
+    }
+    
+    var startDate: Date? {
+        return travel?.startDate
+    }
+    
+    var endDate: Date? {
+        return travel?.endDate
+    }
+    
     func place(section: Int, index: Int) -> PlaceDTO {
         return schedules[section].places[index]
     }
@@ -31,6 +55,22 @@ class ScheduleViewModel {
     
     func dateToString(section: Int) -> String {
         return schedules[section].date?.toString() ?? "-"
+    }
+    
+    func hasStartFlight() -> Bool {
+        self.travel?.startFlight?.airline != nil
+    }
+    
+    func hasEndFlight() -> Bool {
+        self.travel?.endFlight?.airline != nil
+    }
+    
+    func isLastSection(_ section: Int) -> Bool {
+        schedules.count - 1 == section
+    }
+    
+    func isLastIndex(_ section: Int, _ index: Int) -> Bool {
+        schedules[section].places.count - 1 == index
     }
 }
 
@@ -94,7 +134,7 @@ extension ScheduleViewModel {
             entity.title = "제주여행"
             entity.startDate = travel.startDate
             entity.endDate = travel.endDate
-            entity.startFlight = travel.startFlight?.toEntity(context: CoreDataManager.shared.context)
+            entity.startFlight = travel.startFlight?.toEntity()
             
             if let startDate = travel.startDate, let endDate = travel.endDate {
                 let dates = startDate.datesUntil(endDate)
@@ -158,6 +198,36 @@ extension ScheduleViewModel {
         
         self.travel?.startDate = startDate
         self.travel?.endDate = endDate
+    }
+    
+    func updateTravelStartFlight(_ flight: FlightDTO) {
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
+            return
+        }
+        
+        let predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
+
+        let _ = CoreDataManager.shared.update(TravelEntity.self, predicate: predicate) { entity in
+            entity.startFlight = flight.toEntity()
+        }
+        
+        self.travel?.startFlight = flight
+    }
+    
+    func updateTravelEndFlight(_ flight: FlightDTO) {
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
+            return
+        }
+        
+        let predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
+
+        let _ = CoreDataManager.shared.update(TravelEntity.self, predicate: predicate) { entity in
+            entity.endFlight = flight.toEntity()
+        }
+        
+        self.travel?.endFlight = flight
     }
 }
 
