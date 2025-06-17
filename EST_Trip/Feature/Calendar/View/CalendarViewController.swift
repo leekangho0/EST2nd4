@@ -144,6 +144,13 @@ extension CalendarViewController {
     @objc func dateButtonTap(_ sender: Any) {
         let vc = FeatureFactory.makeFlight()
         
+        let travle = Travel(
+            startDate: viewModel.travelDate.startDate,
+            endDate: viewModel.travelDate.endDate
+        )
+        vc.travel = travle
+
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }

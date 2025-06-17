@@ -56,7 +56,7 @@ extension Travel {
             endDate: endDate,
             schedules: [scheduleDay1, scheduleDay2],
             isBookmarked: true,
-            startflight: flightToJeju,
+            startFlight: flightToJeju,
             endFlight: flightFromJeju
         )
         

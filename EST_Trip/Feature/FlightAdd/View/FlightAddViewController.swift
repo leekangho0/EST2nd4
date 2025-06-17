@@ -10,6 +10,7 @@ import UIKit
 class FlightAddViewController: UIViewController, UITextFieldDelegate {
     let viewModel = FlightAddViewModel()
     private var hasPresentedDateSheet = false
+    var travel: Travel?
 
     @IBOutlet weak var departureDate: UIButton!
     @IBAction func departureDateButtonTapped(_ sender: Any) {
@@ -243,6 +244,8 @@ extension FlightAddViewController {
         print("CoreData 저장 직전 상태: \(viewModel.flight)")
         viewModel.saveToCoreData()
         let vc = FeatureFactory.makePlanner()
+        vc.travel = viewModel.updateTravle(travle: travel)
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 

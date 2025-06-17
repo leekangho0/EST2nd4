@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
     // 📌 dday를 기준으로 dday >=0 이면 futureTripTitle, dday < 0 이면 pastTripTitle에 넣어주기
     var futureTrip: [Trip] = []
     var pastTrip: [Trip] = []
-    var currentTrip: [Trip] = []
+//    var currentTrip: [Trip] = []
 
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var userName: UILabel!
@@ -43,16 +43,21 @@ class MainViewController: UIViewController {
 
         tableView.dataSource = self
 
-        // 코어데이터에서 데이터 로드
-		fetchTrips()
-        loadTrips()
-        currentTrip = futureTrip
+        trips = futureTrip
 
         header.backgroundColor = UIColor.dolHareubangLightGray.withAlphaComponent(0.2)
 
         if let savedName = UserDefaults.standard.string(forKey: "username") {
             userName.text = savedName
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // 코어데이터에서 데이터 로드
+        fetchTrips()
+        loadTrips()
     }
 
     @IBAction func editNameButton(_ sender: Any) {
@@ -76,32 +81,17 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func plusButtonTapped(_ sender: Any) {
-		//임시코드!, 플러스버튼 선택시 CoreData에 임시데이터 저장
-        let randomNumber = Int.random(in: -10...10) // 시작날짜 현재 날짜 기준 -10~+10
-        let startDate = Calendar.current.date(byAdding: .day, value: randomNumber, to: Date())!
-        let tripLength = Int.random(in: 1...3) // 시작날짜와 끝나는 날짜 설정 +1~+3
-        let endDate = Calendar.current.date(byAdding: .day, value: tripLength, to: startDate)!
-        let randomNumber2 = Int.random(in: 1...100) // title뒤에 붙을 이름 랜덤 1~100
-
-        CoreDataManager.shared.insert(TravelEntity.self) { travel in
-            travel.id = UUID()
-            travel.title = "제주여행\(randomNumber2)"
-            travel.startDate = startDate
-            travel.endDate = endDate
-        }
-        // 여기까지 임시코드입니다. 추후 삭제필요!
-        fetchTrips()
         let vc = FeatureFactory.makeCalendar()
         navigationController?.pushViewController(vc, animated: true)
     }
 
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         if sender == futureTripButton {
-            currentTrip = futureTrip
+            trips = futureTrip
             futureTripButton.tintColor = .label
             pastTripButton.tintColor = .dolHareubangGray
         } else {
-            currentTrip = pastTrip
+            trips = pastTrip
             futureTripButton.tintColor = .dolHareubangGray
             pastTripButton.tintColor = .label
         }
@@ -110,6 +100,9 @@ class MainViewController: UIViewController {
     }
 
     func loadTrips() {
+        futureTrip = []
+        pastTrip = []
+        
         for trip in trips {
             let dayDiff = trip.startDate.days(from: Date.today)
 
@@ -124,7 +117,7 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentTrip.count
+        return trips.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -132,7 +125,7 @@ extension MainViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        let trip = currentTrip[indexPath.row]
+        let trip = trips[indexPath.row]
 
         func showDday() {
             let targetDate = trip.startDate // 📌 Schedule 메인에서 날짜 가져와 넣어주기
@@ -162,6 +155,7 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController {
     func fetchTrips() {
         let travelData = CoreDataManager.shared.fetch(TravelEntity.self)
+        
         self.trips = travelData.compactMap { travel in
             guard let title = travel.title,
                   let startDate = travel.startDate,
