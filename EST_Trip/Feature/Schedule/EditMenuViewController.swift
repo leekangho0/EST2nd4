@@ -29,6 +29,11 @@ class EditMenuViewController: UIViewController {
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false
             sheet.preferredCornerRadius = 20
         }
+
+        [titleEditButton, dateEditButton, tripDeleteButton].forEach {
+                $0?.tintColor = .label
+                $0?.setTitleColor(.label, for: .normal)
+            }
     }
 
     @IBAction func titleEditButtonTapped(_ sender: UIButton) {

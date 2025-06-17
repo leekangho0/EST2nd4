@@ -25,8 +25,13 @@ class EditTripTitleViewController: UIViewController, UITextFieldDelegate {
         titleTextField.text = currentTitle
         confirmButton.isEnabled = !(currentTitle?.isEmpty ?? true)
 
-        background.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         modal.layer.cornerRadius = 12
+
+        if traitCollection.userInterfaceStyle == .dark {
+                background.backgroundColor = UIColor.dolHareubangGray.withAlphaComponent(0.7) // 밝은 회색 투명
+            } else {
+                background.backgroundColor = UIColor.black.withAlphaComponent(0.4)  // 기존 설정 유지
+            }
 
         titleTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }

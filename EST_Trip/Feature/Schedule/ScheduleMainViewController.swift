@@ -56,14 +56,12 @@ class ScheduleMainViewController: UIViewController {
         sender.isSelected.toggle()
 
         if sender.isSelected {
-            //sender.backgroundColor = UIColor(hex: "#FFA24D", alpha: 1.0)
             sender.backgroundColor = UIColor(named: "JejuOrange")
-            //sender.setTitleColor(.white, for: .selected)
             sender.tintColor = .white
         } else {
-            sender.backgroundColor = UIColor(hex: "#D9D9D9", alpha: 0.6)
-            sender.setTitleColor(UIColor(hex: "#7E7E7E", alpha: 1.0), for: .normal)
-            sender.tintColor = UIColor(hex: "#7E7E7E", alpha: 1.0)
+            sender.backgroundColor = UIColor(named: "DolHareubangLightGray")
+            sender.setTitleColor(UIColor(named: "DolHareubangGray"), for: .normal)
+            sender.tintColor = UIColor(named: "DolHareubangGray")
         }
     }
 
@@ -88,6 +86,8 @@ class ScheduleMainViewController: UIViewController {
 // MARK: - Set up UI
 extension ScheduleMainViewController {
     private func setupView() {
+        navigationController?.navigationBar.tintColor = .label
+
         let mapButton = UIBarButtonItem(
             image: UIImage(systemName: "map"),
             style: .plain,
@@ -117,8 +117,17 @@ extension ScheduleMainViewController {
         toggleButtons.forEach { button in
             button.layer.cornerRadius = button.frame.height / 2
             button.clipsToBounds = true
-            button.layer.backgroundColor = UIColor(hex: "#D9D9D9", alpha: 0.6)?.cgColor
-            button.setTitleColor(UIColor(hex: "#7E7E7E", alpha: 1.0), for: .normal)
+
+            if traitCollection.userInterfaceStyle == .dark {
+                button.backgroundColor = UIColor(named: "DolHareubangLightGray")
+                button.setTitleColor(UIColor(named: "DolHareubangGray"), for: .normal)
+                button.tintColor = UIColor(named: "DolHareubangGray")
+            } else {
+                button.backgroundColor = UIColor(named: "DolHareubangLightGray")
+                button.setTitleColor(UIColor(named: "DolHareubangGray"), for: .normal)
+                button.tintColor = UIColor(named: "DolHareubangGray")
+            }
+
         }
 
         tableView.delegate = self
