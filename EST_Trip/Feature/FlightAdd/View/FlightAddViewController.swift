@@ -31,7 +31,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var arrivalDate: UIButton!
     @IBAction func arrivalDateButtonTapped(_ sender: Any) {
-        print("도착일 선택 체크")
         presentArrivalDataSheet()
     }
 
@@ -50,16 +49,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         setupNavigationBar()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        let flight: [FlightEntity] = CoreDataManager.shared.fetch(FlightEntity.self)
-        flight.forEach { data in
-            print("저장된 데이터 확인 :",data)
-            print("저장된 공항",data.departureAirport ?? "")
-        }
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -74,7 +63,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
 
     @objc private func flightNameChanged() {
         viewModel.updateFlightName(name: flightName.text ?? "")
-        print(viewModel.flight.flightName)
     }
 
     private func setButtonTitle(title: String, for button: UIButton, active: Bool = true) {
@@ -172,8 +160,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             vc.onAirportSelected = { [weak self] selectedAirport in
                 guard let self else { return }
 
-                print("선택된 공항 \(selectedAirport)")
-                print("뷰모델 상태:", viewModel.flight.departureAirport ?? "없음")
                 let title = viewModel.updateDepartureAirport(airport: selectedAirport)
                 setButtonTitle(title: title, for: departureAirport)
             }
@@ -193,7 +179,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
                 guard let self else { return }
                 let title = viewModel.updateArrivalDate(date: date)
                 setButtonTitle(title: title, for: arrivalDate)
-                print("도착일 체크 \(String(describing: viewModel.flight.arrivalDate))")
             }
             present(vc, animated: true)
         }
@@ -226,7 +211,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
                 guard let self else { return }
                 let title = viewModel.updateArrivalAirport(airport: selectAirport)
                 setButtonTitle(title: title, for: arrivalAirport)
-                print("모델 전체 상태 체크",viewModel.flight)
             }
             present(vc, animated: true)
         }
@@ -241,7 +225,6 @@ extension FlightAddViewController {
             present(alert, animated: true)
             return
         }
-        print("CoreData 저장 직전 상태: \(viewModel.flight)")
         viewModel.saveToCoreData()
         let vc = FeatureFactory.makePlanner()
         vc.travel = viewModel.updateTravle(travle: travel)

@@ -52,4 +52,8 @@ final class CalendarSelectionStore {
     func isStartOrEndDate(_ date: Date) -> Bool {
         return date == travelDate.startDate || date == travelDate.endDate
     }
+
+    func reset() {
+        travelDate = TravelDate()
+    }
 }

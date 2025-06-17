@@ -106,6 +106,10 @@ final class CalendarViewModel {
         }
     }
 
+    func resetSelection() {
+        selectionStore.reset()
+    }
+
     // MARK: - 날짜 선택 파트
     // 날짜 선택
     func select(date: Date) {

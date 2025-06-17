@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        let root = FeatureFactory.makeScheduleDetail()
+        let root = FeatureFactory.makeMain()
         let nav = UINavigationController(rootViewController: root)
         window.rootViewController = nav
         window.makeKeyAndVisible()
