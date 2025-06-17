@@ -64,7 +64,7 @@ extension Travel {
     }
     
     private static func makeDay1Places(scheduleID: UUID, date: Date) -> [PlaceDTO] {
-        [
+        [/*
             PlaceDTO(
                 id: UUID(),
                 scheduleID: scheduleID,
@@ -122,12 +122,13 @@ extension Travel {
                 photo: nil,
                 arrivalTime: Calendar.current.date(byAdding: .hour, value: 2, to: date)
             ),
+          */
         ]
     }
     
     private static func makeDay2Places(scheduleID: UUID, date: Date) -> [PlaceDTO] {
         [
-            
+            /*
             
             PlaceDTO(
                 id: UUID(),
@@ -181,6 +182,7 @@ extension Travel {
                 photo: nil,
                 arrivalTime: Calendar.current.date(byAdding: .hour, value: 2, to: date)
             ),
+             */
         ]
     }
 }

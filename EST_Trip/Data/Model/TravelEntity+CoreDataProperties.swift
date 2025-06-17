@@ -13,7 +13,7 @@ import CoreData
 extension TravelEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<TravelEntity> {
-        return NSFetchRequest<TravelEntity>(entityName: "Travel")
+        return NSFetchRequest<TravelEntity>(entityName: "TravelEntity")
     }
 
     @NSManaged public var endDate: Date?

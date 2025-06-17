@@ -40,11 +40,17 @@ extension ScheduleEntity {
 // MARK: Generated accessors for places
 extension ScheduleEntity {
 
+//    @objc(addPlacesObject:)
+//    @NSManaged public func addToPlaces(_ value: TravelEntity)
+//
+//    @objc(removePlacesObject:)
+//    @NSManaged public func removeFromPlaces(_ value: TravelEntity)
+    
     @objc(addPlacesObject:)
-    @NSManaged public func addToPlaces(_ value: TravelEntity)
+    @NSManaged public func addToPlaces(_ value: PlaceEntity)
 
     @objc(removePlacesObject:)
-    @NSManaged public func removeFromPlaces(_ value: TravelEntity)
+    @NSManaged public func removeFromPlaces(_ value: PlaceEntity)
 
     @objc(addPlaces:)
     @NSManaged public func addToPlaces(_ values: NSSet)
