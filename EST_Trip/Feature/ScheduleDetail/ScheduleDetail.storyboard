@@ -165,10 +165,10 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="sAP-Nk-e2I">
-                                        <rect key="frame" x="33.000000000000007" y="119.33333333333337" width="74.666666666666686" height="63"/>
+                                        <rect key="frame" x="33" y="119.33333333333337" width="327" height="63"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSJ-H0-NnJ">
-                                                <rect key="frame" x="0.0" y="0.0" width="74.666666666666671" height="25"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="327" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="UoN-ZN-UjA"/>
                                                 </constraints>
@@ -180,7 +180,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BIG-dQ-sBt">
-                                                <rect key="frame" x="0.0" y="38" width="74.666666666666671" height="25"/>
+                                                <rect key="frame" x="0.0" y="38" width="327" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="Ia9-9c-Bs2"/>
                                                 </constraints>
@@ -208,6 +208,7 @@
                                     <constraint firstAttribute="trailing" secondItem="TY7-tj-I7J" secondAttribute="trailing" constant="33" id="8xU-Mr-anG"/>
                                     <constraint firstItem="TY7-tj-I7J" firstAttribute="top" secondItem="IwU-Ns-wuk" secondAttribute="top" constant="40" id="DFU-Rm-XFM"/>
                                     <constraint firstItem="TY7-tj-I7J" firstAttribute="leading" secondItem="IwU-Ns-wuk" secondAttribute="leading" constant="33" id="LvM-lB-H08"/>
+                                    <constraint firstAttribute="trailing" secondItem="sAP-Nk-e2I" secondAttribute="trailing" constant="33" id="NTh-Q2-r8a"/>
                                     <constraint firstItem="sAP-Nk-e2I" firstAttribute="leading" secondItem="IwU-Ns-wuk" secondAttribute="leading" constant="33" id="bN8-8R-omT"/>
                                     <constraint firstItem="sAP-Nk-e2I" firstAttribute="top" secondItem="2lE-8H-s8Y" secondAttribute="bottom" constant="20" id="gL1-lH-YOq"/>
                                 </constraints>
@@ -283,7 +284,6 @@
                     </view>
                     <connections>
                         <outlet property="backgroundView" destination="cGf-9M-Upl" id="yfO-Vb-aCO"/>
-                        <outlet property="containerView" destination="cGf-9M-Upl" id="qOZ-Oj-6DF"/>
                         <outlet property="datePicker" destination="zbM-15-4ra" id="q0W-xF-Lvf"/>
                     </connections>
                 </viewController>
@@ -291,12 +291,145 @@
             </objects>
             <point key="canvasLocation" x="1494" y="-35"/>
         </scene>
+        <!--Add Memo View Controller-->
+        <scene sceneID="lAA-Iz-Z2N">
+            <objects>
+                <viewController storyboardIdentifier="AddMemoViewController" id="VKg-YU-Br4" customClass="AddMemoViewController" customModule="EST_Trip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="34n-Sg-sZm">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nNa-yL-3ET">
+                                <rect key="frame" x="35" y="218" width="323" height="250"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="T4e-6A-e1r">
+                                        <rect key="frame" x="30" y="35" width="263" height="130"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbP-wm-1s4">
+                                                <rect key="frame" x="0.0" y="0.0" width="31.333333333333332" height="21.666666666666668"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bRc-m5-Gw3">
+                                                <rect key="frame" x="0.0" y="41.666666666666679" width="263" height="88.333333333333314"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="textColor" systemColor="labelColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                            </textView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="JbP-wm-1s4" firstAttribute="top" secondItem="T4e-6A-e1r" secondAttribute="top" id="CTZ-lo-Wpr"/>
+                                            <constraint firstAttribute="trailing" secondItem="bRc-m5-Gw3" secondAttribute="trailing" id="UME-xg-79K"/>
+                                            <constraint firstItem="JbP-wm-1s4" firstAttribute="leading" secondItem="T4e-6A-e1r" secondAttribute="leading" id="XSF-SP-o4b"/>
+                                            <constraint firstAttribute="height" constant="130" id="k34-lz-8n3"/>
+                                            <constraint firstItem="bRc-m5-Gw3" firstAttribute="leading" secondItem="T4e-6A-e1r" secondAttribute="leading" id="mxx-qp-YPt"/>
+                                            <constraint firstAttribute="bottom" secondItem="bRc-m5-Gw3" secondAttribute="bottom" id="wLh-46-glf"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nxd-XE-ZDv">
+                                        <rect key="frame" x="0.0" y="209" width="323" height="41"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaG-dt-65a">
+                                                <rect key="frame" x="0.0" y="0.0" width="162" height="41"/>
+                                                <color key="tintColor" name="DolHareubangGray"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="취소">
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="cancelButtonTapped:" destination="VKg-YU-Br4" eventType="touchUpInside" id="kV7-aR-0hT"/>
+                                                </connections>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HO7-cD-6za">
+                                                <rect key="frame" x="162" y="0.0" width="1" height="41"/>
+                                                <color key="backgroundColor" name="DolHareubangLightGray"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="1" id="oyp-di-Bod"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qYR-Dm-YGA">
+                                                <rect key="frame" x="163" y="0.0" width="160" height="41"/>
+                                                <color key="tintColor" name="JejuOcean"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="확인">
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="confirmButtonTapped:" destination="VKg-YU-Br4" eventType="touchUpInside" id="O4O-54-dBs"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="qYR-Dm-YGA" secondAttribute="bottom" id="2Cs-hY-mMl"/>
+                                            <constraint firstItem="qYR-Dm-YGA" firstAttribute="width" secondItem="GaG-dt-65a" secondAttribute="width" multiplier="0.989556" id="39K-lo-dfu"/>
+                                            <constraint firstAttribute="bottom" secondItem="HO7-cD-6za" secondAttribute="bottom" id="6iD-PB-KSd"/>
+                                            <constraint firstAttribute="bottom" secondItem="GaG-dt-65a" secondAttribute="bottom" id="9RO-eU-t5l"/>
+                                            <constraint firstItem="qYR-Dm-YGA" firstAttribute="top" secondItem="Nxd-XE-ZDv" secondAttribute="top" id="PKB-Zp-mCr"/>
+                                            <constraint firstAttribute="height" constant="41" id="UWF-nQ-l0Q"/>
+                                            <constraint firstItem="qYR-Dm-YGA" firstAttribute="leading" secondItem="HO7-cD-6za" secondAttribute="trailing" id="XoG-Ty-aq9"/>
+                                            <constraint firstItem="GaG-dt-65a" firstAttribute="leading" secondItem="Nxd-XE-ZDv" secondAttribute="leading" id="ZEf-bZ-MzQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="qYR-Dm-YGA" secondAttribute="trailing" id="i2g-Ub-adw"/>
+                                            <constraint firstItem="HO7-cD-6za" firstAttribute="leading" secondItem="GaG-dt-65a" secondAttribute="trailing" id="pHN-ly-u06"/>
+                                            <constraint firstItem="GaG-dt-65a" firstAttribute="top" secondItem="Nxd-XE-ZDv" secondAttribute="top" id="u9N-QV-8hE"/>
+                                            <constraint firstItem="HO7-cD-6za" firstAttribute="top" secondItem="Nxd-XE-ZDv" secondAttribute="top" id="zrc-Xy-rH4"/>
+                                        </constraints>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xdD-Y0-78d">
+                                        <rect key="frame" x="0.0" y="209" width="323" height="1"/>
+                                        <color key="backgroundColor" name="DolHareubangLightGray"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="qpY-BH-NYf"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="T4e-6A-e1r" firstAttribute="top" secondItem="nNa-yL-3ET" secondAttribute="top" constant="35" id="Npx-0C-1no"/>
+                                    <constraint firstAttribute="trailing" secondItem="T4e-6A-e1r" secondAttribute="trailing" constant="30" id="WtA-j5-Pwd"/>
+                                    <constraint firstItem="T4e-6A-e1r" firstAttribute="leading" secondItem="nNa-yL-3ET" secondAttribute="leading" constant="30" id="X6z-ou-Fd7"/>
+                                    <constraint firstItem="xdD-Y0-78d" firstAttribute="leading" secondItem="nNa-yL-3ET" secondAttribute="leading" id="cF5-ag-PFk"/>
+                                    <constraint firstAttribute="bottom" secondItem="xdD-Y0-78d" secondAttribute="bottom" constant="40" id="cuh-ds-cJc"/>
+                                    <constraint firstAttribute="trailing" secondItem="Nxd-XE-ZDv" secondAttribute="trailing" id="ewj-kE-q47"/>
+                                    <constraint firstAttribute="trailing" secondItem="xdD-Y0-78d" secondAttribute="trailing" id="lDk-Ug-MRY"/>
+                                    <constraint firstAttribute="height" constant="250" id="lDq-A7-IL9"/>
+                                    <constraint firstItem="Nxd-XE-ZDv" firstAttribute="leading" secondItem="nNa-yL-3ET" secondAttribute="leading" id="szU-0m-CTR"/>
+                                    <constraint firstAttribute="bottom" secondItem="Nxd-XE-ZDv" secondAttribute="bottom" id="zMg-5u-A9h"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="CzO-oL-Pxo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="CzO-oL-Pxo" firstAttribute="trailing" secondItem="nNa-yL-3ET" secondAttribute="trailing" constant="35" id="FPi-yw-uoa"/>
+                            <constraint firstItem="nNa-yL-3ET" firstAttribute="leading" secondItem="CzO-oL-Pxo" secondAttribute="leading" constant="35" id="idl-jr-lbc"/>
+                            <constraint firstItem="nNa-yL-3ET" firstAttribute="centerX" secondItem="34n-Sg-sZm" secondAttribute="centerX" id="lq4-nv-JLx"/>
+                            <constraint firstItem="nNa-yL-3ET" firstAttribute="top" secondItem="CzO-oL-Pxo" secondAttribute="top" constant="100" id="uVq-MZ-sdX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundView" destination="nNa-yL-3ET" id="b5V-RS-Fz4"/>
+                        <outlet property="confirmButton" destination="qYR-Dm-YGA" id="VIT-di-3oI"/>
+                        <outlet property="memoTextView" destination="bRc-m5-Gw3" id="xdi-fc-98l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EjN-Ip-7cO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2192" y="-35"/>
+        </scene>
     </scenes>
     <resources>
         <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="clock" catalog="system" width="128" height="123"/>
         <image name="doc.text" catalog="system" width="115" height="128"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
+        <namedColor name="DolHareubangGray">
+            <color red="0.49411764705882355" green="0.49411764705882355" blue="0.49411764705882355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="DolHareubangLightGray">
+            <color red="0.85100001096725464" green="0.85100001096725464" blue="0.85100001096725464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="JejuOcean">
             <color red="0.23921568627450981" green="0.6470588235294118" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

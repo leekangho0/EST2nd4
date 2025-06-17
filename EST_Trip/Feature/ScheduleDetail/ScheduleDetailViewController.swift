@@ -18,11 +18,12 @@ struct ScheduleDetail {
 
 class ScheduleDetailViewController: UIViewController {
 
-    @IBOutlet weak var addTimeButton: UIButton!
-    @IBOutlet weak var addMemoButton: UIButton!
+    @IBOutlet private weak var addTimeButton: UIButton!
+    @IBOutlet private weak var addMemoButton: UIButton!
     @IBOutlet private weak var routeFindingButton: UIButton!
     
     var delegate: ScheduleDetailViewControllerDelegate?
+
     private var detail = ScheduleDetail()
 
     private let timeFormatter: DateFormatter = {
@@ -33,6 +34,7 @@ class ScheduleDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupUI()
         loadSavedData()
     }
@@ -41,8 +43,8 @@ class ScheduleDetailViewController: UIViewController {
         presentTimePicker()
     }
 
-    @IBAction func addMemoButtonTapped(_ sender: Any) {
-//        presentMemoView()
+    @IBAction private func addMemoButtonTapped(_ sender: UIButton) {
+        presentMemoView()
     }
 
     private func setupUI() {
@@ -62,6 +64,7 @@ class ScheduleDetailViewController: UIViewController {
         addMemoButton.titleLabel?.lineBreakMode = .byTruncatingTail
         addMemoButton.titleLabel?.numberOfLines = 1
         addMemoButton.titleLabel?.adjustsFontSizeToFitWidth = false
+
 
         addTimeButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: -3)
         addTimeButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -3, bottom: 0, right: 3)
@@ -118,22 +121,26 @@ class ScheduleDetailViewController: UIViewController {
         present(timeVC, animated: true)
     }
 
-//    private func presentMemoView() {
-//        guard let memoVC = storyboard?.instantiateViewController(withIdentifier: "AddMemoViewController") as? AddMemoViewController else { return }
-//
-//        memoVC.memoEnteredHandler = { [weak self] memo in
-//            guard let self = self else { return }
-//            self.detail.memo = memo
-//            UserDefaults.standard.set(memo, forKey: "savedMemo")
-//            self.addMemoButton.setTitle(memo, for: .normal)
-//        }
-//
-//        memoVC.currentMemo = (addMemoButton.titleLabel?.text == "메모 추가") ? "" : addMemoButton.titleLabel?.text
-//
-//        memoVC.modalPresentationStyle = .overFullScreen
-//        memoVC.modalTransitionStyle = .crossDissolve
-//        present(memoVC, animated: true)
-//    }
+    private func presentMemoView() {
+        guard let memoVC = storyboard?.instantiateViewController(withIdentifier: "AddMemoViewController") as? AddMemoViewController else { return }
+
+        memoVC.memoEnteredHandler = { [weak self] memo in
+            guard let self = self else { return }
+            self.detail.memo = memo
+            UserDefaults.standard.set(memo, forKey: "savedMemo")
+            self.addMemoButton.setTitle(memo, for: .normal)
+        }
+
+        if addMemoButton.titleLabel?.text == " 메모 추가" {
+            memoVC.currentMemo = ""
+        } else {
+            memoVC.currentMemo = addMemoButton.titleLabel?.text
+        }
+
+        memoVC.modalPresentationStyle = .overFullScreen
+        memoVC.modalTransitionStyle = .crossDissolve
+        present(memoVC, animated: true)
+    }
 
     private func formatTime(_ date: Date) -> String {
         return timeFormatter.string(from: date)
