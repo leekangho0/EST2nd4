@@ -15,35 +15,37 @@ struct Trip {
 
 class MainViewController: UIViewController {
 
-    @IBOutlet weak var header: UIView!
-
-    @IBOutlet weak var userName: UILabel!
-
-    @IBOutlet weak var futureTripButton: UIButton!
-    @IBOutlet weak var pastTripButton: UIButton!
-
-    @IBOutlet weak var tableView: UITableView!
-
     // 더미 데이터
-    let trips = [
-        Trip(title: "6월", startDate: Date(year: 2025, month: 6, day: 13), endDate: Date(year: 2025, month: 6, day: 15)),
-        Trip(title: "7월 여름휴가입니다아아아", startDate: Date(year: 2025, month: 7, day: 10), endDate: Date(year: 2025, month: 7, day: 12)),
-        Trip(title: "4월 제주", startDate: Date(year: 2024, month: 4, day: 15), endDate: Date(year: 2024, month: 4, day: 20)),
-        Trip(title: "8월 제주", startDate: Date(year: 2025, month: 8, day: 15), endDate: Date(year: 2025, month: 8, day: 23)),
-        Trip(title: "9월 한달살기", startDate: Date(year: 2025, month: 9, day: 3), endDate: Date(year: 2025, month: 10, day: 2)),
-        Trip(title: "겨울 제주", startDate: Date(year: 2024, month: 12, day: 15), endDate: Date(year: 2024, month: 12, day: 19))
-    ]
+    //    let trips = [
+    //        Trip(title: "6월", startDate: Date(year: 2025, month: 6, day: 13), endDate: Date(year: 2025, month: 6, day: 15)),
+    //        Trip(title: "7월 여름휴가입니다아아아", startDate: Date(year: 2025, month: 7, day: 10), endDate: Date(year: 2025, month: 7, day: 12)),
+    //        Trip(title: "4월 제주", startDate: Date(year: 2024, month: 4, day: 15), endDate: Date(year: 2024, month: 4, day: 20)),
+    //        Trip(title: "8월 제주", startDate: Date(year: 2025, month: 8, day: 15), endDate: Date(year: 2025, month: 8, day: 23)),
+    //        Trip(title: "9월 한달살기", startDate: Date(year: 2025, month: 9, day: 3), endDate: Date(year: 2025, month: 10, day: 2)),
+    //        Trip(title: "겨울 제주", startDate: Date(year: 2024, month: 12, day: 15), endDate: Date(year: 2024, month: 12, day: 19))
+    //    ]
+    var trips: [Trip] = []
+
 
     // 📌 dday를 기준으로 dday >=0 이면 futureTripTitle, dday < 0 이면 pastTripTitle에 넣어주기
     var futureTrip: [Trip] = []
     var pastTrip: [Trip] = []
     var currentTrip: [Trip] = []
 
+    @IBOutlet weak var header: UIView!
+    @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var futureTripButton: UIButton!
+    @IBOutlet weak var pastTripButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.dataSource = self
 
+        // 코어데이터에서 데이터 로드
+		fetchTrips()
+        // futureTrip/ pastTrip 나누는 메서드로 보입니다, 명칭 수정하면 더 좋을 것 같아요!
         loadTrips()
         currentTrip = futureTrip
 
@@ -75,8 +77,22 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func plusButtonTapped(_ sender: Any) {
-        let vc = FeatureFactory.makeCalendar()
+		//임시코드!, 플러스버튼 선택시 CoreData에 임시데이터 저장
+        let randomNumber = Int.random(in: -10...10) // 시작날짜 현재 날짜 기준 -10~+10
+        let startDate = Calendar.current.date(byAdding: .day, value: randomNumber, to: Date())!
+        let tripLength = Int.random(in: 1...3) // 시작날짜와 끝나는 날짜 설정 +1~+3
+        let endDate = Calendar.current.date(byAdding: .day, value: tripLength, to: startDate)!
+        let randomNumber2 = Int.random(in: 1...100) // title뒤에 붙을 이름 랜덤 1~100
 
+        CoreDataManager.shared.insert(TravelEntity.self) { travel in
+            travel.id = UUID()
+            travel.title = "제주여행\(randomNumber2)"
+            travel.startDate = startDate
+            travel.endDate = endDate
+        }
+        // 여기까지 임시코드입니다. 추후 삭제필요!
+
+        let vc = FeatureFactory.makeCalendar()
         navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -143,3 +159,17 @@ extension MainViewController: UITableViewDataSource {
         return cell
     }
 }
+
+extension MainViewController {
+    func fetchTrips() {
+        let travelData = CoreDataManager.shared.fetch(TravelEntity.self)
+        self.trips = travelData.compactMap { travel in
+            guard let title = travel.title,
+                  let startDate = travel.startDate,
+                  let endDate = travel.endDate else { return nil }
+            return Trip(title: title, startDate: startDate, endDate: endDate)
+        }
+        tableView.reloadData()
+    }
+}
+

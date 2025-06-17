@@ -107,6 +107,8 @@ class ScheduleMainViewController: UIViewController {
         searchVC.selectedSection = section
         searchVC.delegate = self  // 꼭 delegate 지정
         self.navigationController?.pushViewController(searchVC, animated: true)
+        
+        updateTableViewHeight()
     }
     
     @objc func editPlaceButtonTapped(_ sender: UIButton) {
