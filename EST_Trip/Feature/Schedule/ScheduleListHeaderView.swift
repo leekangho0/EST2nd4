@@ -16,19 +16,19 @@ class ScheduleListHeaderView: UIView {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var addPlaceButton: UIButton!
     @IBOutlet weak var addMemoButton: UIButton!
-
     
-
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         //commonInit()
     }
-
+    
     private func commonInit() {
         if let view = Bundle.main.loadNibNamed("ScheduleListHeaderView", owner: self, options: nil)?.first as? UIView {
             addSubview(view)
@@ -37,11 +37,11 @@ class ScheduleListHeaderView: UIView {
         
         addButtonStyles()
     }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
+    
     private func addButtonStyles() {
         let borderColor = UIColor.black.cgColor
         [addPlaceButton, addMemoButton].forEach { button in

@@ -13,6 +13,7 @@ class EditMenuViewController: UIViewController {
     @IBOutlet weak var dateEditButton: UIButton!
     @IBOutlet weak var tripDeleteButton: UIButton!
 
+    var currentTitleText: String?
     var onTitleUpdate: ((String) -> Void)?
 
     override func viewDidLoad() {
@@ -31,34 +32,18 @@ class EditMenuViewController: UIViewController {
     }
 
     @IBAction func titleEditButtonTapped(_ sender: UIButton) {
-        let alert = UIAlertController(title: "여행 제목", message: nil, preferredStyle: .alert)
+        let storyboard = UIStoryboard(name: "Schedule", bundle: nil)
+        guard let editTitleVC = storyboard.instantiateViewController(withIdentifier: "EditTripTitleViewController") as? EditTripTitleViewController else { return }
 
-        alert.addTextField { textField in
-            textField.placeholder = "제목을 입력하세요"
-            textField.clearButtonMode = .whileEditing
-            textField.borderStyle = .none
+        editTitleVC.currentTitle = currentTitleText
 
-            let bottomLine = CALayer()
-            bottomLine.frame = CGRect(x: 0, y: textField.frame.height - 1, width: textField.frame.width, height: 1)
-            bottomLine.backgroundColor = UIColor.systemBlue.cgColor
-            textField.layer.addSublayer(bottomLine)
+        editTitleVC.onTitleConfirmed = { [weak self] newTitle in
+            self?.onTitleUpdate?(newTitle)
+            self?.dismiss(animated: true)
         }
-
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        let confirmAction = UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
-            if let text = alert.textFields?.first?.text, !text.isEmpty {
-                self?.onTitleUpdate?(text)
-                self?.dismiss(animated: true)
-            }
-        })
-
-        alert.addAction(cancelAction)
-        alert.addAction(confirmAction)
-
-        cancelAction.setValue(UIColor.gray, forKey: "titleTextColor")
-        confirmAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
-
-        present(alert, animated: true)
+        editTitleVC.modalPresentationStyle = .overFullScreen
+        editTitleVC.modalTransitionStyle = .crossDissolve
+        present(editTitleVC, animated: true)
     }
 
     @IBAction func dateEditButtonTapped(_ sender: UIButton) {
@@ -69,5 +54,3 @@ class EditMenuViewController: UIViewController {
         // TODO: 삭제 로직
     }
 }
-
-
