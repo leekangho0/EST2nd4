@@ -14,6 +14,9 @@ final class CalendarViewController: UIViewController {
 
 	private let viewModel = CalendarViewModel()
     private var didScrollToToday = false
+    
+    var isEditMode = false
+    var completion: ((Date?, Date?) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,15 +154,19 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
 extension CalendarViewController {
     @objc func dateButtonTap(_ sender: Any) {
-        let vc = FeatureFactory.makeFlight()
-        
-        let travle = Travel(
-            startDate: viewModel.travelDate.startDate,
-            endDate: viewModel.travelDate.endDate
-        )
-        vc.travel = travle
-
-        
-        navigationController?.pushViewController(vc, animated: true)
+        if isEditMode {
+            completion?(viewModel.travelDate.startDate, viewModel.travelDate.endDate)
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let vc = FeatureFactory.makeFlight()
+            
+            let travel = Travel(
+                startDate: viewModel.travelDate.startDate,
+                endDate: viewModel.travelDate.endDate
+            )
+            vc.travel = travel
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

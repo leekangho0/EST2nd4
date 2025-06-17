@@ -242,7 +242,7 @@ extension SearchViewController: UITableViewDataSource {
         cell.onSelectTapped = { [weak self] in
             guard let self = self,
                   let section = self.selectedSection else { return }
-            self.delegate?.searchViewController(self, didSelectPlace: place, forSection: section)
+//            self.delegate?.searchViewController(self, didSelectPlace: place, forSection: section)
             self.navigationController?.popViewController(animated: true)
         }
 
@@ -279,11 +279,23 @@ extension SearchViewController: UITextFieldDelegate {
 extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
         print("✅ 선택된 장소: \(place.name ?? "이름 없음")")
-        print(place)
+//        print(place)
+//        searchBar.text = place.name
+//        LocalPlaceService.shared.addPlace(place: place)
+        
         hideAutocompleteResults()
         searchBar.resignFirstResponder()
-        searchBar.text = place.name
-        LocalPlaceService.shared.addPlace(place: place)
+
+        let place = PlaceDTO(
+            id: UUID(),
+            name: place.name,
+            latitude: place.coordinate.latitude,
+            longitude: place.coordinate.longitude,
+            address: place.formattedAddress
+        )
+        
+        self.delegate?.searchViewController(self, didSelectPlace: place, forSection: selectedSection ?? 0)
+        self.navigationController?.popViewController(animated: true)
     }
 
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: Error) {

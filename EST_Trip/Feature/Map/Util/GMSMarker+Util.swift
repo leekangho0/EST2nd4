@@ -11,10 +11,10 @@ import GoogleMaps
 extension GMSMarker {
     static func make(from place: PlaceDTO) -> GMSMarker {
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longittude)
+        marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
         marker.title = place.name
-        marker.snippet = place.category.name
-        marker.icon = place.category.image
+        marker.snippet = place.category?.name
+        marker.icon = place.category?.image
         
         return marker
     }

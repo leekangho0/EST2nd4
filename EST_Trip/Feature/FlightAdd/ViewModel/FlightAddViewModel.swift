@@ -91,10 +91,10 @@ extension FlightAddViewModel {
         }
     }
     
-    func updateTravle(travle: Travel?) -> Travel? {
-        var travle = travle
+    func updateTravel(travel: Travel?) -> Travel? {
+        var travel = travel
         
-        travle?.startFlight = FlightDTO(
+        travel?.startFlight = FlightDTO(
             airline: flight.flightName,
             departureDate: flight.departureDate,
             departureTime: flight.departureDate,
@@ -104,6 +104,6 @@ extension FlightAddViewModel {
             arrivalDate: flight.arrivalDate
         )
         
-        return travle
+        return travel
     }
 }
