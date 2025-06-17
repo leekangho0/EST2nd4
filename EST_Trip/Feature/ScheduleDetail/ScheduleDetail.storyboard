@@ -225,6 +225,10 @@
                     <connections>
                         <outlet property="addMemoButton" destination="BIG-dQ-sBt" id="dqn-pP-hmk"/>
                         <outlet property="addTimeButton" destination="nSJ-H0-NnJ" id="aVg-sN-L6G"/>
+                        <outlet property="addressLabel" destination="JvL-bS-Ppy" id="7AW-VJ-zJM"/>
+                        <outlet property="categoryLabel" destination="oTI-ch-w1l" id="K3a-HY-pxk"/>
+                        <outlet property="nameLabel" destination="oFx-VD-J9S" id="PGO-pF-him"/>
+                        <outlet property="ratingStackView" destination="TDm-ek-0ZC" id="MYS-vQ-lOb"/>
                         <outlet property="routeFindingButton" destination="mhj-7q-QTj" id="eg6-oh-q0X"/>
                     </connections>
                 </viewController>
@@ -440,7 +444,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

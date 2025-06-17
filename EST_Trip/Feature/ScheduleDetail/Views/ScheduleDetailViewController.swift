@@ -8,7 +8,9 @@
 import UIKit
 
 protocol ScheduleDetailViewControllerDelegate {
-    func didTapRouteFindingButton()
+    func updatePlaceDate(section: Int, place: PlaceDTO?, date: Date)
+    func didTapRouteFindingButton(place: PlaceDTO?)
+    func updatePlaceMemo(section: Int, place: PlaceDTO?, memo: String)
 }
 
 struct ScheduleDetail {
@@ -18,6 +20,11 @@ struct ScheduleDetail {
 
 class ScheduleDetailViewController: UIViewController {
 
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var ratingStackView: UIStackView!
+    
     @IBOutlet private weak var addTimeButton: UIButton!
     @IBOutlet private weak var addMemoButton: UIButton!
     @IBOutlet private weak var routeFindingButton: UIButton!
@@ -31,12 +38,17 @@ class ScheduleDetailViewController: UIViewController {
         formatter.dateFormat = "HH:mm"
         return formatter
     }()
+    
+    var place: PlaceDTO?
+    var section: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
-        loadSavedData()
+//        loadSavedData()
+        
+        configure()
     }
 
     @IBAction private func addTimeButtonTapped(_ sender: UIButton) {
@@ -86,10 +98,24 @@ class ScheduleDetailViewController: UIViewController {
         sheet.preferredCornerRadius = 16
     }
     
+    private func configure() {
+        guard let place else { return }
+        
+        nameLabel.text = place.name
+        categoryLabel.text = ""
+        addressLabel.text = place.address
+        
+        if let arrivalTime = place.arrivalTime {
+            addTimeButton.setTitle(arrivalTime.timeToString(), for: .normal)
+        }
+        addMemoButton.setTitle(place.memo, for: .normal)
+        
+        ratingStackView.isHidden = true
+    }
+    
     @IBAction func findRoute(_ sender: Any) {
         self.dismiss(animated: false) { [weak self] in
-            // 여기서 protocol 수정 후 데이터 넘겨주세요
-            self?.delegate?.didTapRouteFindingButton()
+            self?.delegate?.didTapRouteFindingButton(place: self?.place)
         }
     }
 
@@ -112,8 +138,10 @@ class ScheduleDetailViewController: UIViewController {
         timeVC.onTimeSelected = { [weak self] selectedDate in
             guard let self = self else { return }
             self.detail.time = selectedDate
-            UserDefaults.standard.set(selectedDate.timeIntervalSince1970, forKey: "savedTime")
+//            UserDefaults.standard.set(selectedDate.timeIntervalSince1970, forKey: "savedTime")
             self.addTimeButton.setTitle(self.formatTime(selectedDate), for: .normal)
+            
+            self.delegate?.updatePlaceDate(section: section, place: self.place, date: selectedDate)
         }
 
         timeVC.modalPresentationStyle = .overFullScreen
@@ -127,8 +155,10 @@ class ScheduleDetailViewController: UIViewController {
         memoVC.memoEnteredHandler = { [weak self] memo in
             guard let self = self else { return }
             self.detail.memo = memo
-            UserDefaults.standard.set(memo, forKey: "savedMemo")
+//            UserDefaults.standard.set(memo, forKey: "savedMemo")
             self.addMemoButton.setTitle(memo, for: .normal)
+            
+            self.delegate?.updatePlaceMemo(section: section, place: self.place, memo: memo)
         }
 
         if addMemoButton.titleLabel?.text == " 메모 추가" {

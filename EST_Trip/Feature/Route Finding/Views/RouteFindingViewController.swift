@@ -51,7 +51,7 @@ class RouteFindingViewController: UIViewController {
         return vc
     }()
     
-    var place: Place?
+    var place: PlaceDTO?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -428,7 +428,13 @@ extension RouteFindingViewController: CLLocationManagerDelegate {
               let place = place else { return }
         
         routeFindingVM.updateLocation(currentLocation, for: .start)
-        routeFindingVM.updateLocation(place.location, for: .end)
+        routeFindingVM.updateLocation(
+                CLLocationCoordinate2D(
+                    latitude: place.latitude,
+                    longitude: place.longitude
+                ),
+                for: .end
+            )
         fetchRoutes()
         
         hasUpdatedRoute = true

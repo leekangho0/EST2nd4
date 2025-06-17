@@ -20,7 +20,7 @@ class ScheduleMainViewController: UIViewController {
     
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     
-    private let sectionHeight: CGFloat = 80
+    private let sectionHeight: CGFloat = 50
     
     private var isEditMode = false
     
@@ -124,11 +124,6 @@ extension ScheduleMainViewController {
         self.navigationController?.pushViewController(flightVC, animated: true)
     }
     
-    @objc func editPlaceButtonTapped(_ sender: UIButton) {
-        isEditMode.toggle()
-        tableView.isEditing = isEditMode
-    }
-    
     @IBAction func editButtonTapped(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Schedule", bundle: nil)
         guard let editVC = storyboard.instantiateViewController(withIdentifier: "EditMenuViewController") as? EditMenuViewController else {
@@ -146,6 +141,23 @@ extension ScheduleMainViewController {
         
         present(editVC, animated: true)
         
+    }
+    
+    @IBAction func handleLongPress(_ gesture: UILongPressGestureRecognizer? = nil) {
+        if let state = gesture?.state {
+            if state == .ended {
+                updateEditMode()
+            }
+        }
+    }
+    
+    private func updateEditMode() {
+        isEditMode.toggle()
+        tableView.isEditing = isEditMode
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -312,15 +324,22 @@ extension ScheduleMainViewController: UITableViewDataSource{
         headerView.dayLabel.text = "Day \(section + 1)"
         headerView.dateLabel.text = scheduleVM.dateToString(section: section)
         
+        /*
         headerView.editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         headerView.editButton.setTitle(nil, for: .normal)
         
         headerView.addPlaceButton.setTitle("장소 추가", for: .normal)
         headerView.addMemoButton.setTitle("메모 추가", for: .normal)
+        */
         
         headerView.addPlaceButton.tag = section
+        headerView.addPlaceButton.isHidden = isEditMode
         headerView.addPlaceButton.addTarget(self, action: #selector(addPlaceButtonTapped(_:)), for: .touchUpInside)
-        headerView.editButton.addTarget(self, action: #selector(editPlaceButtonTapped(_:)), for: .touchUpInside)
+        
+        headerView.editConfirmButton.isHidden = !isEditMode
+        headerView.endEdit = { [weak self] in
+            self?.updateEditMode()
+        }
         
         return headerView
     }
@@ -382,18 +401,45 @@ extension ScheduleMainViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailVC = FeatureFactory.makeScheduleDetail()
-        detailVC.modalPresentationStyle = .pageSheet
-        detailVC.delegate = self
-        
-        self.present(detailVC, animated: true)
+        if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) {
+            
+        } else {
+            let section = indexPath.section
+            var index = indexPath.row
+            
+            if isStartFlightSection(section) {
+                index -= 1
+            }
+            
+            let detailVC = FeatureFactory.makeScheduleDetail()
+            detailVC.modalPresentationStyle = .pageSheet
+            detailVC.delegate = self
+            detailVC.place = scheduleVM.place(section: section, index: index)
+            detailVC.section = section
+            
+            self.present(detailVC, animated: true)
+        }
     }
 }
 
 // MARK: - ScheduleDetailViewControllerDelegate
 extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
-    func didTapRouteFindingButton() {
+    func updatePlaceDate(section: Int, place: PlaceDTO?, date: Date) {
+        if let place {
+            scheduleVM.updatePlaceTime(in: section, placeID: place.id, time: date)
+        }
+    }
+    
+    func updatePlaceMemo(section: Int, place: PlaceDTO?, memo: String) {
+        if let place {
+            scheduleVM.updatePlaceMemo(in: section, placeID: place.id, memo: memo)
+        }
+    }
+    
+    func didTapRouteFindingButton(place: PlaceDTO?) {
         let routeFindingVC = FeatureFactory.makeRoute()
+        routeFindingVC.place = place
+        
         self.navigationController?.pushViewController(routeFindingVC, animated: true)
     }
 }

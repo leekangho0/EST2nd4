@@ -476,3 +476,30 @@ extension ScheduleViewModel {
         }
     }
 }
+
+// MARK: - Update Place
+extension ScheduleViewModel {
+    func updatePlaceMemo(in section: Int, placeID: UUID, memo: String) {
+        let predicate = NSPredicate(format: "id == %@", placeID as CVarArg)
+
+        let _ = CoreDataManager.shared.update(PlaceEntity.self, predicate: predicate) { entity in
+            entity.memo = memo
+        }
+        
+        if let index = self.schedules[section].places.firstIndex(where: { $0.id == placeID }) {
+            schedules[section].places[index].memo = memo
+        }
+    }
+    
+    func updatePlaceTime(in section: Int, placeID: UUID, time: Date) {
+        let predicate = NSPredicate(format: "id == %@", placeID as CVarArg)
+
+        let _ = CoreDataManager.shared.update(PlaceEntity.self, predicate: predicate) { entity in
+            entity.arrivalTime = time
+        }
+        
+        if let index = self.schedules[section].places.firstIndex(where: { $0.id == placeID }) {
+            schedules[section].places[index].arrivalTime = time
+        }
+    }
+}
