@@ -32,6 +32,7 @@ class MainViewController: UIViewController {
 
         // 코어데이터에서 데이터 로드
         viewModel.notifyAll()
+        viewModel.setSection(.upcoming)
     }
 
     @IBAction func editNameButton(_ sender: Any) {

@@ -25,4 +25,8 @@ extension Date {
         
         return dates
     }
+    
+    static func range(start: Date, end: Date) -> String {
+        "\(start.toString()) ~ \(end.toString(format: "MM.dd"))"
+    }
 }

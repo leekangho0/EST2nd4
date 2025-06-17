@@ -53,11 +53,10 @@ class MainViewModel {
         switch section {
         case .prior:
             travel = pastTrip
-            reloadClosure?()
         case .upcoming:
             travel = futureTrip
-            reloadClosure?()
         }
+        reloadClosure?()
     }
 }
 

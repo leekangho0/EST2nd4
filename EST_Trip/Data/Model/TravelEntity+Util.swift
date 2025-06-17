@@ -18,4 +18,8 @@ extension TravelEntity {
      
         return entity
     }
+    
+    var orderedSchdules: [ScheduleEntity] {
+        schedules?.compactMap { $0 as? ScheduleEntity } ?? []
+    }
 }

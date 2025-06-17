@@ -123,4 +123,9 @@ extension TravelProvider {
     func updateTitle(_ text: String, entity: TravelEntity) {
         storageProvider.update(\TravelEntity.title, value: text, for: entity)
     }
+    
+    func updateDate(start: Date, end: Date, entity: TravelEntity) {
+        storageProvider.update(\TravelEntity.startDate, value: start, for: entity)
+        storageProvider.update(\TravelEntity.endDate, value: end, for: entity)
+    }
 }

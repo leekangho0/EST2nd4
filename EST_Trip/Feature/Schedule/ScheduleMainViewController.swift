@@ -35,6 +35,15 @@ class ScheduleMainViewController: UIViewController {
             }
         }
         
+        viewModel.onTravelChanged = { [weak self] change in
+            switch change {
+            case let .date(travelRange):
+                self?.dateLabel.text = travelRange
+            case let .title(text):
+                self?.titleLabel.text = text
+            }
+        }
+        
         viewModel.notify()
     }
     
@@ -84,6 +93,9 @@ class ScheduleMainViewController: UIViewController {
 // MARK: - Set up UI
 extension ScheduleMainViewController {
     private func setupView() {
+        
+        self.titleLabel.text = viewModel.title
+        self.dateLabel.text = viewModel.dateRangeTitle
         setNavigation()
         setTableView()
         
@@ -144,6 +156,8 @@ extension ScheduleMainViewController {
             self?.titleLabel.text = newTitle
         }
         
+        editVC.delegate = self
+        
         // 모달 시트 스타일 설정
         if let sheet = editVC.sheetPresentationController {
             sheet.detents = [.custom { _ in 280 }]
@@ -181,7 +195,7 @@ extension ScheduleMainViewController: UITableViewDataSource{
         let headerView = ScheduleListHeaderView()
         
         headerView.dayLabel.text = "Day \(section + 1)"
-//        headerView.dateLabel.text = viewModel.headerTitle(section: section)
+        headerView.dateLabel.text = viewModel.headerTitle(section: section)
         headerView.addPlaceButton.tag = section
         
         headerView.addPlaceButton.addTarget(self, action: #selector(addPlaceButtonTapped(_:)), for: .touchUpInside)
@@ -283,15 +297,11 @@ extension ScheduleMainViewController: EditMenuViewControllerDelegate {
         let calendarVC = FeatureFactory.makeCalendar()
         calendarVC.isEditMode = true
         calendarVC.completion = { [weak self] startDate, endDate in
-//            guard let self else { return }
-//            
-//            if let startDate, let endDate {
-//                self.viewModel.updateTravelDate(startDate: startDate, endDate: endDate)
-//            }
-//            
-//            DispatchQueue.main.async {
-//                self.configureDateLabel(startDate: startDate, endDate: endDate)
-//            }
+            guard let self else { return }
+ 
+            if let startDate, let endDate {
+                self.viewModel.updateDate(start: startDate, end: endDate)
+            }
         }
         
         navigationController?.pushViewController(calendarVC, animated: true)
