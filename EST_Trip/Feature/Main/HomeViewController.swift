@@ -48,13 +48,19 @@ class MainViewController: UIViewController {
         currentTrip = futureTrip
 
         header.backgroundColor = UIColor.dolHareubangLightGray.withAlphaComponent(0.2)
+
+        if let savedName = UserDefaults.standard.string(forKey: "username") {
+            userName.text = savedName
+        }
     }
 
     @IBAction func editNameButton(_ sender: Any) {
         guard let editUsernameVC = self.storyboard?.instantiateViewController(withIdentifier: "EditUsernameViewController") as? EditUsernameViewController else { return }
 
         editUsernameVC.userNameEntered = { [weak self] text in
-            self?.userName.text = text
+            guard let self = self else { return }
+            self.userName.text = text
+            UserDefaults.standard.set(text, forKey: "username")
         }
 
         if userName.text == "사용자명" {

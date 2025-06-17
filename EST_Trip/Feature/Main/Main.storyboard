@@ -522,7 +522,7 @@
                     </view>
                     <connections>
                         <outlet property="background" destination="6bt-Cn-7Zb" id="cZU-26-YWk"/>
-                        <outlet property="confirmButtonLable" destination="o9a-VM-Eqk" id="Qky-2V-0QP"/>
+                        <outlet property="confirmButtonLabel" destination="o9a-VM-Eqk" id="Qky-2V-0QP"/>
                         <outlet property="modal" destination="mYg-Jy-ZZq" id="3fh-dX-LGN"/>
                         <outlet property="usernameTextfield" destination="xzY-Sc-7Jz" id="Y4v-1W-Q49"/>
                     </connections>

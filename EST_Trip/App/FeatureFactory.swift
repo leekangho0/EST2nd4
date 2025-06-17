@@ -27,7 +27,7 @@ enum FeatureFactory {
         let vc = StoryboardType.schedule.makeViewController(ScheduleMainViewController.self)
         return vc
     }
-    
+
     static func makeRoute() -> RouteFindingViewController {
         let vc = StoryboardType.route.makeViewController(RouteFindingViewController.self)
         
