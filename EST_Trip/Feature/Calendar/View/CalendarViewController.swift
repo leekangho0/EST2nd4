@@ -12,7 +12,8 @@ final class CalendarViewController: UIViewController {
     @IBOutlet weak var setDateButton: UIButton!
     @IBOutlet weak var dateSelectionView: UIView!
 
-	private let viewModel = CalendarViewModel()
+    var viewModel: CalendarViewModel!
+    
     private var didScrollToToday = false
     
     var isEditMode = false

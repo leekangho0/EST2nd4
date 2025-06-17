@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24E248" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="ExpenseEntity" representedClassName=".ExpenseEntity" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ExpenseEntity" representedClassName=".ExpenseEntity" syncable="YES" codeGenerationType="class">
         <attribute name="amount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="category" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="payerCount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceEntity" inverseName="expense" inverseEntity="PlaceEntity"/>
     </entity>
-    <entity name="FlightEntity" representedClassName=".FlightEntity" syncable="YES">
+    <entity name="FlightEntity" representedClassName=".FlightEntity" syncable="YES" codeGenerationType="class">
         <attribute name="arrivalAirport" attributeType="String"/>
         <attribute name="arrivalDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="arrivalTime" attributeType="Date" usesScalarValueType="NO"/>
@@ -16,14 +15,12 @@
         <attribute name="departureDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="departureTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flightname" attributeType="String"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="endFlight" inverseEntity="TravelEntity"/>
-        <relationship name="startFlight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="startFlight" inverseEntity="TravelEntity"/>
+        <relationship name="travel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="flight" inverseEntity="TravelEntity"/>
     </entity>
-    <entity name="PlaceEntity" representedClassName=".PlaceEntity" syncable="YES">
+    <entity name="PlaceEntity" representedClassName=".PlaceEntity" syncable="YES" codeGenerationType="class">
         <attribute name="address" attributeType="String"/>
         <attribute name="arrivalTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="category" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="category" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -31,24 +28,19 @@
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="photo" optional="YES" attributeType="Binary"/>
-        <attribute name="scheduleID" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="expense" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseEntity" inverseName="place" inverseEntity="ExpenseEntity"/>
         <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ScheduleEntity" inverseName="places" inverseEntity="ScheduleEntity"/>
     </entity>
-    <entity name="ScheduleEntity" representedClassName=".ScheduleEntity" syncable="YES">
+    <entity name="ScheduleEntity" representedClassName=".ScheduleEntity" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="travelId" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="places" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PlaceEntity" inverseName="schedule" inverseEntity="PlaceEntity"/>
-        <relationship name="travel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="schedules" inverseEntity="TravelEntity"/>
+        <relationship name="places" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="PlaceEntity" inverseName="schedule" inverseEntity="PlaceEntity"/>
+        <relationship name="travel" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="schedules" inverseEntity="TravelEntity"/>
     </entity>
-    <entity name="TravelEntity" representedClassName=".TravelEntity" syncable="YES">
+    <entity name="TravelEntity" representedClassName=".TravelEntity" syncable="YES" codeGenerationType="class">
         <attribute name="endDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="startDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="endFlight" inverseEntity="FlightEntity"/>
-        <relationship name="schedules" toMany="YES" deletionRule="Cascade" destinationEntity="ScheduleEntity" inverseName="travel" inverseEntity="ScheduleEntity"/>
-        <relationship name="startFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="startFlight" inverseEntity="FlightEntity"/>
+        <relationship name="flight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="travel" inverseEntity="FlightEntity"/>
+        <relationship name="schedules" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ScheduleEntity" inverseName="travel" inverseEntity="ScheduleEntity"/>
     </entity>
 </model>

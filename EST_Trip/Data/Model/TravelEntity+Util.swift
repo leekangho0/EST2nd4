@@ -9,11 +9,6 @@
 import Foundation
 import CoreData
 
-
-public class TravelEntity: NSManagedObject {
-
-}
-
 extension TravelEntity {
     static func sample(context: NSManagedObjectContext) -> TravelEntity {
         let entity = TravelEntity(context: context)

@@ -8,7 +8,9 @@
 import Foundation
 
 final class FlightAddViewModel {
-    var flight = Flight()
+    let travel: TravelEntity
+    
+    var flight = FlightDTO()
 
     private let dayFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -21,9 +23,13 @@ final class FlightAddViewModel {
         f.dateFormat = "HH:mm"
         return f
     }()
+    
+    init(travel: TravelEntity) {
+        self.travel = travel
+    }
 
     func updateFlightName(name: String) {
-        flight.flightName = name
+        flight.flightNumber = name
     }
 
     func updateDepartureDate(date: Date) -> String {
@@ -69,7 +75,7 @@ final class FlightAddViewModel {
 
 extension FlightAddViewModel {
     func isFlightVaild() -> Bool {
-        return !flight.flightName.isEmpty &&
+        return flight.flightNumber?.isEmpty == false &&
         flight.departureDate != nil &&
         flight.departureTime != nil &&
         flight.arrivalDate != nil &&
@@ -78,32 +84,23 @@ extension FlightAddViewModel {
         flight.arrivalAirport != nil
     }
 
-    func saveToCoreData() {
-        CoreDataManager.shared.insert(FlightEntity.self) { entity in
-            entity.id = UUID()
-            entity.flightname = flight.flightName
-            entity.departureDate = flight.departureDate
-            entity.departureTime = flight.departureTime
-            entity.arrivalDate = flight.departureDate
-            entity.arrivalTime = flight.arrivalTime
-            entity.departureAirport = flight.departureAirport
-            entity.arrivalAirport = flight.arrivalAirport
-        }
+    func addFlight() {
+        TravelProvider.shared.addFlight(entity: travel, flight: flight)
     }
-    
-    func updateTravel(travel: Travel?) -> Travel? {
-        var travel = travel
-        
-        travel?.startFlight = FlightDTO(
-            airline: flight.flightName,
-            departureDate: flight.departureDate,
-            departureTime: flight.departureDate,
-            arrivalTime: flight.arrivalTime,
-            departureAirport: flight.departureAirport,
-            arrivalAirport: flight.arrivalAirport,
-            arrivalDate: flight.arrivalDate
-        )
-        
-        return travel
-    }
+//    
+//    func updateTravle(travle: Travel?) -> Travel? {
+//        var travle = travle
+//        
+//        travle?.startFlight = FlightDTO(
+//            airline: flight.flightName,
+//            departureDate: flight.departureDate,
+//            departureTime: flight.departureDate,
+//            arrivalTime: flight.arrivalTime,
+//            departureAirport: flight.departureAirport,
+//            arrivalAirport: flight.arrivalAirport,
+//            arrivalDate: flight.arrivalDate
+//        )
+//        
+//        return travle
+//    }
 }

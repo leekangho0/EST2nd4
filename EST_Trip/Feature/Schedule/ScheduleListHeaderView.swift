@@ -35,6 +35,12 @@ class ScheduleListHeaderView: UIView {
             view.frame = bounds
         }
         
+        editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+        editButton.setTitle(nil, for: .normal)
+        
+        addPlaceButton.setTitle("장소 추가", for: .normal)
+        addMemoButton.setTitle("메모 추가", for: .normal)
+        
         addButtonStyles()
     }
     

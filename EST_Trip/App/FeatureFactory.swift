@@ -10,21 +10,25 @@ import UIKit
 enum FeatureFactory {
     static func makeMain() -> MainViewController {
         let vc = StoryboardType.main.makeViewController(MainViewController.self)
+        vc.viewModel = MainViewModel(travelProvider: TravelProvider.shared)
         return vc
     }
     
     static func makeCalendar() -> CalendarViewController {
         let vc = StoryboardType.calendar.makeViewController(CalendarViewController.self)
+        vc.viewModel = CalendarViewModel()
         return vc
     }
     
-    static func makeFlight() -> FlightAddViewController {
+    static func makeFlight(travel: TravelEntity) -> FlightAddViewController {
         let vc = StoryboardType.flight.makeViewController(FlightAddViewController.self)
+        vc.viewModel = FlightAddViewModel(travel: travel)
         return vc
     }
     
-    static func makePlanner() -> ScheduleMainViewController {
+    static func makePlanner(travel: TravelEntity) -> ScheduleMainViewController {
         let vc = StoryboardType.schedule.makeViewController(ScheduleMainViewController.self)
+        vc.viewModel = ScheduleViewModel(travel: travel, scheduleProvider: ScheduleProvider(travel: travel))
         return vc
     }
 

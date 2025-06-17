@@ -183,6 +183,10 @@ enum CategoryType: Int16 {
             return "기타"
         }
     }
+    
+    var image: UIImage? {
+        UIImage(systemName: imageName)
+    }
 }
 
 struct FlightDTO {
@@ -194,49 +198,6 @@ struct FlightDTO {
     var departureAirport: String?
     var arrivalAirport: String?
     var arrivalDate: Date?
-    
-    init(
-        airline: String? = nil,
-        flightNumber: String? = nil,
-        departureDate: Date? = nil,
-        departureTime: Date? = nil,
-        arrivalTime: Date? = nil,
-        departureAirport: String? = nil,
-        arrivalAirport: String? = nil,
-        arrivalDate: Date? = nil
-    ) {
-        self.airline = airline
-        self.flightNumber = flightNumber
-        self.departureDate = departureDate
-        self.departureTime = departureTime
-        self.arrivalTime = arrivalTime
-        self.departureAirport = departureAirport
-        self.arrivalAirport = arrivalAirport
-        self.arrivalDate = arrivalDate
-    }
-    
-    init?(entity: FlightEntity?) {
-        self.airline = entity?.flightname
-        self.departureDate = entity?.departureDate
-        self.departureTime = entity?.departureTime
-        self.arrivalTime = entity?.arrivalTime
-        self.departureAirport = entity?.departureAirport
-        self.arrivalAirport = entity?.arrivalAirport
-        self.arrivalDate = entity?.arrivalDate
-    }
-    
-    func toEntity(context: NSManagedObjectContext) -> FlightEntity {
-        return FlightEntity(
-            context: context,
-            departureDate: self.departureDate,
-            departureAirport: self.departureAirport,
-            departureTime: self.departureTime,
-            flightname: self.airline,
-            arrivalAirport: self.arrivalAirport,
-            arrivalTime: self.arrivalTime,
-            arrivalDate: self.arrivalDate
-        )
-    }
 }
 
 struct CategoryDTO {

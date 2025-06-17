@@ -8,9 +8,10 @@
 import UIKit
 
 class FlightAddViewController: UIViewController, UITextFieldDelegate {
-    let viewModel = FlightAddViewModel()
+    var viewModel: FlightAddViewModel!
+    
     private var hasPresentedDateSheet = false
-    var travel: Travel?
+//    var travel: Travel?
 
     @IBOutlet weak var departureDate: UIButton!
     @IBAction func departureDateButtonTapped(_ sender: Any) {
@@ -225,10 +226,10 @@ extension FlightAddViewController {
             present(alert, animated: true)
             return
         }
-        viewModel.saveToCoreData()
-        let vc = FeatureFactory.makePlanner()
-        vc.travel = viewModel.updateTravel(travel: travel)
-        vc.shouldCreate = true
+        
+        viewModel.addFlight()
+        
+        let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
         
         navigationController?.pushViewController(vc, animated: true)
     }
