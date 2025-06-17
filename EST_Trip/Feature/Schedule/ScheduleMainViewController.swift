@@ -17,6 +17,7 @@ class ScheduleMainViewController: UIViewController {
     
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var dateLabel: UILabel!
     private var isEditMode = false
     
     @IBOutlet weak var titleLabel: UILabel!
