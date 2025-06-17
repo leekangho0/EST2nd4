@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ExpenseEntity" representedClassName=".ExpenseEntity" syncable="YES">
         <attribute name="amount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="category" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -46,8 +46,8 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="startDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="endFlight" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="endFlight" inverseEntity="FlightEntity"/>
+        <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="endFlight" inverseEntity="FlightEntity"/>
         <relationship name="schedules" toMany="YES" deletionRule="Cascade" destinationEntity="ScheduleEntity" inverseName="travel" inverseEntity="ScheduleEntity"/>
-        <relationship name="startFlight" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="startFlight" inverseEntity="FlightEntity"/>
+        <relationship name="startFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="startFlight" inverseEntity="FlightEntity"/>
     </entity>
 </model>
