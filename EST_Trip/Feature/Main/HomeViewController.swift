@@ -8,29 +8,18 @@
 import UIKit
 
 struct Trip {
+    let id: UUID
     let title: String
     let startDate: Date
     let endDate: Date
 }
 
 class MainViewController: UIViewController {
-
-    // 더미 데이터
-    //    let trips = [
-    //        Trip(title: "6월", startDate: Date(year: 2025, month: 6, day: 13), endDate: Date(year: 2025, month: 6, day: 15)),
-    //        Trip(title: "7월 여름휴가입니다아아아", startDate: Date(year: 2025, month: 7, day: 10), endDate: Date(year: 2025, month: 7, day: 12)),
-    //        Trip(title: "4월 제주", startDate: Date(year: 2024, month: 4, day: 15), endDate: Date(year: 2024, month: 4, day: 20)),
-    //        Trip(title: "8월 제주", startDate: Date(year: 2025, month: 8, day: 15), endDate: Date(year: 2025, month: 8, day: 23)),
-    //        Trip(title: "9월 한달살기", startDate: Date(year: 2025, month: 9, day: 3), endDate: Date(year: 2025, month: 10, day: 2)),
-    //        Trip(title: "겨울 제주", startDate: Date(year: 2024, month: 12, day: 15), endDate: Date(year: 2024, month: 12, day: 19))
-    //    ]
     var trips: [Trip] = []
-
-
     // 📌 dday를 기준으로 dday >=0 이면 futureTripTitle, dday < 0 이면 pastTripTitle에 넣어주기
     var futureTrip: [Trip] = []
     var pastTrip: [Trip] = []
-//    var currentTrip: [Trip] = []
+    //    var currentTrip: [Trip] = []
 
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var userName: UILabel!
@@ -42,6 +31,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
 
         tableView.dataSource = self
+        tableView.delegate = self
 
         trips = futureTrip
 
@@ -51,7 +41,7 @@ class MainViewController: UIViewController {
             userName.text = savedName
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -102,7 +92,7 @@ class MainViewController: UIViewController {
     func loadTrips() {
         futureTrip = []
         pastTrip = []
-        
+
         for trip in trips {
             let dayDiff = trip.startDate.days(from: Date.today)
 
@@ -155,14 +145,31 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController {
     func fetchTrips() {
         let travelData = CoreDataManager.shared.fetch(TravelEntity.self)
-        
+
         self.trips = travelData.compactMap { travel in
+            let id = travel.id
             guard let title = travel.title,
                   let startDate = travel.startDate,
                   let endDate = travel.endDate else { return nil }
-            return Trip(title: title, startDate: startDate, endDate: endDate)
+            return Trip(id: id, title: title, startDate: startDate, endDate: endDate)
         }
         tableView.reloadData()
     }
 }
 
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let trip = trips[indexPath.row]
+        //디버깅시 확인후 지워주세요!
+        print("인덱스\(indexPath), id:",trip.id)
+
+        let vc = FeatureFactory.makePlanner()
+
+        //필요시 이동할 뷰컨에 travelID를 받을 변수 하나 선언해주세요
+        //EX) vc.travelID = trip.id
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
