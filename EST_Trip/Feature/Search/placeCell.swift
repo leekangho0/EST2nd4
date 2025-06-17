@@ -39,7 +39,7 @@ class placeCell: UITableViewCell {
 
         selectButton.setTitle("선택", for: .normal)
         selectButton.backgroundColor = .systemGray5
-        selectButton.setTitleColor(.black, for: .normal)
+        selectButton.setTitleColor(.label, for: .normal)
         selectButton.layer.cornerRadius = selectButton.frame.height / 2
         selectButton.layer.masksToBounds = true
     }
