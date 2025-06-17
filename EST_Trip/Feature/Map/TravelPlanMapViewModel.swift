@@ -14,9 +14,7 @@ class TravelPlanMapViewModel {
     var currentMarker: [GMSMarker] = []
     
     init(travel: TravelEntity) {
-        self.schedules = (travel.schedules as? Set<ScheduleEntity>)?
-            .compactMap { $0 }
-            .sorted { $0.date ?? .now < $1.date ?? .now } ?? []
+        self.schedules = travel.orderedSchdules
     }
     
     func selectMarker(_ item: PlaceDetail) -> GMSMarker? {

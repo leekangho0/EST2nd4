@@ -9,11 +9,6 @@
 import Foundation
 import CoreData
 
-
-public class TravelEntity: NSManagedObject {
-
-}
-
 extension TravelEntity {
     static func sample(context: NSManagedObjectContext) -> TravelEntity {
         let entity = TravelEntity(context: context)
@@ -22,5 +17,9 @@ extension TravelEntity {
         entity.startDate = .now
      
         return entity
+    }
+    
+    var orderedSchdules: [ScheduleEntity] {
+        schedules?.compactMap { $0 as? ScheduleEntity } ?? []
     }
 }

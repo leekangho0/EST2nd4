@@ -23,12 +23,36 @@ class CustomTableViewCell: UITableViewCell {
 
         dDayBackground.layer.cornerRadius = 8
         dDayBackground.clipsToBounds = true
+        
+        tripImage.image = UIImage(systemName: "airplane")
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         cellBackground.backgroundColor = selected ? .jejuOcean : .jejuOcean.withAlphaComponent(0.7)
+    }
+    
+    func bind(travel: TravelEntity) {
+        showDday(travel)
+
+        tripTitle.text = travel.title // 📌 Schedule 메인에서 일정 제목 가져와 넣어주기
+        tripDate.text = "\((travel.startDate ?? Date()).toString()) ~ \((travel.endDate ?? Date()).toString(format: "MM.dd"))" // 📌 Schedule 메인에서 날짜 가져와 넣어주기
+    }
+    
+    private func showDday(_ travel: TravelEntity) {
+        let targetDate = travel.startDate // 📌 Schedule 메인에서 날짜 가져와 넣어주기
+        let today = Date.today
+
+        let dayDiff = targetDate?.days(from: today) ?? 0
+
+        if dayDiff == 0 {
+            dDay.text = "D-Day"
+        } else if dayDiff > 0 {
+            dDay.text = "D-\(dayDiff)"
+        } else {
+            dDay.text = "D+\(abs(dayDiff))"
+        }
     }
 }
 

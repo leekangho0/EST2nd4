@@ -91,6 +91,10 @@ final class CoreDataManager {
         }
     }
     
+    func update<Root, Value>(_ keyPath: ReferenceWritableKeyPath<Root, Value>, value: Value, for root: Root) {
+        root[keyPath: keyPath] = value
+        saveContext()
+    }
     
     func update() {
         saveContext()

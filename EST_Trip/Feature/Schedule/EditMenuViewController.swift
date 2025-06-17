@@ -20,7 +20,7 @@ class EditMenuViewController: UIViewController {
     @IBOutlet weak var tripDeleteButton: UIButton!
 
     var currentTitleText: String?
-//    var onTitleUpdate: ((String) -> Void)?
+    var onTitleUpdate: ((String) -> Void)?
     var delegate: EditMenuViewControllerDelegate?
 
     override func viewDidLoad() {

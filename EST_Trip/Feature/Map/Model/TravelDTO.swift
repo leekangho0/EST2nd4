@@ -37,20 +37,20 @@ struct Travel {
         self.endFlight = endFlight
     }
     
-    init(entity: TravelEntity) {
-        self.id = entity.id
-        self.title = entity.title ?? "-"
-        self.startDate = entity.startDate
-        self.endDate = entity.endDate
-        self.startFlight = FlightDTO(entity: entity.startFlight)
-        self.endFlight = FlightDTO(entity: entity.endFlight)
-        
-        if let scheduleEntities = entity.schedules as? Set<ScheduleEntity> {
-            self.schedules = scheduleEntities
-                .sorted { $0.date ?? Date() < $1.date ?? Date() }
-                .map { Schedule(entity: $0) }
-        }
-    }
+//    init(entity: TravelEntity) {
+//        self.id = entity.id
+//        self.title = entity.title ?? "-"
+//        self.startDate = entity.startDate
+//        self.endDate = entity.endDate
+//        self.startFlight = FlightDTO(entity: entity.startFlight)
+//        self.endFlight = FlightDTO(entity: entity.endFlight)
+//        
+//        if let scheduleEntities = entity.schedules as? Set<ScheduleEntity> {
+//            self.schedules = scheduleEntities
+//                .sorted { $0.date ?? Date() < $1.date ?? Date() }
+//                .map { Schedule(entity: $0) }
+//        }
+//    }
 }
 
 struct Schedule {
@@ -71,20 +71,20 @@ struct Schedule {
         self.places = places
     }
     
-    init(entity: ScheduleEntity) {
-        self.id = entity.id
-        self.date = entity.date
-        self.travelID = entity.travelId
-        var places = [PlaceDTO]()
-        
-        if let placeEntities = entity.places as? Set<PlaceEntity> {
-            places = placeEntities
-                .sorted { $0.index < $1.index }
-                .map { PlaceDTO(entity: $0) }
-        }
-        
-        self.places = places
-    }
+//    init(entity: ScheduleEntity) {
+//        self.id = entity.id
+//        self.date = entity.date
+//        self.travelID = entity.travelId
+//        var places = [PlaceDTO]()
+//        
+//        if let placeEntities = entity.places as? Set<PlaceEntity> {
+//            places = placeEntities
+//                .sorted { $0.index < $1.index }
+//                .map { PlaceDTO(entity: $0) }
+//        }
+//        
+//        self.places = places
+//    }
 }
 
 struct PlaceDTO {
@@ -127,20 +127,20 @@ struct PlaceDTO {
         self.arrivalTime = arrivalTime
     }
     
-    init(entity: PlaceEntity) {
-        self.id = entity.id
-        self.scheduleID = entity.scheduleID
-        self.name = entity.name
-        self.latitude = entity.latitude
-        self.longitude = entity.longitude
-        self.address = entity.address
-//        self.category =
-        self.memo = entity.memo
-//        self.expense =
-//        self.photo =
-        self.arrivalTime = entity.arrivalTime
-        self.index = Int(entity.index)
-    }
+//    init(entity: PlaceEntity) {
+//        self.id = entity.id
+//        self.scheduleID = entity.scheduleID
+//        self.name = entity.name
+//        self.latitude = entity.latitude
+//        self.longitude = entity.longitude
+//        self.address = entity.address
+////        self.category =
+//        self.memo = entity.memo
+////        self.expense =
+////        self.photo =
+//        self.arrivalTime = entity.arrivalTime
+//        self.index = Int(entity.index)
+//    }
 }
 
 struct Expense {
@@ -183,6 +183,10 @@ enum CategoryType: Int16 {
             return "기타"
         }
     }
+    
+    var image: UIImage? {
+        UIImage(systemName: imageName)
+    }
 }
 
 struct FlightDTO {
@@ -194,49 +198,6 @@ struct FlightDTO {
     var departureAirport: String?
     var arrivalAirport: String?
     var arrivalDate: Date?
-    
-    init(
-        airline: String? = nil,
-        flightNumber: String? = nil,
-        departureDate: Date? = nil,
-        departureTime: Date? = nil,
-        arrivalTime: Date? = nil,
-        departureAirport: String? = nil,
-        arrivalAirport: String? = nil,
-        arrivalDate: Date? = nil
-    ) {
-        self.airline = airline
-        self.flightNumber = flightNumber
-        self.departureDate = departureDate
-        self.departureTime = departureTime
-        self.arrivalTime = arrivalTime
-        self.departureAirport = departureAirport
-        self.arrivalAirport = arrivalAirport
-        self.arrivalDate = arrivalDate
-    }
-    
-    init?(entity: FlightEntity?) {
-        self.airline = entity?.flightname
-        self.departureDate = entity?.departureDate
-        self.departureTime = entity?.departureTime
-        self.arrivalTime = entity?.arrivalTime
-        self.departureAirport = entity?.departureAirport
-        self.arrivalAirport = entity?.arrivalAirport
-        self.arrivalDate = entity?.arrivalDate
-    }
-    
-    func toEntity(context: NSManagedObjectContext) -> FlightEntity {
-        return FlightEntity(
-            context: context,
-            departureDate: self.departureDate,
-            departureAirport: self.departureAirport,
-            departureTime: self.departureTime,
-            flightname: self.airline,
-            arrivalAirport: self.arrivalAirport,
-            arrivalTime: self.arrivalTime,
-            arrivalDate: self.arrivalDate
-        )
-    }
 }
 
 struct CategoryDTO {

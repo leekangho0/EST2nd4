@@ -392,7 +392,7 @@
                     </view>
                     <connections>
                         <outlet property="contentView" destination="cAS-S8-hYm" id="w1C-iR-yR4"/>
-                        <outlet property="dateLabel" destination="3PR-zG-Cvi" id="Hgr-7G-gLa"/>
+                        <outlet property="dateLabel" destination="3PR-zG-Cvi" id="zuj-at-eIY"/>
                         <outlet property="scrollView" destination="Crz-hA-oBO" id="INy-BB-TIc"/>
                         <outlet property="tableView" destination="al8-3Z-vvS" id="466-3k-B0A"/>
                         <outlet property="tableViewHeightConstraint" destination="tTG-AD-6iJ" id="XLl-XV-Eyc"/>

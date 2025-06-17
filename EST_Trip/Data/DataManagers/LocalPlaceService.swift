@@ -20,7 +20,7 @@ class LocalPlaceService {
         CoreDataManager.shared.insert(PlaceEntity.self) { entity in
             entity.name = place.name
             entity.id = UUID()
-            entity.scheduleID = UUID()
+//            entity.scheduleID = UUID()
             entity.address = place.formattedAddress
             entity.latitude = place.coordinate.latitude
             entity.longitude = place.coordinate.longitude

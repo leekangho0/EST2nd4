@@ -40,6 +40,13 @@ final class CalendarViewModel {
     init() {
         generateSections()
     }
+    
+    func createTravel() -> TravelEntity? {
+        guard let startDate = travelDate.startDate, let endDate = travelDate.endDate else {
+            return nil
+        }
+        return TravelProvider.shared.create(start: startDate, end: endDate)
+    }
 
     func generateSections() {
         guard let start = DateComponents(calendar: calendar, year: 2025, month: 1, day: 1).date else {

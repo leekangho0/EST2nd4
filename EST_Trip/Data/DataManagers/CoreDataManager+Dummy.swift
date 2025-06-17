@@ -28,12 +28,12 @@ extension CoreDataManager {
         let today = Date()
 
         for (index, title) in dummyTitles.enumerated() {
-            insert(TravelEntity.self) { entity in
-                entity.id = UUID()
-                entity.title = title
-                entity.startDate = calendar.date(byAdding: .day, value: index * 7, to: today) ?? today
-                entity.endDate = calendar.date(byAdding: .day, value: (index * 7) + 3, to: today) ?? today
-            }
+//            insert(TravelEntity.self) { entity in
+//                entity.id = UUID()
+//                entity.title = title
+//                entity.startDate = calendar.date(byAdding: .day, value: index * 7, to: today) ?? today
+//                entity.endDate = calendar.date(byAdding: .day, value: (index * 7) + 3, to: today) ?? today
+//            }
         }
 
         saveContext()
