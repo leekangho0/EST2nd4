@@ -9,9 +9,13 @@ import Foundation
 import CoreData
 
 class ScheduleViewModel {
-    private var travle: Travel?
+    private var travel: Travel?
     
-    var schedules: [Schedule] = []
+    var schedules: [Schedule] = [] {
+        didSet {
+            travel?.schedules = schedules
+        }
+    }
     
     var scheduleCount: Int {
         return schedules.count
@@ -33,7 +37,7 @@ class ScheduleViewModel {
 // MARK: - Set up Datas
 extension ScheduleViewModel {
     func setTravel(_ travel: Travel?) {
-        self.travle = travel
+        self.travel = travel
         schedules = travel?.schedules.map { schedule in
             var sortedSchedule = schedule
             sortedSchedule.places.sort { ($0.index ?? 0) < ($1.index ?? 0) }
@@ -75,31 +79,31 @@ extension ScheduleViewModel {
     }
 }
 
-// MARK: - Travle CRUD
+// MARK: - Travel CRUD
 extension ScheduleViewModel {
-    func createTravle(_ travle: Travel?, completion: () -> Void ) {
-        self.travle = travle
+    func createTravel(_ travel: Travel?, completion: () -> Void ) {
+        self.travel = travel
         
-        guard let travle else {
-            print("❌ Travle Nil Data Error")
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
             return
         }
         
         CoreDataManager.shared.insert(TravelEntity.self) { entity in
-            entity.id = travle.id
+            entity.id = travel.id
             entity.title = "제주여행"
-            entity.startDate = travle.startDate
-            entity.endDate = travle.endDate
-            entity.startFlight = travle.startFlight?.toEntity(context: CoreDataManager.shared.context)
+            entity.startDate = travel.startDate
+            entity.endDate = travel.endDate
+            entity.startFlight = travel.startFlight?.toEntity(context: CoreDataManager.shared.context)
             
-            if let startDate = travle.startDate, let endDate = travle.endDate {
+            if let startDate = travel.startDate, let endDate = travel.endDate {
                 let dates = startDate.datesUntil(endDate)
                 
                 dates.forEach {
                     let schedule = ScheduleEntity(
                         context: CoreDataManager.shared.context,
                         date: $0,
-                        travelId: travle.id,
+                        travelId: travel.id,
                         places: []
                     )
                     
@@ -113,23 +117,58 @@ extension ScheduleViewModel {
        }
     }
     
-    func deleteTravle() {
+    func deleteTravel() {
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
+            return
+        }
         
+        let predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
+
+        CoreDataManager.shared.delete(TravelEntity.self, predicate: predicate)
     }
     
-    func updateTravle() {
+    func updateTravelTitle(_ title: String) {
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
+            return
+        }
         
+        let predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
+
+        let _ = CoreDataManager.shared.update(TravelEntity.self, predicate: predicate) { entity in
+            entity.title = title
+        }
+        
+        self.travel?.title = title
+    }
+    
+    func updateTravelDate(startDate: Date, endDate: Date) {
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
+            return
+        }
+        
+        let predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
+
+        let _ = CoreDataManager.shared.update(TravelEntity.self, predicate: predicate) { entity in
+            entity.startDate = startDate
+            entity.endDate = endDate
+        }
+        
+        self.travel?.startDate = startDate
+        self.travel?.endDate = endDate
     }
 }
 
 // MARK: - Place CRUD
 extension ScheduleViewModel {
     func addPlace(to section: Int, place: PlaceDTO, completion: () -> Void) {
-        guard let travle else { print("❌ Travle Nil Data Error"); return }
+        guard let travel else { print("❌ Travel Nil Data Error"); return }
         
         let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
         
         do {
             // 1. TravelEntity 찾기
@@ -175,11 +214,11 @@ extension ScheduleViewModel {
     }
     
     func insertPlace(to section: Int, at index: Int, place: PlaceDTO, completion: (() -> Void)? = nil) {
-        guard let travle else { print("❌ Travle Nil Data Error"); return }
+        guard let travel else { print("❌ Travel Nil Data Error"); return }
         
         let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
         
         do {
             // 1. TravelEntity 찾기
@@ -237,14 +276,14 @@ extension ScheduleViewModel {
     }
     
     func deletePlace(from section: Int, _ index: Int, completion: (() -> Void)? = nil) {
-        guard let travle else {
-            print("❌ Travle Nil Data Error")
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
             return
         }
 
         let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
         
         do {
             // 1. TravelEntity 찾기
@@ -288,8 +327,8 @@ extension ScheduleViewModel {
     }
     
     func updatePlace(moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)? = nil) {
-        guard let travle else {
-            print("❌ Travle Nil Data Error")
+        guard let travel else {
+            print("❌ Travel Nil Data Error")
             return
         }
         
@@ -303,7 +342,7 @@ extension ScheduleViewModel {
         
         let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<TravelEntity> = TravelEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", travle.id as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "id == %@", travel.id as CVarArg)
         
         do {
             // 1. TravelEntity 찾기

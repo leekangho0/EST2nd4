@@ -11,7 +11,7 @@ import UIKit
 final class CoreDataManager {
     static let shared = CoreDataManager()
     private init() {}
-
+    
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Models")
         container.loadPersistentStores { _, error in
@@ -21,14 +21,14 @@ final class CoreDataManager {
         }
         return container
     }()
-
+    
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
-
+    
     func saveContext() {
         guard context.hasChanges else { return }
-
+        
         do {
             try context.save()
         } catch let error as NSError {
@@ -37,23 +37,47 @@ final class CoreDataManager {
     }
     
     @discardableResult
-        func insert<T: NSManagedObject>(_ type: T.Type, configure: (T) -> Void) -> T? {
-            let entityName = String(describing: type)
-
-            guard let entity = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as? T else {
-                print("❌ Failed to create entity: \(entityName)")
+    func insert<T: NSManagedObject>(_ type: T.Type, configure: (T) -> Void) -> T? {
+        let entityName = String(describing: type)
+        
+        guard let entity = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as? T else {
+            print("❌ Failed to create entity: \(entityName)")
+            return nil
+        }
+        
+        configure(entity)
+        saveContext()
+        
+        print("✅ 저장 완료")
+        
+        return entity
+    }
+    
+    func update<T: NSManagedObject>(
+        _ type: T.Type,
+        predicate: NSPredicate,
+        configure: (T) -> Void
+    ) -> T? {
+        let entityName = String(describing: type)
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
+        fetchRequest.predicate = predicate
+        
+        do {
+            if let object = try context.fetch(fetchRequest).first {
+                configure(object)
+                saveContext()
+                print("✅ 업데이트 완료")
+                return object
+            } else {
+                print("❌ 업데이트할 객체를 찾을 수 없음: \(entityName)")
                 return nil
             }
-
-            configure(entity)
-            saveContext()
-            
-            print("✅ 저장 완료")
-            
-            return entity
+        } catch {
+            print("❌ 업데이트 실패: \(error)")
+            return nil
         }
-    
-    
+    }
+
     func fetch<T: NSManagedObject>(_ type: T.Type, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> [T] {
         let request = NSFetchRequest<T>(entityName: String(describing: type))
         request.predicate = predicate
@@ -77,5 +101,26 @@ final class CoreDataManager {
         saveContext()
     }
     
+    func delete<T: NSManagedObject>(
+        _ type: T.Type,
+        predicate: NSPredicate
+    ) {
+        let entityName = String(describing: type)
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
+        fetchRequest.predicate = predicate
+
+        do {
+            let objects = try context.fetch(fetchRequest)
+            for object in objects {
+                context.delete(object)
+            }
+
+            saveContext()
+            print("✅ 삭제 완료")
+        } catch {
+            print("❌ 삭제 실패: \(error)")
+        }
+    }
+
 }
 

@@ -48,8 +48,9 @@ class EditTripTitleViewController: UIViewController, UITextFieldDelegate {
     @IBAction func confirmButtonTapped(_ sender: Any) {
         let trimmed = titleTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !trimmed.isEmpty else { return }
-        onTitleConfirmed?(trimmed)
-        dismiss(animated: true)
+        dismiss(animated: true) { [weak self] in
+            self?.onTitleConfirmed?(trimmed)
+        }
     }
 
     // 텍스트 제한 (선택사항)

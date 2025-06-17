@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol EditMenuViewControllerDelegate {
+    func didUpdateTitle(_ newTitle: String)
+    func didUpdateDate()
+    func didDeleteTravel()
+}
+
 class EditMenuViewController: UIViewController {
 
     @IBOutlet weak var titleEditButton: UIButton!
@@ -14,7 +20,8 @@ class EditMenuViewController: UIViewController {
     @IBOutlet weak var tripDeleteButton: UIButton!
 
     var currentTitleText: String?
-    var onTitleUpdate: ((String) -> Void)?
+//    var onTitleUpdate: ((String) -> Void)?
+    var delegate: EditMenuViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +45,9 @@ class EditMenuViewController: UIViewController {
         editTitleVC.currentTitle = currentTitleText
 
         editTitleVC.onTitleConfirmed = { [weak self] newTitle in
-            self?.onTitleUpdate?(newTitle)
-            self?.dismiss(animated: true)
+            self?.dismiss(animated: true) {
+                self?.delegate?.didUpdateTitle(newTitle)
+            }
         }
         editTitleVC.modalPresentationStyle = .overFullScreen
         editTitleVC.modalTransitionStyle = .crossDissolve
@@ -47,10 +55,14 @@ class EditMenuViewController: UIViewController {
     }
 
     @IBAction func dateEditButtonTapped(_ sender: UIButton) {
-        // TODO: 날짜 수정 로직
+        dismiss(animated: true) { [weak self] in
+            self?.delegate?.didUpdateDate()
+        }
     }
 
     @IBAction func tripDeleteButtonTapped(_ sender: UIButton) {
-        // TODO: 삭제 로직
+        dismiss(animated: true) { [weak self] in
+            self?.delegate?.didDeleteTravel()
+        }
     }
 }
