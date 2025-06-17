@@ -5,10 +5,6 @@
 //  Created by 권도현 on 6/9/25.
 //
 
-//
-//  SearchViewController.swift
-//  EST_Trip
-//
 
 import UIKit
 import GooglePlaces
@@ -21,6 +17,8 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var cafeButton: UIButton!
     @IBOutlet weak var searchBar: UITextField!
 
+    weak var delegate: SearchViewControllerDelegate?
+    
     var allPlaces: [Place] = [
         Place(imageName: "beach", title: "협재 해수욕장", subtitle: "관광 · 제주 제주시 협재리", category: .관광),
         Place(imageName: "mountain", title: "한라산", subtitle: "관광 · 제주 제주시", category: .관광),
@@ -30,6 +28,7 @@ class SearchViewController: UIViewController {
 
     var filteredPlaces: [Place] = []
     var selectedCategory: Category?
+    var selectedSection: Int?
 
     private lazy var autocompleteDataSource: GMSAutocompleteTableDataSource = {
         let source = GMSAutocompleteTableDataSource()
@@ -240,8 +239,11 @@ extension SearchViewController: UITableViewDataSource {
         let place = filteredPlaces[indexPath.row]
         cell.configure(with: place)
 
-        cell.onSelectTapped = {
-            print("선택된 장소: \(place.title)")
+        cell.onSelectTapped = { [weak self] in
+            guard let self = self,
+                  let section = self.selectedSection else { return }
+            self.delegate?.searchViewController(self, didSelectPlace: place, forSection: section)
+            self.navigationController?.popViewController(animated: true)
         }
 
         return cell
@@ -253,7 +255,7 @@ extension SearchViewController: UITableViewDelegate {}
 
 extension SearchViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.5) {
             self.resultsController.view.alpha = 1
         }
     }
@@ -277,6 +279,7 @@ extension SearchViewController: UITextFieldDelegate {
 extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
         print("✅ 선택된 장소: \(place.name ?? "이름 없음")")
+        print(place)
         hideAutocompleteResults()
         searchBar.resignFirstResponder()
         searchBar.text = place.name
