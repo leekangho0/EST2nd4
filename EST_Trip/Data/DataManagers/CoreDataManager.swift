@@ -47,6 +47,9 @@ final class CoreDataManager {
 
             configure(entity)
             saveContext()
+            
+            print("✅ 저장 완료")
+            
             return entity
         }
     

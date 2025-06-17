@@ -26,7 +26,28 @@ extension FlightEntity {
     @NSManaged public var arrivalDate: Date?
     @NSManaged public var startFlight: TravelEntity?
     @NSManaged public var endFlight: TravelEntity?
-
+    
+    convenience init(
+        context: NSManagedObjectContext,
+        id: UUID = UUID(),
+        departureDate: Date? = nil,
+        departureAirport: String? = nil,
+        departureTime: Date? = nil,
+        flightname: String? = nil,
+        arrivalAirport: String? = nil,
+        arrivalTime: Date? = nil,
+        arrivalDate: Date? = nil
+    ) {
+        self.init(context: context)
+        self.id = id
+        self.departureDate = departureDate
+        self.departureAirport = departureAirport
+        self.departureTime = departureTime
+        self.flightname = flightname
+        self.arrivalAirport = arrivalAirport
+        self.arrivalTime = arrivalTime
+        self.arrivalDate = arrivalDate
+    }
 }
 
 extension FlightEntity : Identifiable {

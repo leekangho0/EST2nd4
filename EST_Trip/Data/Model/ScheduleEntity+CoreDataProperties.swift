@@ -21,7 +21,20 @@ extension ScheduleEntity {
     @NSManaged public var travelId: UUID?
     @NSManaged public var places: NSSet?
     @NSManaged public var travel: TravelEntity?
-
+    
+    convenience init(
+        context: NSManagedObjectContext,
+        id: UUID = UUID(),
+        date: Date,
+        travelId: UUID,
+        places: [PlaceEntity]
+    ) {
+        self.init(context: context)
+        self.id = id
+        self.date = date
+        self.travelId = travelId
+        self.places = NSSet(array: places)
+    }
 }
 
 // MARK: Generated accessors for places

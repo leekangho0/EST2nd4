@@ -7,11 +7,6 @@
 
 import UIKit
 
-struct PlaceModel {
-    let name: String
-    let category: String
-    let address: String
-}
 
 class ScheduleMainViewController: UIViewController {
     
@@ -28,46 +23,24 @@ class ScheduleMainViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
 
-    var schedulePlaces: [[PlaceModel]] = [[], [], []]
-    var headerTitles: [String] = ["", "", ""]
+    private let scheduleVM = ScheduleViewModel()
+    
+    var travel: Travel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let mapButton = UIBarButtonItem(
-            image: UIImage(systemName: "map"),
-            style: .plain,
-            target: self,
-            action: #selector(mapButtonTapped)
-        )
-        navigationItem.rightBarButtonItem = mapButton
-
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
-        
-        tableView.isScrollEnabled = false
-        
-        tableView.showsVerticalScrollIndicator = false
-        
-        tableView.contentInsetAdjustmentBehavior = .never
-        
-        toggleButtons.forEach { button in
-            button.layer.cornerRadius = button.frame.height / 2
-            button.clipsToBounds = true
-            button.layer.backgroundColor = UIColor(hex: "#D9D9D9", alpha: 0.6)?.cgColor
-            button.setTitleColor(UIColor(hex: "#7E7E7E", alpha: 1.0), for: .normal)
-        }
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.rowHeight = UITableView.automaticDimension
+        setupView()
+        scheduleVM.createTravle(travel)
     }
     
     @objc func mapButtonTapped() {
         let mapVC = FeatureFactory.makeMap()
         self.navigationController?.pushViewController(mapVC, animated: true)
+    }
+    
+    @objc func backButtonTapped() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -92,14 +65,6 @@ class ScheduleMainViewController: UIViewController {
             sender.tintColor = UIColor(hex: "#7E7E7E", alpha: 1.0)
         }
     }
-    
-    func placePicker(for section: Int) {
-        // TODO: 장소 선택 뷰 띄우기. 현재는 더미 데이터 삽입
-        let newPlace = PlaceModel(name: "우진해장국", category: "맛집", address: "제주 제주시 서사로 11")
-        schedulePlaces[section].append(newPlace)
-        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
-        tableView.layoutIfNeeded()
-    }
 
     @objc func addPlaceButtonTapped(_ sender: UIButton) {
         let section = sender.tag
@@ -121,8 +86,48 @@ class ScheduleMainViewController: UIViewController {
 
 // MARK: - Set up UI
 extension ScheduleMainViewController {
+    private func setupView() {
+        let mapButton = UIBarButtonItem(
+            image: UIImage(systemName: "map"),
+            style: .plain,
+            target: self,
+            action: #selector(mapButtonTapped)
+        )
+        navigationItem.rightBarButtonItem = mapButton
+        
+        let leftButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.backward"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+        navigationItem.leftBarButtonItem = leftButton
+
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
+        
+        tableView.isScrollEnabled = false
+        
+        tableView.showsVerticalScrollIndicator = false
+        
+        tableView.contentInsetAdjustmentBehavior = .never
+        
+        toggleButtons.forEach { button in
+            button.layer.cornerRadius = button.frame.height / 2
+            button.clipsToBounds = true
+            button.layer.backgroundColor = UIColor(hex: "#D9D9D9", alpha: 0.6)?.cgColor
+            button.setTitleColor(UIColor(hex: "#7E7E7E", alpha: 1.0), for: .normal)
+        }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+    }
+    
     private func updateTableViewHeight() {
-        let defaultHeight = sectionHeight * CGFloat(schedulePlaces.count)
+        let defaultHeight = sectionHeight * CGFloat(scheduleVM.scheduleCount)
         
         tableViewHeightConstraint.constant = max(tableView.contentSize.height, defaultHeight)
     }
@@ -176,21 +181,22 @@ extension ScheduleMainViewController {
 extension ScheduleMainViewController: UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return schedulePlaces.count
+        return scheduleVM.scheduleCount
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return schedulePlaces[section].count
+        return scheduleVM.placeCount(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ScheduleListCell.self), for: indexPath) as? ScheduleListCell else { return UITableViewCell() }
         
-        let place = schedulePlaces[indexPath.section][indexPath.row]
-        let isLastCell = indexPath.row == schedulePlaces[indexPath.section].count - 1
-        cell.configure(indexPath: indexPath, isLastCell: isLastCell, place: place)
+        let section = indexPath.section
+        let index = indexPath.row
+        let place = scheduleVM.place(section: section, index: index)
         
-        // TODO: 셀 데이터 구성은 나중에 연결
+        cell.configure(indexPath: indexPath, place: place)
+        
         return cell
     }
     
@@ -198,7 +204,7 @@ extension ScheduleMainViewController: UITableViewDataSource{
         let headerView = ScheduleListHeaderView()
         
         headerView.dayLabel.text = "Day \(section + 1)"
-        headerView.dateLabel.text = "06/\(27 + section)"
+        headerView.dateLabel.text = scheduleVM.dateToString(section: section)
         
         headerView.editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         headerView.editButton.setTitle(nil, for: .normal)
@@ -291,12 +297,17 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
 extension ScheduleMainViewController: SearchViewControllerDelegate {
     func searchViewController(_ controller: SearchViewController, didSelectPlace place: Place, forSection section: Int) {
         
-        let placeModel = PlaceModel(
-            name: place.title,
-            category: place.category.rawValue,  
-            address: place.subtitle
-        )
-        schedulePlaces[section].append(placeModel)
+        // 여기서 Add 작업
+        
+//        let placeModel = PlaceModel(
+//            name: place.title,
+//            category: place.category.rawValue,  
+//            address: place.subtitle
+//        )
+//        schedulePlaces[section].append(placeModel)
+        
+        
+        
         tableView.reloadSections(IndexSet(integer: section), with: .automatic)
         updateTableViewHeight()
     }

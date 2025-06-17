@@ -44,10 +44,10 @@ class ScheduleListCell: UITableViewCell {
     }
     
     
-    func configure(indexPath: IndexPath, isLastCell: Bool, place: PlaceModel) {
+    func configure(indexPath: IndexPath, place: PlaceDTO) {
         numberBadgeLabel.text = "\(indexPath.row + 1)"
         titleLabel.text = place.name
-        categoryLabel.text = place.category
+        categoryLabel.text = place.category.name
         addressLabel.text = place.address
         distanceLabel.text = "3.7 km"
     }

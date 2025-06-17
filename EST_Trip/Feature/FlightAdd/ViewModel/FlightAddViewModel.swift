@@ -90,4 +90,20 @@ extension FlightAddViewModel {
             entity.arrivalAirport = flight.arrivalAirport
         }
     }
+    
+    func updateTravle(travle: Travel?) -> Travel? {
+        var travle = travle
+        
+        travle?.startFlight = FlightDTO(
+            airline: flight.flightName,
+            departureDate: flight.departureDate,
+            departureTime: flight.departureDate,
+            arrivalTime: flight.arrivalTime,
+            departureAirport: flight.departureAirport,
+            arrivalAirport: flight.arrivalAirport,
+            arrivalDate: flight.arrivalDate
+        )
+        
+        return travle
+    }
 }

@@ -6,15 +6,16 @@
 //
 
 import UIKit
+import CoreData
 
 struct Travel {
-    let id: UUID
-    var title: String
-    var startDate, endDate: Date
+    var id: UUID = UUID()
+    var title: String = "제주 여행"
+    var startDate, endDate: Date?
     var schedules: [Schedule] = []
-    var isBookmarked: Bool
-    var startflight: FlightDTO
-    var endFlight: FlightDTO
+    var isBookmarked: Bool = false
+    var startFlight: FlightDTO?
+    var endFlight: FlightDTO?
 }
 
 struct Schedule {
@@ -58,15 +59,49 @@ enum CategoryType: Int16 {
     case travel
     case shopping
     case etc
+    
+    var name: String {
+        switch self {
+        case .accmodation:
+            return "숙소"
+        case .cafe:
+            return "카페"
+        case .restaurant:
+            return "음식점"
+        case .transportation:
+            return "교통"
+        case .travel:
+            return "관광"
+        case .shopping:
+            return "쇼핑"
+        case .etc:
+            return "기타"
+        }
+    }
 }
 
 struct FlightDTO {
-    let airline: String
-    let flightNumber: String
-    let departureTime: Date
-    let arrivalTime: Date
-    let departureAirport: String
-    let arrivalAirport: String
+    var airline: String?
+    var flightNumber: String?
+    var departureDate: Date?
+    var departureTime: Date?
+    var arrivalTime: Date?
+    var departureAirport: String?
+    var arrivalAirport: String?
+    var arrivalDate: Date?
+    
+    func toEntity(context: NSManagedObjectContext) -> FlightEntity {
+        return FlightEntity(
+            context: context,
+            departureDate: self.departureDate,
+            departureAirport: self.departureAirport,
+            departureTime: self.departureTime,
+            flightname: self.airline,
+            arrivalAirport: self.arrivalAirport,
+            arrivalTime: self.arrivalTime,
+            arrivalDate: self.arrivalDate
+        )
+    }
 }
 
 struct CategoryDTO {
