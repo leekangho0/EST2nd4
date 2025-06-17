@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -42,7 +43,7 @@
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
                                         <variation key="heightClass=regular-widthClass=regular">
-                                            <color key="tintColor" systemColor="systemGray5Color"/>
+                                            <color key="tintColor" name="DolHareubangGray"/>
                                         </variation>
                                         <connections>
                                             <action selector="categoryButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Rvs-pW-eRw"/>
@@ -57,7 +58,7 @@
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
                                         <variation key="heightClass=regular-widthClass=regular">
-                                            <color key="tintColor" systemColor="systemGray5Color"/>
+                                            <color key="tintColor" name="DolHareubangGray"/>
                                         </variation>
                                         <connections>
                                             <action selector="categoryButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="zJ9-qc-pTu"/>
@@ -72,7 +73,7 @@
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
                                         <variation key="heightClass=regular-widthClass=regular">
-                                            <color key="tintColor" systemColor="systemGray5Color"/>
+                                            <color key="tintColor" name="DolHareubangGray"/>
                                         </variation>
                                         <connections>
                                             <action selector="categoryButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Opf-EQ-Ymk"/>
@@ -122,10 +123,10 @@
                                                     <color key="tintColor" systemColor="systemGray5Color"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="filled" title="선택" cornerStyle="capsule">
-                                                        <color key="baseForegroundColor" name="DolHareubangGray"/>
+                                                        <color key="baseForegroundColor" systemColor="labelColor"/>
                                                     </buttonConfiguration>
                                                     <variation key="heightClass=regular-widthClass=regular">
-                                                        <color key="tintColor" systemColor="systemGray5Color"/>
+                                                        <color key="tintColor" name="DolHareubangGray"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="selectButtonTapped:" destination="fzk-5d-lvQ" eventType="touchUpInside" id="4z7-50-y2W"/>
