@@ -50,12 +50,6 @@ enum FeatureFactory {
         vc.viewModel = SearchViewModel(service: RemotePlaceService(), section: section)
         return vc
     }
-
-    static func makeSearchResult() -> SearchResultViewController {
-        let vc = StoryboardType.search.makeViewController(SearchResultViewController.self)
-        
-        return vc
-    }
     
     static func makeMap(_ viewModel: TravelPlanMapViewModel) -> TravelPlanMapViewController {
         let vc = StoryboardType.map.makeViewController(TravelPlanMapViewController.self)
