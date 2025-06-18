@@ -91,7 +91,7 @@ extension TravelProvider {
     
     /// Flight 정보를 입력받아서 flight 갱신 또는 생성
     func addFlight(entity: TravelEntity, flight: FlightDTO) {
-        if let exist = entity.flight {
+        if let exist = entity.startFlight {
             flight.apply(entity: exist)
             storageProvider.update()
         } else {
@@ -99,7 +99,7 @@ extension TravelProvider {
             // 존재하지 않으면 새로 생성 후 relationship
             storageProvider.insert(FlightEntity.self) { newEntity in
                 flight.apply(entity: newEntity)
-                entity.flight = newEntity
+                entity.startFlight = newEntity
             }
         }
     }
@@ -128,5 +128,13 @@ extension TravelProvider {
     func updateDate(start: Date, end: Date, entity: TravelEntity) {
         storageProvider.update(\TravelEntity.startDate, value: start, for: entity)
         storageProvider.update(\TravelEntity.endDate, value: end, for: entity)
+    }
+    
+    func updateStartFlight(flight: FlightEntity, entity: TravelEntity) {
+        storageProvider.update(\TravelEntity.startFlight, value: flight, for: entity)
+    }
+    
+    func updateEndFlight(flight: FlightEntity, entity: TravelEntity) {
+        storageProvider.update(\TravelEntity.endFlight, value: flight, for: entity)
     }
 }

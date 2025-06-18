@@ -126,7 +126,7 @@ struct PlaceDTO {
         self.photo = photo
         self.arrivalTime = arrivalTime
     }
-    
+
 //    init(entity: PlaceEntity) {
 //        self.id = entity.id
 //        self.scheduleID = entity.scheduleID
@@ -135,6 +135,23 @@ struct PlaceDTO {
 //        self.longitude = entity.longitude
 //        self.address = entity.address
 ////        self.category =
+//        self.memo = entity.memo
+////        self.expense =
+////        self.photo =
+//        self.arrivalTime = entity.arrivalTime
+//        self.index = Int(entity.index)
+//    }
+
+//    init(entity: PlaceEntity) {
+//        self.id = entity.id
+//        self.scheduleID = entity.scheduleID
+//        self.name = entity.name
+//        self.latitude = entity.latitude
+//        self.longitude = entity.longitude
+//        self.address = entity.address
+//        
+//        let categoryType = CategoryType(rawValue: entity.category) ?? .etc
+//        self.category = CategoryDTO(type: categoryType, name: categoryType.name)
 //        self.memo = entity.memo
 ////        self.expense =
 ////        self.photo =
@@ -198,6 +215,36 @@ struct FlightDTO {
     var departureAirport: String?
     var arrivalAirport: String?
     var arrivalDate: Date?
+
+    init(
+        airline: String? = nil,
+        flightNumber: String? = nil,
+        departureDate: Date? = nil,
+        departureTime: Date? = nil,
+        arrivalTime: Date? = nil,
+        departureAirport: String? = nil,
+        arrivalAirport: String? = nil,
+        arrivalDate: Date? = nil
+    ) {
+        self.airline = airline
+        self.flightNumber = flightNumber
+        self.departureDate = departureDate
+        self.departureTime = departureTime
+        self.arrivalTime = arrivalTime
+        self.departureAirport = departureAirport
+        self.arrivalAirport = arrivalAirport
+        self.arrivalDate = arrivalDate
+    }
+    
+    init?(entity: FlightEntity?) {
+        self.airline = entity?.flightname
+        self.departureDate = entity?.departureDate
+        self.departureTime = entity?.departureTime
+        self.arrivalTime = entity?.arrivalTime
+        self.departureAirport = entity?.departureAirport
+        self.arrivalAirport = entity?.arrivalAirport
+        self.arrivalDate = entity?.arrivalDate
+    }
 }
 
 struct CategoryDTO {

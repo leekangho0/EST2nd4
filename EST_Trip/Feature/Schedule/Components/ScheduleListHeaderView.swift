@@ -17,7 +17,9 @@ class ScheduleListHeaderView: UIView {
     @IBOutlet weak var addPlaceButton: UIButton!
     @IBOutlet weak var addMemoButton: UIButton!
     
+    @IBOutlet weak var editConfirmButton: UIButton!
     
+    var endEdit: (() -> Void)? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,6 +37,7 @@ class ScheduleListHeaderView: UIView {
             view.frame = bounds
         }
         
+/*
         editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         editButton.setTitle(nil, for: .normal)
         
@@ -42,6 +45,7 @@ class ScheduleListHeaderView: UIView {
         addMemoButton.setTitle("메모 추가", for: .normal)
         
         addButtonStyles()
+ */
     }
     
     override func awakeFromNib() {
@@ -56,5 +60,12 @@ class ScheduleListHeaderView: UIView {
             button?.layer.cornerRadius = 8
             button?.clipsToBounds = true
         }
+    }
+    
+    @IBAction func endEdit(_ sender: Any) {
+        addPlaceButton.isHidden = false
+        editConfirmButton.isHidden = true
+        
+        endEdit?()
     }
 }
