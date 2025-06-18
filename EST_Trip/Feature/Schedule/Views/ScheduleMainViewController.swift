@@ -43,10 +43,10 @@ class ScheduleMainViewController: UIViewController {
                 self?.dateLabel.text = travelRange
             case let .title(text):
                 self?.titleLabel.text = text
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
             default: break
+            }
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
             }
         }
         
@@ -148,7 +148,11 @@ extension ScheduleMainViewController {
     }
     
     @objc private func editTap(_ sender: UIButton) {
-        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        self.tableView.performBatchUpdates {
+            self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        } completion: { _ in
+
+        }
     }
 }
 
@@ -310,7 +314,12 @@ extension ScheduleMainViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView,
                    moveRowAt sourceIndexPath: IndexPath,
                    to destinationIndexPath: IndexPath) {
-        self.viewModel.movePlace(sourceIndexPath, destinationIndexPath)
+        self.tableView.performBatchUpdates {
+            self.viewModel.movePlace(sourceIndexPath, destinationIndexPath)
+        } completion: { _ in
+            self.tableView.reloadSections(IndexSet(arrayLiteral: sourceIndexPath.section, destinationIndexPath.section), with: .automatic)
+        }
+        
     }
     
     // MARK: 갈 수 있는지 없는지 판단
