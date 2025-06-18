@@ -226,6 +226,7 @@
                     </view>
                     <connections>
                         <outlet property="cafeButton" destination="cDy-Yf-awD" id="Wyk-tD-YwM"/>
+                        <outlet property="dayHeaderLabel" destination="YPL-fj-FWd" id="KZl-dE-t31"/>
                         <outlet property="foodButton" destination="xcc-sM-1La" id="hMc-xs-yt6"/>
                         <outlet property="searchBar" destination="tes-YD-aQu" id="3N5-oc-Mf3"/>
                         <outlet property="tableView" destination="9hY-Vf-aMc" id="0ea-uY-mpy"/>
