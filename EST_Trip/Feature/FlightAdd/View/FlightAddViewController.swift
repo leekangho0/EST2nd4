@@ -112,7 +112,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             let skipButton = UIBarButtonItem(title: "스킵", style: .plain, target: self, action: #selector(skipTap))
             skipButton.setTitleTextAttributes([.font: font], for: .normal)
             skipButton.setTitleTextAttributes([.font: font], for: .highlighted)
-            skipButton.tintColor = .lightGray
+            skipButton.tintColor = .label
             
             navigationItem.rightBarButtonItems = [skipButton, rightButton]
         }
