@@ -41,20 +41,27 @@ class ScheduleMainViewController: UIViewController {
             switch change {
             case let .date(travelRange):
                 self?.dateLabel.text = travelRange
-                
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
             case let .title(text):
                 self?.titleLabel.text = text
-            case .flight:
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
+            default: break
+            }
+            
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
             }
         }
         
         viewModel.notify()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if viewModel.hasStartFlight() && viewModel.hasEndFlight() {
+            toggleButtons.first?.isHidden = true
+        } else {
+            toggleButtons.first?.isHidden = false
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -98,18 +105,13 @@ extension ScheduleMainViewController {
     }
     
     @IBAction func addFlight(_ sender: Any) {
-        // 이미 출발편과 도착편 항공 정보가 모두 등록되어 있는 경우, 등록 불가 처리
-        if viewModel.hasStartFlight() && viewModel.hasEndFlight() {
-            return
-        }
-        
         let flightVC = FeatureFactory.makeFlight(travel: viewModel.travel)
-        flightVC.isAppendMode = true
+        flightVC.mode = .append
         flightVC.dateType = viewModel.hasStartFlight() ? .end : (viewModel.hasEndFlight() ? .start : .all)
-        flightVC.onUpdate = { [weak self] flight in
+        flightVC.onUpdate = { [weak self] dateType, flight in
             guard let self else { return }
             
-            if flightVC.dateType == .start {
+            if dateType == .start {
                 self.viewModel.updateStartFlight(flight: flight)
             } else {
                 self.viewModel.updateEndFlight(flight: flight)
@@ -412,7 +414,30 @@ extension ScheduleMainViewController: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) {
+            let flightVC = FeatureFactory.makeFlight(travel: viewModel.travel)
+            flightVC.mode = .edit
+            flightVC.dateType = isStartFlightCell(at: indexPath) ? .start : .end
+            flightVC.existingFlight = isStartFlightCell(at: indexPath) ? viewModel.startFlight : viewModel.endFlight
+            flightVC.onUpdate = { [weak self] _, flight in
+                guard let self else { return }
+                
+                if flightVC.dateType == .start {
+                    self.viewModel.updateStartFlight(flight: flight)
+                } else {
+                    self.viewModel.updateEndFlight(flight: flight)
+                }
+            }
+            flightVC.onDelete = { [weak self] in
+                guard let self else { return }
+                
+                if flightVC.dateType == .start {
+                    self.viewModel.deleteStartFlight()
+                } else {
+                    self.viewModel.deleteEndFlight()
+                }
+            }
             
+            self.navigationController?.pushViewController(flightVC, animated: true)
         } else {
             let section = indexPath.section
             var index = indexPath.row

@@ -16,10 +16,16 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         case start, end, all
     }
     
+    enum Mode {
+        case edit, append, none
+    }
+    
 //    var travel: Travel?
-    var isAppendMode = false
+    var mode: Mode = .none
     var dateType: DateType = .all
-    var onUpdate: ((FlightDTO) -> Void)? = nil
+    var onUpdate: ((DateType, FlightDTO) -> Void)? = nil
+    var onDelete: (() -> Void)? = nil
+    var existingFlight: FlightDTO?
 
     @IBOutlet weak var departureDate: UIButton!
     @IBAction func departureDateButtonTapped(_ sender: Any) {
@@ -56,12 +62,16 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        
+        if mode == .edit {
+            configureView()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !hasPresentedDateSheet {
+        if !hasPresentedDateSheet, mode != .edit {
             presentDataSelectionSheet()
             hasPresentedDateSheet = true
         }
@@ -106,8 +116,16 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         rightButton.setTitleTextAttributes([.font: font], for: .highlighted)
         rightButton.tintColor = .label
         
-        if isAppendMode {
+        if mode == .append {
             navigationItem.rightBarButtonItems = [rightButton]
+        } else if mode == .edit {
+            let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteFlight))
+            deleteButton.setTitleTextAttributes([.font: font], for: .normal)
+            deleteButton.setTitleTextAttributes([.font: font], for: .highlighted)
+            deleteButton.tintColor = .red
+            
+            navigationItem.rightBarButtonItems = [deleteButton, rightButton]
+            
         } else {
             let skipButton = UIBarButtonItem(title: "스킵", style: .plain, target: self, action: #selector(skipTap))
             skipButton.setTitleTextAttributes([.font: font], for: .normal)
@@ -116,6 +134,40 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             
             navigationItem.rightBarButtonItems = [skipButton, rightButton]
         }
+    }
+    
+    private func configureView() {
+        guard let flight = existingFlight else { return }
+        
+        viewModel.flight = flight
+        
+        flightName.text = flight.flightName
+        
+        setButtonTitle(
+            title: viewModel.dayFormatter.string(from: flight.departureDate ?? .now),
+            for: departureDate
+        )
+        setButtonTitle(
+            title: viewModel.timeFormatter.string(from: flight.departureTime ?? .now),
+            for: departureTime
+        )
+        setButtonTitle(
+            title: flight.departureAirport ?? "",
+            for: departureAirport
+        )
+        
+        setButtonTitle(
+            title: viewModel.dayFormatter.string(from: flight.arrivalDate ?? .now),
+            for: arrivalDate
+        )
+        setButtonTitle(
+            title: viewModel.timeFormatter.string(from: flight.arrivalTime ?? .now),
+            for: arrivalTime
+        )
+        setButtonTitle(
+            title: flight.arrivalAirport ?? "",
+            for: arrivalAirport
+        )
     }
 
     private func presentDataSelectionSheet() {
@@ -132,6 +184,8 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
                 setButtonTitle(title: title, for: departureDate)
 
                 viewModel.updateTripDirection(isFirst: isFirst)
+                
+                self.dateType = isFirst ? .start : .end
 
                 refreshAirportButtonsUI()
             }
@@ -246,11 +300,11 @@ extension FlightAddViewController {
             return
         }
         
-        if isAppendMode {
-            onUpdate?(viewModel.flight)
+        if mode != .none {
+            onUpdate?(dateType, viewModel.flight)
             navigationController?.popViewController(animated: true)
         } else {
-            let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
+            let vc = FeatureFactory.makePlanner(travel: viewModel.travel, startFlight: viewModel.flight)
             viewModel.addFlight()
             viewModel.saveToCoreData()
             navigationController?.pushViewController(vc, animated: true)
@@ -265,6 +319,11 @@ extension FlightAddViewController {
         let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
         
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func deleteFlight(_ sender: Any) {
+        onDelete?()
+        navigationController?.popViewController(animated: true)
     }
 }
 

@@ -144,12 +144,16 @@ extension TravelProvider {
         storageProvider.update(\TravelEntity.endDate, value: end, for: entity)
     }
     
-    func updateStartFlight(flight: FlightEntity, entity: TravelEntity) {
-        storageProvider.update(\TravelEntity.startFlight, value: flight, for: entity)
+    func deleteStartFlight(entity: TravelEntity) {
+        if let entity = entity.startFlight {
+            storageProvider.delete(entity)
+        }
     }
     
-    func updateEndFlight(flight: FlightEntity, entity: TravelEntity) {
-        storageProvider.update(\TravelEntity.endFlight, value: flight, for: entity)
+    func deleteEndFlight(entity: TravelEntity) {
+        if let entity = entity.endFlight {
+            storageProvider.delete(entity)
+        }
     }
     
     func updateSchduels(_ scheduleEntities: [ScheduleEntity], _ start: Date, _ end: Date, entity: TravelEntity) -> [ScheduleEntity] {
@@ -172,7 +176,6 @@ extension TravelProvider {
         }
         
         for (index, date) in dates.enumerated() {
-            print(date)
             scheduleEntities[index].date = date
         }
         
