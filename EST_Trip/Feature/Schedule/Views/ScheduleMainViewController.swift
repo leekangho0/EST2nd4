@@ -43,7 +43,10 @@ class ScheduleMainViewController: UIViewController {
                 self?.dateLabel.text = travelRange
             case let .title(text):
                 self?.titleLabel.text = text
-            default: break
+            case .flight:
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             }
         }
         
@@ -98,20 +101,14 @@ extension ScheduleMainViewController {
         
         let flightVC = FeatureFactory.makeFlight(travel: viewModel.travel)
         flightVC.isAppendMode = true
-        flightVC.dateType = viewModel.hasStartFlight() ? .end : .start
-        flightVC.onUpdate = { [weak self] flightDTO in
-            /*
+        flightVC.dateType = viewModel.hasStartFlight() ? .end : (viewModel.hasEndFlight() ? .start : .all)
+        flightVC.onUpdate = { [weak self] flight in
             guard let self else { return }
             
             if flightVC.dateType == .start {
                 self.viewModel.updateStartFlight(flight: flight)
             } else {
-                self.viewModel.updateStartFlight(flight: flight)
-            }
-             */
-            
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
+                self.viewModel.updateEndFlight(flight: flight)
             }
         }
         
@@ -231,7 +228,7 @@ extension ScheduleMainViewController {
     }
     
     private func updateTableViewHeight() {
-        tableViewHeightConstraint.constant = max(tableView.contentSize.height, viewModel.updatedSectionHeight)
+        tableViewHeightConstraint.constant = calculateExactTableViewHeight()
     }
     
     private func calculateExactTableViewHeight() -> CGFloat {
@@ -288,8 +285,6 @@ extension ScheduleMainViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ScheduleListCell.self), for: indexPath) as! ScheduleListCell
         
-        let place = viewModel.item(for: indexPath)
-
         let section = indexPath.section
         var index = indexPath.row
         
@@ -461,7 +456,19 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
 
 // MARK: - SearchViewControllerDelegate
 extension ScheduleMainViewController: SearchViewControllerDelegate {
-    func searchViewController(_ controller: SearchViewController, didSelectPlace place: GooglePlaceDTO, for section: Int) {
+    func searchViewController(_ controller: SearchViewController, place: PlaceDTO, for section: Int) {
+        viewModel.addPlace(place, section)
+        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+        updateTableViewHeight()
+    }
+    
+    func searchViewController(_ controller: SearchViewController, place: GooglePlaceDTO, for section: Int) {
+        viewModel.addPlace(place, section)
+        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+        updateTableViewHeight()
+    }
+    
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: PlaceDTO, for section: Int) {
         viewModel.addPlace(place, section)
         tableView.reloadSections(IndexSet(integer: section), with: .automatic)
         updateTableViewHeight()

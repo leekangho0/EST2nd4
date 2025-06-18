@@ -61,6 +61,15 @@ final class ScheduleProvider: NSObject {
             newEntity.schedule = entity
         }
     }
+    
+    func addPlace(_ item: PlaceDTO, entity: ScheduleEntity) {
+        storageProvider.insert(PlaceEntity.self) { newEntity in
+            item.apply(entity: newEntity)
+            
+            // relationship
+            newEntity.schedule = entity
+        }
+    }
 }
 
 extension ScheduleProvider: NSFetchedResultsControllerDelegate {

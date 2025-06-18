@@ -11,8 +11,7 @@ import CoreData
 enum TravelChange {
     case title(String)
     case date(String)
-    case startFlight(FlightEntity)
-    case endFlight(FlightEntity)
+    case flight
 }
 
 class ScheduleViewModel {
@@ -29,6 +28,9 @@ class ScheduleViewModel {
     
     let sectionHeight: CGFloat = 80
     
+    var startFlight: FlightDTO?
+    var endFlight: FlightDTO?
+    
     var updatedSectionHeight: CGFloat {
         sectionHeight * CGFloat(numberOfSections)
     }
@@ -42,19 +44,19 @@ class ScheduleViewModel {
     }
 
     var startFlightAirport: String? {
-        return travel.startFlight?.departureAirport
+        return startFlight?.departureAirport
     }
     
     var startFlightArrivalTime: String? {
-        return travel.startFlight?.arrivalTime?.timeToString(suffix: "도착")
+        return startFlight?.arrivalTime?.timeToString(suffix: "도착")
     }
     
     var endFlightAirport: String? {
-        return travel.endFlight?.departureAirport
+        return endFlight?.departureAirport
     }
     
     var endFlightDepartureTime: String? {
-        return travel.endFlight?.departureTime?.timeToString(suffix: "출발")
+        return endFlight?.departureTime?.timeToString(suffix: "출발")
     }
     
     var startDate: Date? {
@@ -80,8 +82,14 @@ class ScheduleViewModel {
         travelProvider: TravelProvider
     ) {
         self.travel = travel
+        
+        self.startFlight = FlightDTO(entity: travel.startFlight)
+        self.endFlight = FlightDTO(entity: travel.endFlight)
+        
         self.scheduleProvider = scheduleProvider
         self.travelProvider = travelProvider
+        
+        dump(travel)
     }
     
     func bind(reloadAction: @escaping () -> Void) {
@@ -112,24 +120,37 @@ class ScheduleViewModel {
     func updateTitle(_ text: String) {
         travelProvider.updateTitle(text, entity: travel)
         onTravelChanged?(.title(text))
+        
+        travel.title = title
     }
     
     func updateDate(start: Date, end: Date) {
         travelProvider.updateDate(start: start, end: end, entity: travel)
         onTravelChanged?(.date(Date.range(start: start, end: end)))
+        
+        travel.startDate = start
+        travel.endDate = end
     }
     
-    func updateStartFlight(flight: FlightEntity) {
-        travelProvider.updateStartFlight(flight: flight, entity: travel)
-        onTravelChanged?(.startFlight(flight))
+    func updateStartFlight(flight: FlightDTO) {
+        travelProvider.addStartFlight(entity: travel, flight: flight)
+        startFlight = flight
+        
+        onTravelChanged?(.flight)
     }
     
-    func updateEndFlight(flight: FlightEntity) {
-        travelProvider.updateEndFlight(flight: flight, entity: travel)
-        onTravelChanged?(.endFlight(flight))
+    func updateEndFlight(flight: FlightDTO) {
+        travelProvider.addEndFlight(entity: travel, flight: flight)
+        endFlight = flight
+        
+        onTravelChanged?(.flight)
     }
     
     func addPlace(_ item: GooglePlaceDTO, _ section: Int) {
+        scheduleProvider.addPlace(item, entity: schedules[section])
+    }
+    
+    func addPlace(_ item: PlaceDTO, _ section: Int) {
         scheduleProvider.addPlace(item, entity: schedules[section])
     }
         
@@ -138,11 +159,11 @@ class ScheduleViewModel {
     }
     
     func hasStartFlight() -> Bool {
-        self.travel.startFlight?.flightname != nil
+        return startFlight?.arrivalAirport != nil
     }
     
     func hasEndFlight() -> Bool {
-        self.travel.endFlight?.flightname != nil
+        return endFlight?.arrivalAirport != nil
     }
     
     func isLastSection(_ section: Int) -> Bool {

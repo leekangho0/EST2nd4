@@ -90,7 +90,7 @@ extension TravelProvider {
     }
     
     /// Flight 정보를 입력받아서 flight 갱신 또는 생성
-    func addFlight(entity: TravelEntity, flight: FlightDTO) {
+    func addStartFlight(entity: TravelEntity, flight: FlightDTO) {
         if let exist = entity.startFlight {
             flight.apply(entity: exist)
             storageProvider.update()
@@ -100,6 +100,20 @@ extension TravelProvider {
             storageProvider.insert(FlightEntity.self) { newEntity in
                 flight.apply(entity: newEntity)
                 entity.startFlight = newEntity
+            }
+        }
+    }
+    
+    func addEndFlight(entity: TravelEntity, flight: FlightDTO) {
+        if let exist = entity.startFlight {
+            flight.apply(entity: exist)
+            storageProvider.update()
+        } else {
+            
+            // 존재하지 않으면 새로 생성 후 relationship
+            storageProvider.insert(FlightEntity.self) { newEntity in
+                flight.apply(entity: newEntity)
+                entity.endFlight = newEntity
             }
         }
     }

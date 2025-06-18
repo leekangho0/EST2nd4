@@ -86,7 +86,7 @@ extension FlightAddViewModel {
 
 
     func addFlight() {
-        TravelProvider.shared.addFlight(entity: travel, flight: flight)
+        TravelProvider.shared.addStartFlight(entity: travel, flight: flight)
     }
     
     func saveToCoreData() {

@@ -98,18 +98,26 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         titleView.titleLabel.text = "항공편 추가"
         titleView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)
         navigationItem.titleView = titleView
-
-        let rightButton = UIButton(type: .system)
-        rightButton.setTitle("완료", for: .normal)
-        rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        let customRightBarButton = UIBarButtonItem(customView: rightButton)
         
-        let skipButton = UIBarButtonItem(title: "스킵", style: .plain, target: self, action: #selector(skipTap))
-//        navigationItem.rightBarButtonItem = customRightBarButton
-        
-        navigationItem.rightBarButtonItems = [skipButton, customRightBarButton]
+        let font = UIFont.systemFont(ofSize: 15, weight: .semibold)
 
-        rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
+        let rightButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(completeTap))
+        rightButton.setTitleTextAttributes([.font: font], for: .normal)
+        rightButton.tintColor = .label
+        
+//        let customRightBarButton = UIBarButtonItem(customView: rightButton)
+        
+        if isAppendMode {
+            navigationItem.rightBarButtonItems = [rightButton]
+        } else {
+            let skipButton = UIBarButtonItem(title: "스킵", style: .plain, target: self, action: #selector(skipTap))
+            skipButton.setTitleTextAttributes([.font: font], for: .normal)
+            skipButton.tintColor = .lightGray
+            
+            navigationItem.rightBarButtonItems = [skipButton, rightButton]
+        }
+
+//        rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
     }
 
     private func presentDataSelectionSheet() {
@@ -239,19 +247,14 @@ extension FlightAddViewController {
             present(alert, animated: true)
             return
         }
-
-        viewModel.addFlight()
         
-        let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
-        
-        viewModel.saveToCoreData()
-
         if isAppendMode {
             onUpdate?(viewModel.flight)
             navigationController?.popViewController(animated: true)
         } else {
             let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
-            
+            viewModel.addFlight()
+            viewModel.saveToCoreData()
             navigationController?.pushViewController(vc, animated: true)
         }
     }
