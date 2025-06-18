@@ -43,6 +43,8 @@ class EditTripTitleViewController: UIViewController, UITextFieldDelegate {
 
     @objc func textFieldDidChange() {
         let trimmed = titleTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        titleTextField.text = String(trimmed.prefix(10))
         confirmButton.isEnabled = !trimmed.isEmpty
     }
 
