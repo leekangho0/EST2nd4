@@ -15,6 +15,8 @@
         <attribute name="departureDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="departureTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flightname" attributeType="String"/>
+        <relationship name="end" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="startFlight" inverseEntity="TravelEntity"/>
+        <relationship name="start" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TravelEntity" inverseName="endFlight" inverseEntity="TravelEntity"/>
     </entity>
     <entity name="PlaceEntity" representedClassName=".PlaceEntity" syncable="YES" codeGenerationType="class">
         <attribute name="address" attributeType="String"/>
@@ -41,8 +43,8 @@
         <attribute name="endDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="startDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FlightEntity"/>
+        <relationship name="endFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="start" inverseEntity="FlightEntity"/>
         <relationship name="schedules" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ScheduleEntity" inverseName="travel" inverseEntity="ScheduleEntity"/>
-        <relationship name="startFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity"/>
+        <relationship name="startFlight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FlightEntity" inverseName="end" inverseEntity="FlightEntity"/>
     </entity>
 </model>
