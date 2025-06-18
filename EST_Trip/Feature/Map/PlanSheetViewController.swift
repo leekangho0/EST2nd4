@@ -111,7 +111,7 @@ extension PlanSheetViewController: UICollectionViewDelegate {
         let index = Int((scrollView.contentOffset.x + scrollView.frame.width / 2) / scrollView.frame.width)
         // index 를 기반으로 현재 보여지는 셀을 처리
         print("현재 인덱스: \(index)")
-        self.currentPlace = currentPlaces[index]
+        self.currentPlace = currentPlaces.isEmpty ? nil : currentPlaces[index]
     }
     
     // from method
@@ -119,7 +119,7 @@ extension PlanSheetViewController: UICollectionViewDelegate {
         let index = Int((scrollView.contentOffset.x + scrollView.frame.width / 2) / scrollView.frame.width)
         // index 를 기반으로 현재 보여지는 셀을 처리
         print("현재 인덱스: \(index)")
-        self.currentPlace = currentPlaces[index]
+        self.currentPlace = currentPlaces.isEmpty ? nil : currentPlaces[index]
     }
 }
 
