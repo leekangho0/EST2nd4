@@ -200,10 +200,10 @@ class ScheduleViewModel {
         scheduleProvider.movePlace(in: schedules, from: source, to: destination)
     }
     
-    func removePlace(_ indexPath: IndexPath) {
-        let entity = schedules[indexPath.section]
-        scheduleProvider.removePlace(in: entity, from: indexPath.item)
-        schedules[indexPath.section] = entity
+    func removePlace(_ section: Int, _ index: Int) {
+        let entity = schedules[section]
+        scheduleProvider.removePlace(in: entity, from: index)
+        schedules[section] = entity
     }
 
 //    // MARK: - Set up Datas

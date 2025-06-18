@@ -391,9 +391,18 @@ extension ScheduleMainViewController: UITableViewDataSource{
         if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) { return nil }
         
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, completion in
-            self?.viewModel.removePlace(indexPath)
-            self?.tableView.performBatchUpdates {
-                self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            guard let self else { return }
+            
+            var index = indexPath.row
+            
+            if self.isStartFlightSection(indexPath.section) {
+                index -= 1
+            }
+            
+            self.viewModel.removePlace(indexPath.section, index)
+            self.tableView.performBatchUpdates {
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
             completion(true)
         }
