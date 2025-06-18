@@ -29,7 +29,7 @@ final class FlightAddViewModel {
     }
 
     func updateFlightName(name: String) {
-        flight.flightNumber = name
+        flight.flightName = name
     }
 
     func updateDepartureDate(date: Date) -> String {
@@ -75,7 +75,7 @@ final class FlightAddViewModel {
 
 extension FlightAddViewModel {
     func isFlightVaild() -> Bool {
-        return flight.flightNumber?.isEmpty == false &&
+        return flight.flightName?.isEmpty == false &&
         flight.departureDate != nil &&
         flight.departureTime != nil &&
         flight.arrivalDate != nil &&
@@ -91,7 +91,7 @@ extension FlightAddViewModel {
     
     func saveToCoreData() {
         CoreDataManager.shared.insert(FlightEntity.self) { entity in
-            entity.flightname = flight.airline
+            entity.flightname = flight.flightName
             entity.departureDate = flight.departureDate
             entity.departureTime = flight.departureTime
             entity.arrivalDate = flight.departureDate

@@ -207,8 +207,7 @@ enum CategoryType: Int16 {
 }
 
 struct FlightDTO {
-    var airline: String?
-    var flightNumber: String?
+    var flightName: String?
     var departureDate: Date?
     var departureTime: Date?
     var arrivalTime: Date?
@@ -217,8 +216,7 @@ struct FlightDTO {
     var arrivalDate: Date?
 
     init(
-        airline: String? = nil,
-        flightNumber: String? = nil,
+        flightName: String? = nil,
         departureDate: Date? = nil,
         departureTime: Date? = nil,
         arrivalTime: Date? = nil,
@@ -226,8 +224,7 @@ struct FlightDTO {
         arrivalAirport: String? = nil,
         arrivalDate: Date? = nil
     ) {
-        self.airline = airline
-        self.flightNumber = flightNumber
+        self.flightName = flightName
         self.departureDate = departureDate
         self.departureTime = departureTime
         self.arrivalTime = arrivalTime
@@ -237,7 +234,7 @@ struct FlightDTO {
     }
     
     init?(entity: FlightEntity?) {
-        self.airline = entity?.flightname
+        self.flightName = entity?.flightname
         self.departureDate = entity?.departureDate
         self.departureTime = entity?.departureTime
         self.arrivalTime = entity?.arrivalTime

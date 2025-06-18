@@ -388,7 +388,6 @@ extension ScheduleMainViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // 여기서 삭제 로직 구현해주세요
         
         if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) { return nil }
         
