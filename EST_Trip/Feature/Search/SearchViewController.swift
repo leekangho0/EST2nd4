@@ -170,10 +170,12 @@ class SearchViewController: UIViewController {
     }
 
     private func toggleCategory(_ category: CategoryType, _ button: UIButton) {
-        resetCategoryButtons()
         if viewModel.selectedCategory == category {
-            viewModel.selectedCategory = nil
+//            viewModel.selectedCategory = nil
+            return
         } else {
+            resetCategoryButtons()
+            
             viewModel.selectedCategory = category
             selectButton(button: button)
             
