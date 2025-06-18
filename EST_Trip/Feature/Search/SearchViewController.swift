@@ -46,47 +46,6 @@ class SearchViewController: UIViewController {
         return controller
     }()
 
-    private let emptyView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        let imageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
-        imageView.tintColor = .systemGray
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-
-        let titleLabel = UILabel()
-        titleLabel.text = "검색 결과가 없어요."
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        titleLabel.textColor = .black
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let subtitleLabel = UILabel()
-        subtitleLabel.text = "정확하게 다시 입력해주세요."
-        subtitleLabel.font = UIFont.systemFont(ofSize: 14)
-        subtitleLabel.textColor = .systemGray
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(imageView)
-        view.addSubview(titleLabel)
-        view.addSubview(subtitleLabel)
-
-        NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
-            imageView.widthAnchor.constraint(equalToConstant: 50),
-            imageView.heightAnchor.constraint(equalToConstant: 50),
-
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
-
-            subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-        ])
-
-        view.isHidden = true
-        return view
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -147,12 +106,6 @@ class SearchViewController: UIViewController {
             button.layer.cornerRadius = button.frame.height / 2
             button.layer.masksToBounds = true
         }
-
-        view.addSubview(emptyView)
-        NSLayoutConstraint.activate([
-            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
         
         embed()
     }
