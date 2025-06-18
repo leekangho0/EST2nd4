@@ -134,6 +134,7 @@ extension ScheduleMainViewController {
             return
         }
         editVC.delegate = self
+        editVC.currentTitleText = viewModel.title
         
         // 모달 시트 스타일 설정
         if let sheet = editVC.sheetPresentationController {
