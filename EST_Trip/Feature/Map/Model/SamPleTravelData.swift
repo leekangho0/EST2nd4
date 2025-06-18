@@ -15,8 +15,7 @@ extension Travel {
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
         
         let flightToJeju = FlightDTO(
-            airline: "Korean Air",
-            flightNumber: "KE123",
+            flightName: "Korean Air",
             departureTime: startDate,
             arrivalTime: Calendar.current.date(byAdding: .hour, value: 1, to: startDate)!,
             departureAirport: "Gimpo",
@@ -24,8 +23,7 @@ extension Travel {
         )
         
         let flightFromJeju = FlightDTO(
-            airline: "Jeju Air",
-            flightNumber: "7C456",
+            flightName: "Jeju Air",
             departureTime: Calendar.current.date(byAdding: .day, value: 1, to: startDate)!,
             arrivalTime: Calendar.current.date(byAdding: .day, value: 1, to: startDate)!.addingTimeInterval(3600),
             departureAirport: "Jeju",

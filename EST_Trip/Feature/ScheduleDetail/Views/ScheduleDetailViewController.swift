@@ -109,7 +109,7 @@ class ScheduleDetailViewController: UIViewController {
         if let arrivalTime = place.arrivalTime {
             addTimeButton.setTitle(arrivalTime.timeToString(), for: .normal)
         }
-        addMemoButton.setTitle(place.memo, for: .normal)
+        addMemoButton.setTitle(place.memo ?? "  메모 추가", for: .normal)
         
         ratingStackView.isHidden = true
     }
@@ -162,7 +162,7 @@ class ScheduleDetailViewController: UIViewController {
             self.delegate?.updatePlaceMemo(section: section, place: self.place, memo: memo)
         }
 
-        if addMemoButton.titleLabel?.text == " 메모 추가" {
+        if addMemoButton.titleLabel?.text == "  메모 추가" {
             memoVC.currentMemo = ""
         } else {
             memoVC.currentMemo = addMemoButton.titleLabel?.text
