@@ -42,6 +42,8 @@ class RouteFindingViewController: UIViewController {
     
     private var selectedTransport: Transport = .car
     
+    let jejuAirportLocation = CLLocationCoordinate2D(latitude:33.507251, longitude: 126.493223)
+    
     private lazy var detailVC: RouteDetailViewController? = {
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RouteDetailViewController.self)) as? RouteDetailViewController
@@ -72,8 +74,8 @@ class RouteFindingViewController: UIViewController {
     @IBAction func moveToCurrentLocation(_ sender: Any) {
         if let currentLocation = locationManager.location?.coordinate {
             let camera = GMSCameraPosition.camera(
-                withLatitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
+                withLatitude: jejuAirportLocation.latitude,
+                longitude: jejuAirportLocation.longitude,
                 zoom: 15
             )
             mapView.animate(to: camera)
@@ -427,7 +429,7 @@ extension RouteFindingViewController: CLLocationManagerDelegate {
               let currentLocation = locations.last?.coordinate,
               let place = place else { return }
         
-        routeFindingVM.updateLocation(currentLocation, for: .start)
+        routeFindingVM.updateLocation(jejuAirportLocation, for: .start)
         routeFindingVM.updateLocation(
                 CLLocationCoordinate2D(
                     latitude: place.latitude,
