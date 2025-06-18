@@ -103,6 +103,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         
         let rightButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(completeTap))
         rightButton.setTitleTextAttributes([.font: font], for: .normal)
+        rightButton.setTitleTextAttributes([.font: font], for: .highlighted)
         rightButton.tintColor = .label
         
         if isAppendMode {
@@ -110,6 +111,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         } else {
             let skipButton = UIBarButtonItem(title: "스킵", style: .plain, target: self, action: #selector(skipTap))
             skipButton.setTitleTextAttributes([.font: font], for: .normal)
+            skipButton.setTitleTextAttributes([.font: font], for: .highlighted)
             skipButton.tintColor = .lightGray
             
             navigationItem.rightBarButtonItems = [skipButton, rightButton]
