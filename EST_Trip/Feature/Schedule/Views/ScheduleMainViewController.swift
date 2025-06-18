@@ -391,9 +391,18 @@ extension ScheduleMainViewController: UITableViewDataSource{
         if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) { return nil }
         
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, completion in
-            self?.viewModel.removePlace(indexPath)
-            self?.tableView.performBatchUpdates {
-                self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            guard let self else { return }
+            
+            var index = indexPath.row
+            
+            if self.isStartFlightSection(indexPath.section) {
+                index -= 1
+            }
+            
+            self.viewModel.removePlace(indexPath.section, index)
+            self.tableView.performBatchUpdates {
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
             completion(true)
         }
@@ -409,7 +418,11 @@ extension ScheduleMainViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.width * 0.27
+        if traitCollection.horizontalSizeClass == .regular {
+            return tableView.frame.height * 0.16
+        } else {
+            return tableView.frame.width * 0.27
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
