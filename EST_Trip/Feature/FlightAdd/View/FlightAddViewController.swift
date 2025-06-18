@@ -247,19 +247,14 @@ extension FlightAddViewController {
             present(alert, animated: true)
             return
         }
-
-        viewModel.addFlight()
         
-        let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
-        
-        viewModel.saveToCoreData()
-
         if isAppendMode {
             onUpdate?(viewModel.flight)
             navigationController?.popViewController(animated: true)
         } else {
             let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
-            
+            viewModel.addFlight()
+            viewModel.saveToCoreData()
             navigationController?.pushViewController(vc, animated: true)
         }
     }

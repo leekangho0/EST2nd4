@@ -23,7 +23,7 @@ extension FlightDTO {
         entity.departureDate = departureDate
         entity.departureAirport = departureAirport
         entity.departureTime = departureTime
-        entity.flightname = airline
+        entity.flightname = flightNumber
         entity.arrivalAirport = arrivalAirport
         entity.arrivalTime = arrivalTime
         entity.arrivalDate = arrivalDate
