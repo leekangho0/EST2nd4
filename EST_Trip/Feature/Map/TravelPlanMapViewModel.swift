@@ -13,6 +13,8 @@ class TravelPlanMapViewModel {
     
     var currentMarker: [GMSMarker] = []
     
+    var poliLine: GMSPolyline? = nil
+    
     init(travel: TravelEntity) {
         self.schedules = travel.orderedSchdules
     }
@@ -28,13 +30,16 @@ class TravelPlanMapViewModel {
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
             marker.title = place.name
-            marker.snippet = "카페"
+            marker.snippet = place.categoryType.name
             return marker
         }
     }
     
-    func drawPolyLine() -> (line: GMSPolyline, path: GMSPath) {
+    func drawPolyLine(for zoom: Float) -> (line: GMSPolyline, path: GMSPath) {
         // 경로 그리기
+        
+        self.poliLine?.map = nil
+        self.poliLine = nil
         let path = GMSMutablePath()
         
         currentMarker.map(\.position).forEach { position in
@@ -44,12 +49,31 @@ class TravelPlanMapViewModel {
         let polyline = GMSPolyline(path: path)
 
         // Dash line
-        let strokeStyles = [GMSStrokeStyle.solidColor(.jejuOrange), GMSStrokeStyle.solidColor(.clear)]
-        let strokeLengths = [NSNumber(value: 200), NSNumber(value: 200)]
+        let strokeStyles = [
+            GMSStrokeStyle.solidColor(.jejuOrange),
+            GMSStrokeStyle.solidColor(.clear)
+        ]
+        let segmentLength: Double
+
+        switch zoom {
+        case ..<10:
+            segmentLength = 100.0
+        case 10..<14:
+            segmentLength = 50.0
+        case 14..<18:
+            segmentLength = 20.0
+        case 18..<20:
+            segmentLength = 10.0
+        default:
+            segmentLength = 5.0
+        }
+        
+        let strokeLengths = [NSNumber(value: segmentLength), NSNumber(value: segmentLength)]
         
         polyline.spans = GMSStyleSpans(path, strokeStyles, strokeLengths, .rhumb)
 
         polyline.strokeWidth = 3
+        self.poliLine = polyline
         
         return (polyline, path)
     }

@@ -24,13 +24,16 @@ class TravelPlanMapViewController: UIViewController {
         super.viewDidLoad()
         
         embed()
-        setCamera(Jeju.northEast.coordinate2d)
+        mapView.delegate = self
+        
     }
     
     override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
         
         bottomSheetVC.days = viewModel.schedules
+        
+        setCamera(Jeju.northEast.coordinate2d)
     }
   
     private func embed() {
@@ -49,19 +52,19 @@ class TravelPlanMapViewController: UIViewController {
         self.bottomSheetVC.delegate = self
     }
     
-    private func drawPolyLine() {
+    private func drawPolyLine(for zoom: Float) {
         // 경로 그리기
-        let (polyline, path) = viewModel.drawPolyLine()
+        let (polyline, path) = viewModel.drawPolyLine(for: zoom)
         
         polyline.map = mapView
         
         // Camera Update Zoom out
-        let mapBounds = GMSCoordinateBounds(path: path)
-        let cameraUpdate = GMSCameraUpdate.fit(mapBounds)
-        mapView.moveCamera(cameraUpdate)
+//        let mapBounds = GMSCoordinateBounds(path: path)
+//        let cameraUpdate = GMSCameraUpdate.fit(mapBounds)
+//        mapView.moveCamera(cameraUpdate)
     }
     
-    private func setCamera(_ position: CLLocationCoordinate2D, zoom: Float = 10) {
+    private func setCamera(_ position: CLLocationCoordinate2D, zoom: Float = 14) {
         let camera = GMSCameraPosition.camera(withLatitude: position.latitude, longitude: position.longitude, zoom: zoom)
         mapView.animate(to: camera)
     }
@@ -90,21 +93,31 @@ extension TravelPlanMapViewController: PlanSheetDelegate {
         
         viewModel.drawMarkers(item)
         
-        viewModel.currentMarker.enumerated().forEach { index, marker in
+        viewModel.currentMarker.enumerated().forEach {
+            index,
+            marker in
             marker.map = self.mapView
-            marker.icon = GMSMarker.createNumberedMarkerImage(number: index)
+            marker.icon = GMSMarker.createNumberedPinImage(number: index)
         }
         
         if let first = viewModel.currentMarker.first {
             setCamera(first.position)
         }
         
-        drawPolyLine()
+        drawPolyLine(for: 10)
     }
 }
 
 extension TravelPlanMapViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         return false
+    }
+    
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        drawPolyLine(for: position.zoom)
+    }
+    
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+
     }
 }
