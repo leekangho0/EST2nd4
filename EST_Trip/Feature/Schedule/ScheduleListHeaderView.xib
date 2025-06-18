@@ -48,7 +48,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="t0I-KE-Dgd" secondAttribute="height" multiplier="1:1" id="oHU-3G-Puo"/>
                                     </constraints>
-                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system">
                                         <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="16" weight="semibold"/>

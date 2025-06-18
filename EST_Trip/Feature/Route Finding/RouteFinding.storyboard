@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_3" orientation="portrait" appearance="light"/>
+    <device id="retina6_3" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
@@ -26,7 +26,7 @@
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="I0p-dn-2d9">
                                                 <rect key="frame" x="3" y="0.66666666666666607" width="14" height="12.666666666666668"/>
-                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="I0p-dn-2d9" secondAttribute="height" multiplier="1:1" id="eFH-h4-hUT"/>
                                                 </constraints>
@@ -170,7 +170,7 @@
                                             <constraint firstAttribute="width" secondItem="xJg-gv-Sb4" secondAttribute="height" multiplier="21:17" id="hfg-vi-Fps"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="18"/>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" systemColor="labelColor"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" backgroundImage="arrow.up.arrow.down" catalog="system"/>
                                         <connections>
@@ -178,7 +178,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="xJg-gv-Sb4" firstAttribute="height" secondItem="3N4-mR-s2Q" secondAttribute="height" multiplier="0.25" id="0db-sh-Hgy"/>
                                     <constraint firstItem="3N4-mR-s2Q" firstAttribute="leading" secondItem="dDs-5o-7YH" secondAttribute="trailing" constant="8" id="H0h-iS-h2k"/>
@@ -201,11 +201,11 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSt-sL-uG8">
                                 <rect key="frame" x="337.66666666666669" y="345" width="44.333333333333314" height="44.333333333333314"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hSt-sL-uG8" secondAttribute="height" multiplier="1:1" id="8xJ-43-EB8"/>
                                 </constraints>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="location" catalog="system"/>
                                 <buttonConfiguration key="configuration" style="plain" image="location" catalog="system"/>
@@ -227,7 +227,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="cTz-cS-HNg" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="0UA-VV-zSM"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Qtm-22-5aD" secondAttribute="bottom" constant="118" id="4kV-w4-Wuy"/>
@@ -246,7 +246,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="길찾기" id="38n-Se-8gc">
                         <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" id="Ioy-Np-idc">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" systemColor="labelColor"/>
                             <connections>
                                 <action selector="dismiss:" destination="Y6W-OH-hqX" id="46B-G2-8eD"/>
                             </connections>
@@ -618,14 +618,17 @@
         <image name="location" catalog="system" width="128" height="119"/>
         <image name="mappin" catalog="system" width="106" height="128"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

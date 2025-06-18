@@ -163,19 +163,18 @@
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQi-j8-v1x">
                                                                         <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="40"/>
-                                                                        <color key="backgroundColor" name="DolHareubangLightGray"/>
+                                                                        <color key="backgroundColor" red="0.8522331715" green="0.85223323110000004" blue="0.85223323110000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="q93-Mz-oWR"/>
                                                                         </constraints>
                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                        <color key="tintColor" name="DolHareubangGray"/>
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                         <state key="normal" title="+ 항공편">
                                                                             <color key="titleColor" name="DolHareubangGray"/>
                                                                         </state>
                                                                         <buttonConfiguration key="configuration" style="plain" title="+ 항공편">
                                                                             <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                            <color key="baseForegroundColor" name="DolHareubangGray"/>
+                                                                            <color key="baseForegroundColor" red="0.49539023640000002" green="0.49539023640000002" blue="0.49539023640000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         </buttonConfiguration>
                                                                         <connections>
                                                                             <action selector="addFlight:" destination="Kt2-W2-D71" eventType="touchUpInside" id="alA-VP-gPn"/>
@@ -287,7 +286,7 @@
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="우진해장국" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="0H9-qH-qlB" userLabel="TitleLabel">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="260" height="19.333333333333332"/>
                                                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                                                            <nil key="textColor"/>
+                                                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                             <nil key="highlightedColor"/>
                                                                                         </label>
                                                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="lbC-1z-CCL">
