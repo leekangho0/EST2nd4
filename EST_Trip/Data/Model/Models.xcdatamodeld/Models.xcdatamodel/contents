@@ -27,6 +27,8 @@
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="photo" optional="YES" attributeType="Binary"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="reviewCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="expense" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseEntity" inverseName="place" inverseEntity="ExpenseEntity"/>
         <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ScheduleEntity" inverseName="places" inverseEntity="ScheduleEntity"/>
     </entity>

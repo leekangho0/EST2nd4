@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -48,11 +49,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q0f-l3-QAI" userLabel="DayCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q0f-l3-QAI" userLabel="DayCollectionView">
                                 <rect key="frame" x="8" y="126" width="385" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="S0O-li-Dbq"/>
+                                    <constraint firstAttribute="height" constant="50" id="S0O-li-Dbq"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Yod-Nb-7jb">
                                     <size key="itemSize" width="128" height="128"/>
@@ -62,14 +63,14 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DayCollectionViewCell" id="Y9S-Pr-jeb" customClass="DayCollectionViewCell" customModule="EST_Trip" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="2" width="73.333333333333329" height="46"/>
+                                        <rect key="frame" x="0.0" y="7" width="73.333333333333329" height="36.333333333333329"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="lVT-pS-imi">
-                                            <rect key="frame" x="0.0" y="0.0" width="73.333333333333329" height="46"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="73.333333333333329" height="36.333333333333329"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y6i-14-gxC">
-                                                    <rect key="frame" x="16.000000000000004" y="8" width="41.333333333333343" height="30"/>
+                                                    <rect key="frame" x="16.000000000000004" y="7.9999999999999982" width="41.333333333333343" height="20.333333333333329"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -89,7 +90,7 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Dlp-E9-Iew" userLabel="PlaceCollectionVIew">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Dlp-E9-Iew" userLabel="PlaceCollectionVIew">
                                 <rect key="frame" x="0.0" y="176" width="393" height="150"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -134,11 +135,30 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="VMg-ie-F9W">
+                                                                    <rect key="frame" x="0.0" y="42.666666666666664" width="149" height="16"/>
+                                                                    <subviews>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="lRv-7B-Jzk">
+                                                                            <rect key="frame" x="0.0" y="-0.33333333333333215" width="16" height="15.666666666666664"/>
+                                                                            <color key="tintColor" name="JejuOrange"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="16" id="MKq-4A-m8j"/>
+                                                                                <constraint firstAttribute="width" constant="16" id="NgX-V9-BY8"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NAG-Ue-TsL">
+                                                                            <rect key="frame" x="20" y="0.0" width="129" height="16"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                            <color key="textColor" name="DolHareubangGray"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1og-0K-g7F">
-                                                                    <rect key="frame" x="0.0" y="42.666666666666664" width="149" height="106.33333333333334"/>
+                                                                    <rect key="frame" x="0.0" y="62.666666666666679" width="149" height="86.333333333333314"/>
                                                                     <string key="text">asdjfdsafjlsdjlsdjlskajdslfjsdafljsdflsjdflasjfdljfsadlfjsadlfjsadlfkjsalfjsaflj
 </string>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -156,14 +176,16 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="322" height="165"/>
                                         <connections>
-                                            <outlet property="imageView" destination="CHr-bj-HWd" id="ngg-95-3ub"/>
+                                            <outlet property="contentLabel" destination="1og-0K-g7F" id="CDg-oZ-e5C"/>
+                                            <outlet property="imageView" destination="RO3-Fh-Qcg" id="hfm-qT-jJi"/>
                                             <outlet property="nameLabel" destination="wUf-CM-xPU" id="dz4-Qt-6Nk"/>
                                             <outlet property="ratingLabel" destination="KzN-YX-V7H" id="Emi-pP-Iv8"/>
+                                            <outlet property="reviewCountLabel" destination="NAG-Ue-TsL" id="O4R-cW-FNc"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view contentMode="scaleToFill" verticalHuggingPriority="249" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="snJ-gd-LDf">
+                            <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="snJ-gd-LDf">
                                 <rect key="frame" x="0.0" y="326" width="393" height="526"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -195,6 +217,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="star.fill" catalog="system" width="128" height="116"/>
+        <namedColor name="DolHareubangGray">
+            <color red="0.49411764705882355" green="0.49411764705882355" blue="0.49411764705882355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="JejuOrange">
+            <color red="1" green="0.63529411764705879" blue="0.30196078431372547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

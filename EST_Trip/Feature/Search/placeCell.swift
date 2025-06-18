@@ -16,6 +16,7 @@ class placeCell: UITableViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var selectButton: UIButton!
 
+    @IBOutlet weak var ratinglabel: UILabel!
     var onSelectTapped: (() -> Void)?
 
     @IBAction func selectButtonTapped(_ sender: UIButton) {
@@ -26,6 +27,9 @@ class placeCell: UITableViewCell {
         super.awakeFromNib()
         placeImageView.layer.cornerRadius = 8
         placeImageView.clipsToBounds = true
+        
+        
+        placeImageView.contentMode = .scaleAspectFill
     }
 
     func configure(with model: GooglePlaceDTO) {
@@ -33,7 +37,8 @@ class placeCell: UITableViewCell {
         titleLabel.text = place.displayName
         subtitleLabel.text = place.formattedAddress
 
-        placeImageView.image = model.image ?? UIImage(systemName: "photo")
+        placeImageView.image = model.image ?? UIImage(resource: .image)
+        ratinglabel.text = "\(place.rating ?? 0.0) (\(place.numberOfUserRatings))"
 
         selectButton.setTitle("선택", for: .normal)
         selectButton.backgroundColor = .systemGray5

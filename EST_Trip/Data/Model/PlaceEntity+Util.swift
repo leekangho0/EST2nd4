@@ -16,4 +16,16 @@ extension PlaceEntity {
             self.category = newValue.rawValue
         }
     }
+    
+    public override var description: String {
+        """
+주소: \(self.address ?? "알 수 없음")
+도착시간: \(self.arrivalTime?.timeToString() ?? "-") 
+메모: \(self.memo ?? "-")
+"""
+    }
+    
+    var ratingText: String {
+        String(format: "%.1f", rating) + "(\(reviewCount))"
+    }
 }

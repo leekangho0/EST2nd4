@@ -24,11 +24,14 @@ class SearchViewController: UIViewController {
     var viewModel: SearchViewModel!
 
     private lazy var autocompleteDataSource: GMSAutocompleteTableDataSource = {
+        let circulr = GMSPlaceCircularLocationOption(
+            CLLocationCoordinate2D(latitude: 33.3617, longitude: 126.5292), 50000)
         let source = GMSAutocompleteTableDataSource()
         let filter = GMSAutocompleteFilter()
         filter.countries = ["KR"]
         filter.regionCode = "KR"
-        filter.locationRestriction = GMSPlaceCircularLocationOption(Jeju.northEast.coordinate2d, 600)
+        
+        filter.locationBias = circulr
         source.autocompleteFilter = filter
         source.delegate = self
         return source

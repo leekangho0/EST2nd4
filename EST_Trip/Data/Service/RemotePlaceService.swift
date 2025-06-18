@@ -70,7 +70,7 @@ final class RemotePlaceService {
         
         switch result {
         case .success(let place):
-            dump(place)
+            
             return place
         case .failure(let error):
             throw error
