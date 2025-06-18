@@ -91,6 +91,12 @@ class SearchViewController: UIViewController {
         layout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        toggleCategory(.travel, tourButton)
+    }
+    
     private func bind() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -123,7 +129,7 @@ class SearchViewController: UIViewController {
     
     private func deliverPlace(_ item: GooglePlaceDTO) {
         DispatchQueue.main.async { [self] in
-            self.delegate?.searchViewController(self, didSelectPlace: item, for: self.viewModel.section)
+            self.delegate?.searchViewController(self, place: item, for: self.viewModel.section)
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -341,8 +347,8 @@ extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
         let categoryType = CategoryType.from(placeTypes: place.types ?? [] )
         
         //TODO: 장소 선택시 Place 데이터 저장
-        /*
-        let place = PlaceDTO(
+        
+        let placeDTO = PlaceDTO(
             id: UUID(),
             name: place.name,
             latitude: place.coordinate.latitude,
@@ -351,11 +357,15 @@ extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
             category: CategoryDTO(type: categoryType, name: categoryType.name)
         )
         
-        
+        /*
         if let id = place.id {
             viewModel.load(by: id)
+        }*/
+        
+        DispatchQueue.main.async { [self] in
+            self.delegate?.searchViewController(self, place: placeDTO, for: viewModel.section)
+            self.navigationController?.popViewController(animated: true)
         }
-         */
     }
 
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: Error) {

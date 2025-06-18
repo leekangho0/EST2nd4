@@ -456,7 +456,19 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
 
 // MARK: - SearchViewControllerDelegate
 extension ScheduleMainViewController: SearchViewControllerDelegate {
-    func searchViewController(_ controller: SearchViewController, didSelectPlace place: GooglePlaceDTO, for section: Int) {
+    func searchViewController(_ controller: SearchViewController, place: PlaceDTO, for section: Int) {
+        viewModel.addPlace(place, section)
+        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+        updateTableViewHeight()
+    }
+    
+    func searchViewController(_ controller: SearchViewController, place: GooglePlaceDTO, for section: Int) {
+        viewModel.addPlace(place, section)
+        tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+        updateTableViewHeight()
+    }
+    
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: PlaceDTO, for section: Int) {
         viewModel.addPlace(place, section)
         tableView.reloadSections(IndexSet(integer: section), with: .automatic)
         updateTableViewHeight()

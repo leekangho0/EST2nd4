@@ -149,6 +149,10 @@ class ScheduleViewModel {
     func addPlace(_ item: GooglePlaceDTO, _ section: Int) {
         scheduleProvider.addPlace(item, entity: schedules[section])
     }
+    
+    func addPlace(_ item: PlaceDTO, _ section: Int) {
+        scheduleProvider.addPlace(item, entity: schedules[section])
+    }
         
     func dateToString(section: Int) -> String {
         return schedules[section].date?.toString() ?? "-"

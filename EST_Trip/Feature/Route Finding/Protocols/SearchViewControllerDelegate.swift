@@ -8,5 +8,6 @@
 import UIKit
 
 protocol SearchViewControllerDelegate: AnyObject {
-    func searchViewController(_ controller: SearchViewController, didSelectPlace place: GooglePlaceDTO, for section: Int)
+    func searchViewController(_ controller: SearchViewController, place: GooglePlaceDTO, for section: Int)
+    func searchViewController(_ controller: SearchViewController, place: PlaceDTO, for section: Int)
 }
