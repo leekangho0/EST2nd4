@@ -12,6 +12,14 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
     
     private var hasPresentedDateSheet = false
 //    var travel: Travel?
+    enum DateType {
+        case start, end, all
+    }
+    
+//    var travel: Travel?
+    var isAppendMode = false
+    var dateType: DateType = .all
+    var onUpdate: ((FlightDTO) -> Void)? = nil
 
     @IBOutlet weak var departureDate: UIButton!
     @IBAction func departureDateButtonTapped(_ sender: Any) {
@@ -109,6 +117,7 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         if let vc = storyboard.instantiateViewController(withIdentifier: "FlightDateSelectionViewController") as? FlightDateSelectionViewController {
 
             vc.modalPresentationStyle = .pageSheet
+            vc.dateType = dateType
 
             vc.onSelectDepartureDate = { [weak self] selectedDate, isFirst in
                 guard let self else { return }
@@ -230,12 +239,21 @@ extension FlightAddViewController {
             present(alert, animated: true)
             return
         }
-        
+
         viewModel.addFlight()
         
         let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
         
-        navigationController?.pushViewController(vc, animated: true)
+        viewModel.saveToCoreData()
+
+        if isAppendMode {
+            onUpdate?(viewModel.flight)
+            navigationController?.popViewController(animated: true)
+        } else {
+            let vc = FeatureFactory.makePlanner(travel: viewModel.travel)
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     @objc func onBack(_ sender: Any) {

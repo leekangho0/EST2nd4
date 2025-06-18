@@ -84,10 +84,35 @@ extension FlightAddViewModel {
         flight.arrivalAirport != nil
     }
 
+
     func addFlight() {
         TravelProvider.shared.addFlight(entity: travel, flight: flight)
     }
-//    
+    
+    func saveToCoreData() {
+        CoreDataManager.shared.insert(FlightEntity.self) { entity in
+            entity.flightname = flight.airline
+            entity.departureDate = flight.departureDate
+            entity.departureTime = flight.departureTime
+            entity.arrivalDate = flight.departureDate
+            entity.arrivalTime = flight.arrivalTime
+            entity.departureAirport = flight.departureAirport
+            entity.arrivalAirport = flight.arrivalAirport
+        }
+    }
+    
+//    func flightDTO() -> FlightDTO {
+//        FlightDTO(
+//            airline: flight.flightName,
+//            departureDate: flight.departureDate,
+//            departureTime: flight.departureDate,
+//            arrivalTime: flight.arrivalTime,
+//            departureAirport: flight.departureAirport,
+//            arrivalAirport: flight.arrivalAirport,
+//            arrivalDate: flight.arrivalDate
+//        )
+//    }
+//
 //    func updateTravle(travle: Travel?) -> Travel? {
 //        var travle = travle
 //        

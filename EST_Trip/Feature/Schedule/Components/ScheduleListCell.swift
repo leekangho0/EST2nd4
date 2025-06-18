@@ -49,7 +49,19 @@ class ScheduleListCell: UITableViewCell {
         titleLabel.text = place.name
         categoryLabel.text = place.categoryType.name
         addressLabel.text = place.address
-        distanceLabel.text = "3.7 km"
+//        distanceLabel.text = "3.7 km"
+        
+        categoryLabel.isHidden = false
+        dotLabel.isHidden = false
+    }
+    
+    func configure(indexPath: IndexPath, airport: String, time: String) {
+        numberBadgeLabel.text = "\(indexPath.row + 1)"
+        titleLabel.text = "\(airport)"
+        addressLabel.text = "\(time)"
+        
+        categoryLabel.isHidden = true
+        dotLabel.isHidden = true
     }
     
 }

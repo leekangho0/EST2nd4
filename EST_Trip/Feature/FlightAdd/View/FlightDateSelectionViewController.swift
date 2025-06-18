@@ -17,6 +17,7 @@ class FlightDateSelectionViewController: UIViewController {
     var travelDate: TravelDate {
         return selectionStore.travelDate
     }
+    var dateType: FlightAddViewController.DateType = .all
 
     @IBOutlet weak var firstDateButton: UIButton!
     @IBAction func firstDateButtonTapped(_ sender: Any) {
@@ -73,5 +74,14 @@ class FlightDateSelectionViewController: UIViewController {
             let SecondFormattedStr = formatter.string(from: date.endDate ?? Date())
             secondDateButton.setTitle("오는날 선택 \(SecondFormattedStr)", for: .normal)
         }
+        
+        updateDateButtons()
+    }
+    
+    /// 날짜 타입에 따라 시작 날짜 버튼과 종료 날짜 버튼의 표시 여부를 설정합니다.
+    /// - note: `.start`인 경우 종료 날짜 버튼만 보이고, `.end`인 경우 시작 날짜 버튼만 보입니다.
+    private func updateDateButtons() {
+        firstDateButton.isHidden = dateType == .end
+        secondDateButton.isHidden = dateType == .start
     }
 }

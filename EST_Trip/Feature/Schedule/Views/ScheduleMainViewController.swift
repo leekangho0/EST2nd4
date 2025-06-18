@@ -18,6 +18,8 @@ class ScheduleMainViewController: UIViewController {
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var dateLabel: UILabel!
+    private let sectionHeight: CGFloat = 50
+    
     private var isEditMode = false
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -41,12 +43,22 @@ class ScheduleMainViewController: UIViewController {
                 self?.dateLabel.text = travelRange
             case let .title(text):
                 self?.titleLabel.text = text
+            default: break
             }
         }
         
         viewModel.notify()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        updateTableViewHeight()
+    }
+}
+
+// MARK: - Actions
+extension ScheduleMainViewController {
     @objc func mapButtonTapped() {
         let mapVC = FeatureFactory.makeMap(TravelPlanMapViewModel(travel: viewModel.travel))
         self.navigationController?.pushViewController(mapVC, animated: true)
@@ -54,12 +66,6 @@ class ScheduleMainViewController: UIViewController {
     
     @objc func backButtonTapped() {
         self.navigationController?.popToRootViewController(animated: true)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        updateTableViewHeight()
     }
     
     @IBAction func toggleButtonTapped(_ sender: UIButton) {
@@ -84,16 +90,81 @@ class ScheduleMainViewController: UIViewController {
         updateTableViewHeight()
     }
     
-    @objc func editPlaceButtonTapped(_ sender: UIButton) {
+    @IBAction func addFlight(_ sender: Any) {
+        // 이미 출발편과 도착편 항공 정보가 모두 등록되어 있는 경우, 등록 불가 처리
+        if viewModel.hasStartFlight() && viewModel.hasEndFlight() {
+            return
+        }
+        
+        let flightVC = FeatureFactory.makeFlight(travel: viewModel.travel)
+        flightVC.isAppendMode = true
+        flightVC.dateType = viewModel.hasStartFlight() ? .end : .start
+        flightVC.onUpdate = { [weak self] flightDTO in
+            /*
+            guard let self else { return }
+            
+            if flightVC.dateType == .start {
+                self.viewModel.updateStartFlight(flight: flight)
+            } else {
+                self.viewModel.updateStartFlight(flight: flight)
+            }
+             */
+            
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+        
+        CalendarSelectionStore.shared.setTravelDate(
+            TravelDate(
+                startDate: viewModel.startDate,
+                endDate: viewModel.endDate
+            )
+        )
+        
+        self.navigationController?.pushViewController(flightVC, animated: true)
+    }
+    
+    @IBAction func editButtonTapped(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Schedule", bundle: nil)
+        guard let editVC = storyboard.instantiateViewController(withIdentifier: "EditMenuViewController") as? EditMenuViewController else {
+            return
+        }
+        editVC.delegate = self
+        
+        // 모달 시트 스타일 설정
+        if let sheet = editVC.sheetPresentationController {
+            sheet.detents = [.custom { _ in 280 }]
+            sheet.prefersGrabberVisible = true
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+            sheet.preferredCornerRadius = 20
+        }
+        
+        present(editVC, animated: true)
+        
+    }
+    
+    @IBAction func handleLongPress(_ gesture: UILongPressGestureRecognizer? = nil) {
+        if let state = gesture?.state {
+            if state == .ended {
+                updateEditMode()
+            }
+        }
+    }
+    
+    private func updateEditMode() {
         isEditMode.toggle()
         tableView.isEditing = isEditMode
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
 // MARK: - Set up UI
 extension ScheduleMainViewController {
     private func setupView() {
-        
         self.titleLabel.text = viewModel.title
         self.dateLabel.text = viewModel.dateRangeTitle
         setNavigation()
@@ -108,6 +179,8 @@ extension ScheduleMainViewController {
     }
     
     private func setNavigation() {
+        navigationController?.navigationBar.tintColor = .label
+        
         let mapButton = UIBarButtonItem(
             image: UIImage(systemName: "map"),
             style: .plain,
@@ -136,37 +209,63 @@ extension ScheduleMainViewController {
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
         tableView.contentInsetAdjustmentBehavior = .never
+        
+        toggleButtons.forEach { button in
+            button.layer.cornerRadius = button.frame.height / 2
+            button.clipsToBounds = true
+            
+            if traitCollection.userInterfaceStyle == .dark {
+                button.backgroundColor = UIColor(named: "DolHareubangLightGray")
+                button.setTitleColor(UIColor(named: "DolHareubangGray"), for: .normal)
+                button.tintColor = UIColor(named: "DolHareubangGray")
+            } else {
+                button.backgroundColor = UIColor(named: "DolHareubangLightGray")
+                button.setTitleColor(UIColor(named: "DolHareubangGray"), for: .normal)
+                button.tintColor = UIColor(named: "DolHareubangGray")
+            }
+            
+        }
+        
         tableView.separatorStyle = .none
-        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func updateTableViewHeight() {
         tableViewHeightConstraint.constant = max(tableView.contentSize.height, viewModel.updatedSectionHeight)
     }
     
-    @IBAction func editButtonTapped(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Schedule", bundle: nil)
-        guard let editVC = storyboard.instantiateViewController(withIdentifier: "EditMenuViewController") as? EditMenuViewController else {
-            return
+    private func calculateExactTableViewHeight() -> CGFloat {
+        var height: CGFloat = 0.0
+        
+        let sections = tableView.numberOfSections
+        for section in 0..<sections {
+            // Section Header
+            height += tableView.delegate?.tableView?(tableView, heightForHeaderInSection: section) ?? tableView.sectionHeaderHeight
+            
+            // Cells
+            let rows = tableView.numberOfRows(inSection: section)
+            for row in 0..<rows {
+                height += tableView.delegate?.tableView?(tableView, heightForRowAt: IndexPath(row: row, section: section)) ?? tableView.rowHeight
+            }
         }
         
-        // 새 제목이 입력되면 실행할 코드
-        editVC.onTitleUpdate = { [weak self] newTitle in
-            print("입력된 새 제목: \(newTitle)")
-            self?.titleLabel.text = newTitle
-        }
-        
-        editVC.delegate = self
-        
-        // 모달 시트 스타일 설정
-        if let sheet = editVC.sheetPresentationController {
-            sheet.detents = [.custom { _ in 280 }]
-            sheet.prefersGrabberVisible = true
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheet.preferredCornerRadius = 20
-        }
-        
-        present(editVC, animated: true)
+        return height
+    }
+    
+    private func isStartFlightCell(at indexPath: IndexPath) -> Bool {
+        return isStartFlightSection(indexPath.section) && indexPath.row == 0
+    }
+    
+    private func isStartFlightSection(_ section: Int) -> Bool {
+        return viewModel.hasStartFlight() && section == 0
+    }
+    
+    private func isEndFlightCell(at indexPath: IndexPath) -> Bool {
+        return isEndFlightSection(indexPath.section) && viewModel.isLastIndex(indexPath.section, indexPath.row - 1)
+    }
+    
+    private func isEndFlightSection(_ section: Int) -> Bool {
+        return viewModel.hasEndFlight() && viewModel.isLastSection(section)
     }
 }
 
@@ -178,15 +277,50 @@ extension ScheduleMainViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfRowsInSection(section: section)
+        var count = viewModel.numberOfRowsInSection(section: section)
+        
+        // 항공편 정보가 있을 경우 해당 section 내에서 1 추가
+        if isStartFlightSection(section) || isEndFlightSection(section){ count += 1 }
+        
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ScheduleListCell.self), for: indexPath) as! ScheduleListCell
         
         let place = viewModel.item(for: indexPath)
+
+        let section = indexPath.section
+        var index = indexPath.row
         
-        cell.configure(indexPath: indexPath, place: place)
+        if isStartFlightCell(at: indexPath) {
+            if let startFlightAirport = viewModel.startFlightAirport,
+               let startFlightTime = viewModel.startFlightArrivalTime {
+                cell.configure(
+                    indexPath: indexPath,
+                    airport: startFlightAirport,
+                    time: startFlightTime
+                )
+            }
+        } else if isEndFlightCell(at: indexPath) {
+            if let endFlightAirport = viewModel.endFlightAirport,
+               let endFlightTime = viewModel.endFlightDepartureTime {
+                
+                cell.configure(
+                    indexPath: indexPath,
+                    airport: endFlightAirport,
+                    time: endFlightTime
+                )
+            }
+        } else {
+            
+            if isStartFlightSection(section) {
+                index -= 1
+            }
+            
+            let place = viewModel.place(section: section, index: index)
+            cell.configure(indexPath: indexPath, place: place)
+        }
         
         return cell
     }
@@ -197,9 +331,25 @@ extension ScheduleMainViewController: UITableViewDataSource{
         headerView.dayLabel.text = "Day \(section + 1)"
         headerView.dateLabel.text = viewModel.headerTitle(section: section)
         headerView.addPlaceButton.tag = section
+
+        headerView.dateLabel.text = viewModel.dateToString(section: section)
         
+        /*
+        headerView.editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+        headerView.editButton.setTitle(nil, for: .normal)
+        
+        headerView.addPlaceButton.setTitle("장소 추가", for: .normal)
+        headerView.addMemoButton.setTitle("메모 추가", for: .normal)
+        */
+        
+        headerView.addPlaceButton.tag = section
+        headerView.addPlaceButton.isHidden = isEditMode
         headerView.addPlaceButton.addTarget(self, action: #selector(addPlaceButtonTapped(_:)), for: .touchUpInside)
-        headerView.editButton.addTarget(self, action: #selector(editPlaceButtonTapped(_:)), for: .touchUpInside)
+        
+        headerView.editConfirmButton.isHidden = !isEditMode
+        headerView.endEdit = { [weak self] in
+            self?.updateEditMode()
+        }
         
         return headerView
     }
@@ -212,6 +362,8 @@ extension ScheduleMainViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) { return false }
+        
         return true
     }
     
@@ -243,6 +395,8 @@ extension ScheduleMainViewController: UITableViewDataSource{
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // 여기서 삭제 로직 구현해주세요
         
+        if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) { return nil }
+        
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (_, _, completionHandler) in
             
         }
@@ -262,19 +416,45 @@ extension ScheduleMainViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 여기서 선택된 테이블뷰셀 정보를 넘겨주시면 됩니다
-        let detailVC = FeatureFactory.makeScheduleDetail()
-        detailVC.modalPresentationStyle = .pageSheet
-        detailVC.delegate = self
-        
-        self.present(detailVC, animated: true)
+        if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) {
+            
+        } else {
+            let section = indexPath.section
+            var index = indexPath.row
+            
+            if isStartFlightSection(section) {
+                index -= 1
+            }
+            
+            let detailVC = FeatureFactory.makeScheduleDetail()
+            detailVC.modalPresentationStyle = .pageSheet
+            detailVC.delegate = self
+            detailVC.place = viewModel.place(section: section, index: index)
+            detailVC.section = section
+            
+            self.present(detailVC, animated: true)
+        }
     }
 }
 
 // MARK: - ScheduleDetailViewControllerDelegate
 extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
-    func didTapRouteFindingButton() {
+    func updatePlaceDate(section: Int, place: PlaceEntity?, date: Date) {
+        if let id = place?.id {
+            viewModel.updatePlaceTime(in: section, placeID: id, time: date)
+        }
+    }
+    
+    func updatePlaceMemo(section: Int, place: PlaceEntity?, memo: String) {
+        if let id = place?.id {
+            viewModel.updatePlaceMemo(in: section, placeID: id, memo: memo)
+        }
+    }
+    
+    func didTapRouteFindingButton(place: PlaceEntity?) {
         let routeFindingVC = FeatureFactory.makeRoute()
+        routeFindingVC.place = place
+        
         self.navigationController?.pushViewController(routeFindingVC, animated: true)
     }
 }
