@@ -126,10 +126,13 @@ class ScheduleViewModel {
     
     func updateDate(start: Date, end: Date) {
         travelProvider.updateDate(start: start, end: end, entity: travel)
-        onTravelChanged?(.date(Date.range(start: start, end: end)))
-        
+
         travel.startDate = start
         travel.endDate = end
+        
+        schedules = travelProvider.updateSchduels(schedules, start, end, entity: travel)
+                
+        onTravelChanged?(.date(Date.range(start: start, end: end)))
     }
     
     func updateStartFlight(flight: FlightDTO) {

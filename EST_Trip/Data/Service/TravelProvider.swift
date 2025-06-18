@@ -151,4 +151,33 @@ extension TravelProvider {
     func updateEndFlight(flight: FlightEntity, entity: TravelEntity) {
         storageProvider.update(\TravelEntity.endFlight, value: flight, for: entity)
     }
+    
+    func updateSchduels(_ scheduleEntities: [ScheduleEntity], _ start: Date, _ end: Date, entity: TravelEntity) -> [ScheduleEntity] {
+        var scheduleEntities = scheduleEntities
+        let dates = Date.makeDateRange(from: start, to: end)
+        let scheduleCount = scheduleEntities.count
+        
+        if dates.count < scheduleCount {
+            (0..<(scheduleCount - dates.count)).forEach { _ in
+                storageProvider.delete(scheduleEntities.removeLast())
+            }
+        } else if dates.count > scheduleCount {
+            (0..<(dates.count - scheduleCount)).forEach { _ in
+                let scheduleEntity = storageProvider.insert(ScheduleEntity.self) { newEntity in
+                    newEntity.travel = entity
+                }
+                
+                scheduleEntities.append(scheduleEntity ?? ScheduleEntity())
+            }
+        }
+        
+        for (index, date) in dates.enumerated() {
+            print(date)
+            scheduleEntities[index].date = date
+        }
+        
+        storageProvider.update(\TravelEntity.schedules, value: NSOrderedSet(array: scheduleEntities), for: entity)
+        
+        return scheduleEntities
+    }
 }

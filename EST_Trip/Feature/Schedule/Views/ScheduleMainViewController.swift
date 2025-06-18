@@ -41,6 +41,10 @@ class ScheduleMainViewController: UIViewController {
             switch change {
             case let .date(travelRange):
                 self?.dateLabel.text = travelRange
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             case let .title(text):
                 self?.titleLabel.text = text
             case .flight:
