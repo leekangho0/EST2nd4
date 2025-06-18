@@ -129,7 +129,7 @@ class RouteFindingViewController: UIViewController {
 // MARK: - UI Setting
 extension RouteFindingViewController {
     private func configure() {
-        currentLocationButton.layer.shadowColor = UIColor.black.cgColor
+        currentLocationButton.layer.shadowColor = UIColor.label.cgColor
         currentLocationButton.layer.shadowOpacity = 0.3
         currentLocationButton.layer.shadowOffset = CGSize(width: 0, height: 2)
         currentLocationButton.layer.shadowRadius = 4
