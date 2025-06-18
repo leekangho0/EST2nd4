@@ -106,7 +106,7 @@ class ScheduleViewModel {
     }
     
     func numberOfRowsInSection(section: Int) -> Int {
-        schedules[section].orderedPlaces.count
+        schedules[section].orderedPlaces.count + (isFlightSection(section) ? 1 : 0)
     }
     
     func item(for indexPath: IndexPath) -> PlaceEntity {
@@ -196,8 +196,16 @@ class ScheduleViewModel {
     }
     
     func movePlace(_ source: IndexPath, _ destination: IndexPath) {
+        
+        let from = isStartFlightSection(source.section)
+        ? IndexPath(row: source.row - 1, section: source.section)
+        : source
+        
+        let to = isStartFlightSection(destination.section)
+        ? IndexPath(row: destination.row - 1, section: destination.section)
+        : destination
 
-        scheduleProvider.movePlace(in: schedules, from: source, to: destination)
+        scheduleProvider.movePlace(in: schedules, from: from, to: to)
     }
     
     func removePlace(_ section: Int, _ index: Int) {
@@ -205,10 +213,38 @@ class ScheduleViewModel {
         scheduleProvider.removePlace(in: entity, from: index)
         schedules[section] = entity
     }
-
-//    // MARK: - Set up Datas
-//    extension ScheduleViewModel {
-//        func setTravel(_ travel: Travel?) {
+    
+    func isStartFlightCell(at indexPath: IndexPath) -> Bool {
+        isStartFlightSection(indexPath.section) && indexPath.row == 0
+    }
+    
+    func isStartFlightSection(_ section: Int) -> Bool {
+        hasStartFlight() && section == 0
+    }
+    
+    func isEndFlightCell(at indexPath: IndexPath) -> Bool {
+        isEndFlightSection(indexPath.section) && isLastIndex(indexPath.section, indexPath.row - 1)
+    }
+    
+    private func isEndFlightSection(_ section: Int) -> Bool {
+        hasEndFlight() && isLastSection(section)
+    }
+    
+    func canMoveAt(at indexPath: IndexPath) -> Bool {
+        !(isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath))
+    }
+    
+    func hasSwipeAction(at indexPath: IndexPath) -> Bool {
+        !(isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath))
+    }
+    
+    func isFlightCell(at indexPath: IndexPath) -> Bool {
+        isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath)
+    }
+    
+    func isFlightSection(_ section: Int) -> Bool {
+        isStartFlightSection(section) || isEndFlightSection(section)
+    }
 }
 
 

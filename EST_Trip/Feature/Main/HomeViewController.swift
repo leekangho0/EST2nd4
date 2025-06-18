@@ -8,8 +8,6 @@
 import UIKit
 
 class MainViewController: UIViewController {
-//    var trips: [TravelEntity] = []
-    // 📌 dday를 기준으로 dday >=0 이면 futureTripTitle, dday < 0 이면 pastTripTitle에 넣어주기
 
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var userName: UILabel!
@@ -28,13 +26,8 @@ class MainViewController: UIViewController {
         
         viewModel.notifyAll()
         viewModel.setSection(.upcoming)
-    }
-
-    override func viewIsAppearing(_ animated: Bool) {
-        super.viewIsAppearing(animated)
-
-        // 코어데이터에서 데이터 로드
-        
+        futureTripButton.setTitleColor(.label, for: .normal)
+        pastTripButton.setTitleColor(.dolHareubangGray, for: .normal)
     }
 
     @IBAction func editNameButton(_ sender: Any) {
@@ -64,13 +57,13 @@ class MainViewController: UIViewController {
 
     @IBAction func menuButtonTapped(_ sender: UIButton) {
         if sender == futureTripButton {
+            futureTripButton.setTitleColor(.label, for: .normal)
+            pastTripButton.setTitleColor(.dolHareubangGray, for: .normal)
             viewModel.setSection(.upcoming)
-            futureTripButton.tintColor = .label
-            pastTripButton.tintColor = .dolHareubangGray
         } else {
+            futureTripButton.setTitleColor(.dolHareubangGray, for: .normal)
+            pastTripButton.setTitleColor(.label, for: .normal)
             viewModel.setSection(.prior)
-            futureTripButton.tintColor = .dolHareubangGray
-            pastTripButton.tintColor = .label
         }
     }
     

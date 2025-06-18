@@ -174,6 +174,6 @@ class ScheduleDetailViewController: UIViewController {
     }
 
     private func formatTime(_ date: Date) -> String {
-        return timeFormatter.string(from: date)
+        return date.timeToString()
     }
 }
