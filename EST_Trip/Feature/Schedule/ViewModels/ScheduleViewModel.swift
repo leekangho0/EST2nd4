@@ -87,6 +87,10 @@ class ScheduleViewModel {
         travelProvider.updateDate(start: start, end: end, entity: travel)
         onTravelChanged?(.date(Date.range(start: start, end: end)))
     }
+    
+    func addPlace(_ item: GooglePlaceDTO, _ section: Int) {
+        scheduleProvider.addPlace(item, entity: schedules[section])
+    }
 }
 
 extension ScheduleViewModel: ScheduleProviderDelegate {

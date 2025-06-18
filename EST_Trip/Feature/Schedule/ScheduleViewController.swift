@@ -18,11 +18,11 @@ final class ScheduleViewController: UIViewController {
 }
 
 extension ScheduleViewController {
-    @IBAction func onAddPlace(_ sender: Any) {
-        let vc = FeatureFactory.makeSearch()
-        
-        navigationController?.pushViewController(vc, animated: true)
-    }
+//    @IBAction func onAddPlace(_ sender: Any) {
+//        let vc = FeatureFactory.makeSearch()
+//        
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
     @IBAction func onRoute(_ sender: Any) {
         
         let vc = FeatureFactory.makeRoute()

@@ -76,8 +76,8 @@ class ScheduleMainViewController: UIViewController {
     
     @objc func addPlaceButtonTapped(_ sender: UIButton) {
         let section = sender.tag
-        let searchVC = FeatureFactory.makeSearch()
-        searchVC.selectedSection = section
+        let searchVC = FeatureFactory.makeSearch(section: section)
+        
         searchVC.delegate = self  // 꼭 delegate 지정
         self.navigationController?.pushViewController(searchVC, animated: true)
         
@@ -281,7 +281,8 @@ extension ScheduleMainViewController: ScheduleDetailViewControllerDelegate {
 
 // MARK: - SearchViewControllerDelegate
 extension ScheduleMainViewController: SearchViewControllerDelegate {
-    func searchViewController(_ controller: SearchViewController, didSelectPlace place: PlaceDTO, forSection section: Int) {
+    func searchViewController(_ controller: SearchViewController, didSelectPlace place: GooglePlaceDTO, for section: Int) {
+        viewModel.addPlace(place, section)
         tableView.reloadSections(IndexSet(integer: section), with: .automatic)
         updateTableViewHeight()
     }

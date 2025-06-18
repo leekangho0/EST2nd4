@@ -24,12 +24,13 @@ class TravelPlanMapViewController: UIViewController {
         super.viewDidLoad()
         
         embed()
+        setCamera(Jeju.northEast.coordinate2d)
     }
     
     override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
         
-        bottomSheetVC.days = Days.sample
+        bottomSheetVC.days = viewModel.schedules
     }
   
     private func embed() {
@@ -67,13 +68,13 @@ class TravelPlanMapViewController: UIViewController {
 }
 
 extension TravelPlanMapViewController: PlanSheetDelegate {
-    func sheet(_ view: PlanSheetViewController, didSelectDayAt item: Days) {
+    func sheet(_ view: PlanSheetViewController, didSelectDayAt item: ScheduleEntity) {
         print("day selected")
         
-        drawMarker(item.places)
+        drawMarker(item.orderedPlaces)
     }
     
-    func sheet(_ view: PlanSheetViewController, didSelectPlaceAt item: PlaceDetail) {
+    func sheet(_ view: PlanSheetViewController, didSelectPlaceAt item: PlaceEntity) {
         
         if let marker = viewModel.selectMarker(item) {
             CATransaction.begin()
@@ -84,7 +85,7 @@ extension TravelPlanMapViewController: PlanSheetDelegate {
         }
     }
     
-    private func drawMarker(_ item: [PlaceDetail]) {
+    private func drawMarker(_ item: [PlaceEntity]) {
         self.mapView.clear()
         
         viewModel.drawMarkers(item)

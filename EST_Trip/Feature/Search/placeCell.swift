@@ -8,6 +8,7 @@
 
 import UIKit
 import GooglePlaces
+import GooglePlacesSwift
 
 class placeCell: UITableViewCell {
     @IBOutlet weak var placeImageView: UIImageView!
@@ -27,15 +28,12 @@ class placeCell: UITableViewCell {
         placeImageView.clipsToBounds = true
     }
 
-    func configure(with place: Place) {
-        titleLabel.text = place.title
-        subtitleLabel.text = place.subtitle
+    func configure(with model: GooglePlaceDTO) {
+        let place = model.place
+        titleLabel.text = place.displayName
+        subtitleLabel.text = place.formattedAddress
 
-        if let image = place.thumbnailImage {
-            placeImageView.image = image
-        } else {
-            placeImageView.image = UIImage(named: place.imageName) ?? UIImage(systemName: "photo")
-        }
+        placeImageView.image = model.image ?? UIImage(systemName: "photo")
 
         selectButton.setTitle("선택", for: .normal)
         selectButton.backgroundColor = .systemGray5

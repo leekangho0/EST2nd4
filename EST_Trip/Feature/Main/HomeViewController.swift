@@ -110,13 +110,8 @@ extension MainViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let travel = viewModel.item(for: indexPath)
-        //디버깅시 확인후 지워주세요!
-        print("인덱스\(indexPath), id:",travel.id)
 
         let vc = FeatureFactory.makePlanner(travel: travel)
-
-        //필요시 이동할 뷰컨에 travelID를 받을 변수 하나 선언해주세요
-        //EX) vc.travelID = trip.id
 
         navigationController?.pushViewController(vc, animated: true)
     }

@@ -73,6 +73,7 @@ extension TravelProvider {
        let travelEntity = storageProvider.insert(TravelEntity.self) { entity in
             entity.startDate = start
             entity.endDate = end
+           entity.title = "제주여행"
         }
         
         if let travelEntity {
