@@ -12,13 +12,13 @@ final class FlightAddViewModel {
     
     var flight = FlightDTO()
 
-    private let dayFormatter: DateFormatter = {
+    let dayFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy.M.d"
         return f
     }()
 
-    private let timeFormatter: DateFormatter = {
+    let timeFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "HH:mm"
         return f

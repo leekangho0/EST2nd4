@@ -26,14 +26,15 @@ enum FeatureFactory {
         return vc
     }
     
-    static func makePlanner(travel: TravelEntity) -> ScheduleMainViewController {
+    static func makePlanner(travel: TravelEntity, startFlight: FlightDTO? = nil) -> ScheduleMainViewController {
         let vc = StoryboardType.schedule.makeViewController(ScheduleMainViewController.self)
         vc.viewModel = ScheduleViewModel(
             travel: travel,
             scheduleProvider: ScheduleProvider(
                 travel: travel
             ),
-            travelProvider: TravelProvider.shared
+            travelProvider: TravelProvider.shared,
+            startFlight: startFlight
         )
         return vc
     }

@@ -79,17 +79,21 @@ class ScheduleViewModel {
     init(
         travel: TravelEntity,
         scheduleProvider: ScheduleProvider,
-        travelProvider: TravelProvider
+        travelProvider: TravelProvider,
+        startFlight: FlightDTO?
     ) {
         self.travel = travel
         
-        self.startFlight = FlightDTO(entity: travel.startFlight)
+        if let startFlight = startFlight {
+            self.startFlight = startFlight
+        } else {
+            self.startFlight = FlightDTO(entity: travel.startFlight)
+        }
         self.endFlight = FlightDTO(entity: travel.endFlight)
         
         self.scheduleProvider = scheduleProvider
         self.travelProvider = travelProvider
         
-        dump(travel)
     }
     
     func bind(reloadAction: @escaping () -> Void) {
@@ -126,10 +130,13 @@ class ScheduleViewModel {
     
     func updateDate(start: Date, end: Date) {
         travelProvider.updateDate(start: start, end: end, entity: travel)
-        onTravelChanged?(.date(Date.range(start: start, end: end)))
-        
+
         travel.startDate = start
         travel.endDate = end
+        
+        schedules = travelProvider.updateSchduels(schedules, start, end, entity: travel)
+                
+        onTravelChanged?(.date(Date.range(start: start, end: end)))
     }
     
     func updateStartFlight(flight: FlightDTO) {
@@ -142,6 +149,20 @@ class ScheduleViewModel {
     func updateEndFlight(flight: FlightDTO) {
         travelProvider.addEndFlight(entity: travel, flight: flight)
         endFlight = flight
+        
+        onTravelChanged?(.flight)
+    }
+    
+    func deleteStartFlight() {
+        travelProvider.deleteStartFlight(entity: travel)
+        startFlight = nil
+        
+        onTravelChanged?(.flight)
+    }
+    
+    func deleteEndFlight() {
+        travelProvider.deleteEndFlight(entity: travel)
+        endFlight = nil
         
         onTravelChanged?(.flight)
     }
