@@ -18,8 +18,17 @@ class MainViewModel {
         case upcoming
     }
     
-    private var travel: [TravelEntity] = []
-
+    private var selectedSection: TravelSection = .upcoming
+    
+    private var selectedTravel: [TravelEntity] {
+        switch selectedSection {
+        case .prior:
+            return pastTrip
+        case .upcoming:
+            return futureTrip
+        }
+    }
+    
     private var futureTrip: [TravelEntity] = []
     private var pastTrip: [TravelEntity] = []
     
@@ -32,11 +41,11 @@ class MainViewModel {
     }
     
     var numberOfRowsInSection: Int {
-        travel.count
+        selectedTravel.count
     }
     
     func item(for IndexPath: IndexPath) -> TravelEntity {
-        travel[IndexPath.item]
+        selectedTravel[IndexPath.item]
     }
     
     func bind(reloadAction: @escaping () -> Void) {
@@ -50,12 +59,7 @@ class MainViewModel {
     }
     
     func setSection(_ section: TravelSection) {
-        switch section {
-        case .prior:
-            travel = pastTrip
-        case .upcoming:
-            travel = futureTrip
-        }
+        selectedSection = section
         reloadClosure?()
     }
 }
@@ -64,13 +68,13 @@ class MainViewModel {
 extension MainViewModel: TravelProviderDelegate {
     func travelProviderDidUpdatePrior(_ travels: [TravelEntity]) {
         pastTrip = travels
-        self.travel = pastTrip
+
         reloadClosure?()
     }
     
     func travelProviderDidUpdateUpcoming(_ travels: [TravelEntity]) {
         futureTrip = travels
-        self.travel = pastTrip
+
         reloadClosure?()
     }
 }
