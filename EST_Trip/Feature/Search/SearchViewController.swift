@@ -7,9 +7,8 @@
 
 
 import UIKit
-import GooglePlaces
 import GooglePlacesSwift
-
+import GooglePlaces
 
 
 class SearchViewController: UIViewController {
@@ -319,46 +318,8 @@ extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
         
         hideAutocompleteResults()
         searchBar.resignFirstResponder()
-
-        var address = place.formattedAddress
         
-        if let components = place.addressComponents {
-            var city: String?
-            var local: String?
-            var dong: String?
-            
-            for component in components {
-                if component.types.contains("administrative_area_level_1") {
-                    city = component.shortName // 예: 서울특별시
-                } else if component.types.contains("sublocality_level_2") {
-                    dong = component.shortName // 예: 상봉동
-                } else if component.types.contains("locality") {
-                    local = component.shortName
-                }
-            }
-            
-            if let city = city, let dong = dong {
-                address = "\(city) \(dong)"
-            } else if let city = city, let local = local {
-                address = "\(city) \(local)"
-            }
-        }
-        
-        let categoryType = CategoryType.from(placeTypes: place.types ?? [] )
-        
-        //TODO: 장소 선택시 Place 데이터 저장
-        
-        let placeDTO = PlaceDTO(
-            id: UUID(),
-            name: place.name,
-            latitude: place.coordinate.latitude,
-            longitude: place.coordinate.longitude,
-            address: address,
-            category: CategoryDTO(type: categoryType, name: categoryType.name)
-        )
-        
-        /*
-        if let id = place.id {
+        if let id = place.placeID {
             viewModel.load(by: id)
         }*/
         
