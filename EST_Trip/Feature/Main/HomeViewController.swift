@@ -25,14 +25,16 @@ class MainViewController: UIViewController {
         
         layout()
         bind()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // 코어데이터에서 데이터 로드
+        
         viewModel.notifyAll()
         viewModel.setSection(.upcoming)
+    }
+
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+
+        // 코어데이터에서 데이터 로드
+        
     }
 
     @IBAction func editNameButton(_ sender: Any) {
