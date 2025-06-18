@@ -19,6 +19,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var cafeButton: UIButton!
     @IBOutlet weak var searchBar: UITextField!
 
+    @IBOutlet weak var dayHeaderLabel: UILabel!
     weak var delegate: SearchViewControllerDelegate?
     
     var viewModel: SearchViewModel!
@@ -137,6 +138,7 @@ class SearchViewController: UIViewController {
     }
     
     private func layout() {
+        self.dayHeaderLabel.text = viewModel.headerText
         setupSelectButtonAppearance()
 
         [tourButton, foodButton, cafeButton].forEach { button in
