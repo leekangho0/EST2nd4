@@ -25,6 +25,8 @@ class TransitDetailViewController: UIViewController {
     
     var routeInfo: RouteInfo?
     
+    private var transportObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,6 +37,20 @@ class TransitDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         
         configureRouteStepStackView()
+        
+        transportObserver = NotificationCenter.default.addObserver(forName: .didUpdateTransport, object: nil, queue: .main) { _ in
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let observer = transportObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 
     private func setupView() {
