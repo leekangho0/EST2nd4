@@ -26,6 +26,8 @@ class MainViewController: UIViewController {
         
         viewModel.notifyAll()
         viewModel.setSection(.upcoming)
+        futureTripButton.setTitleColor(.label, for: .normal)
+        pastTripButton.setTitleColor(.dolHareubangGray, for: .normal)
     }
 
     @IBAction func editNameButton(_ sender: Any) {
