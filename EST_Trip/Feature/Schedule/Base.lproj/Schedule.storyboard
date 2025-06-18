@@ -284,7 +284,7 @@
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wXM-t6-Xyi">
                                                                                     <rect key="frame" x="15" y="12" width="260" height="43"/>
                                                                                     <subviews>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="우진해장국" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0H9-qH-qlB" userLabel="TitleLabel">
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="우진해장국" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="0H9-qH-qlB" userLabel="TitleLabel">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="260" height="19.333333333333332"/>
                                                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                                                             <nil key="textColor"/>
@@ -293,7 +293,7 @@
                                                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="lbC-1z-CCL">
                                                                                             <rect key="frame" x="0.0" y="29.333333333333339" width="260" height="13.666666666666668"/>
                                                                                             <subviews>
-                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="맛집" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOu-tp-gFw" userLabel="CategoryLabel">
+                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="맛집" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="lOu-tp-gFw" userLabel="CategoryLabel">
                                                                                                     <rect key="frame" x="0.0" y="0.0" width="24.333333333333332" height="13.666666666666666"/>
                                                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.40431016156462585" colorSpace="custom" customColorSpace="sRGB"/>
@@ -305,7 +305,7 @@
                                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.40431016156462585" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                     <nil key="highlightedColor"/>
                                                                                                 </label>
-                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="제주 제주시 서사로 11" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzu-Z7-mPC" userLabel="AddressLabel">
+                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="제주 제주시 서사로 11" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="Vzu-Z7-mPC" userLabel="AddressLabel">
                                                                                                     <rect key="frame" x="39.333333333333329" y="0.0" width="220.66666666666669" height="13.666666666666666"/>
                                                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.40431016156462585" colorSpace="custom" customColorSpace="sRGB"/>
@@ -677,7 +677,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
