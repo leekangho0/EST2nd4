@@ -100,12 +100,10 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
         navigationItem.titleView = titleView
         
         let font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-
+        
         let rightButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(completeTap))
         rightButton.setTitleTextAttributes([.font: font], for: .normal)
         rightButton.tintColor = .label
-        
-//        let customRightBarButton = UIBarButtonItem(customView: rightButton)
         
         if isAppendMode {
             navigationItem.rightBarButtonItems = [rightButton]
@@ -116,8 +114,6 @@ class FlightAddViewController: UIViewController, UITextFieldDelegate {
             
             navigationItem.rightBarButtonItems = [skipButton, rightButton]
         }
-
-//        rightButton.addTarget(self, action: #selector(completeTap), for: .touchUpInside)
     }
 
     private func presentDataSelectionSheet() {
