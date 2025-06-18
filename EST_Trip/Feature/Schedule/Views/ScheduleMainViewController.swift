@@ -234,25 +234,7 @@ extension ScheduleMainViewController {
     }
     
     private func updateTableViewHeight() {
-        tableViewHeightConstraint.constant = calculateExactTableViewHeight()
-    }
-    
-    private func calculateExactTableViewHeight() -> CGFloat {
-        var height: CGFloat = 0.0
-        
-        let sections = tableView.numberOfSections
-        for section in 0..<sections {
-            // Section Header
-            height += tableView.delegate?.tableView?(tableView, heightForHeaderInSection: section) ?? tableView.sectionHeaderHeight
-            
-            // Cells
-            let rows = tableView.numberOfRows(inSection: section)
-            for row in 0..<rows {
-                height += tableView.delegate?.tableView?(tableView, heightForRowAt: IndexPath(row: row, section: section)) ?? tableView.rowHeight
-            }
-        }
-        
-        return height
+        tableViewHeightConstraint.constant = tableView.contentSize.height
     }
     
     private func isStartFlightCell(at indexPath: IndexPath) -> Bool {
@@ -278,7 +260,7 @@ extension ScheduleMainViewController: UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = viewModel.numberOfRowsInSection(section: section)
         
