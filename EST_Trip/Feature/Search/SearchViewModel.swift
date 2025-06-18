@@ -10,7 +10,7 @@ import GooglePlacesSwift
 
 struct GooglePlaceDTO {
     let place: Place
-    let image: UIImage?
+    var image: UIImage?
 }
 
 extension GooglePlaceDTO {
@@ -18,6 +18,8 @@ extension GooglePlaceDTO {
         entity.latitude = place.location.latitude
         entity.longitude = place.location.longitude
         entity.name = place.displayName
+        entity.reviewCount = Int16(place.numberOfUserRatings)
+        entity.rating = Double(place.rating ?? 0.0)
         entity.photo = image?.jpegData(compressionQuality: 1)
         entity.categoryType = CategoryType.from(placeTypes: place.types.map(\.rawValue))
         entity.address = place.formattedAddress
@@ -60,6 +62,24 @@ class SearchViewModel {
             do {
                 let places = try await remotePlaceService.fetch(by: category.name, category: selectedCategory)
                 filteredPlaces = places.map { GooglePlaceDTO(place: $0, image: nil) }
+                await withTaskGroup(of: (Int, UIImage?).self) { group in
+                    for (index, place) in filteredPlaces.enumerated() {
+                        guard let photo = place.place.photos?.first else { continue }
+                        
+                        group.addTask {
+                            do {
+                                let image = try await self.remotePlaceService.fetch(by: photo)
+                                return (index, image)
+                            } catch {
+                                return (index, nil)
+                            }
+                        }
+                    }
+                    
+                    for await (index, image) in group {
+                        filteredPlaces[index].image = image
+                    }
+                }
                 onReload?()
             } catch {
                 onError?(error)
@@ -87,6 +107,25 @@ class SearchViewModel {
             do {
                let places = try await remotePlaceService.fetch(by: text, category: nil)
                 filteredPlaces = places.map { GooglePlaceDTO(place: $0, image: nil) }
+                
+                await withTaskGroup(of: (Int, UIImage?).self) { group in
+                    for (index, place) in filteredPlaces.enumerated() {
+                        guard let photo = place.place.photos?.first else { continue }
+                        
+                        group.addTask {
+                            do {
+                                let image = try await self.remotePlaceService.fetch(by: photo)
+                                return (index, image)
+                            } catch {
+                                return (index, nil)
+                            }
+                        }
+                    }
+                    
+                    for await (index, image) in group {
+                        filteredPlaces[index].image = image
+                    }
+                }
                 onReload?()
             } catch {
                 onError?(error)

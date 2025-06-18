@@ -150,7 +150,15 @@ extension PlanSheetViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(type: PlaceDetailCollectionViewCell.self, for: indexPath)
             let item = currentPlaces[indexPath.item]
             cell.nameLabel.text = item.name
-            cell.ratingLabel.text = "별점 \(item.categoryType.name) - " //(\(item.reviews))"
+            cell.ratingLabel.text = "카테고리 \(item.categoryType.name)"
+            cell.contentLabel.text = item.description
+            cell.reviewCountLabel.text = item.ratingText
+            if let data = item.photo {
+                cell.imageView.image = UIImage(data: data)
+            } else {
+                cell.imageView.image = UIImage(resource: .image)
+            }
+            
             return cell
         } else {
             fatalError()

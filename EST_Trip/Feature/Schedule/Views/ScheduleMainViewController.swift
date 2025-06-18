@@ -367,6 +367,10 @@ extension ScheduleMainViewController: UITableViewDataSource{
                    to destinationIndexPath: IndexPath) {
         
         viewModel.movePlace(sourceIndexPath, destinationIndexPath)
+        let indices = IndexSet(arrayLiteral: sourceIndexPath.section, destinationIndexPath.section)
+        tableView.performBatchUpdates { [self] in
+            self.tableView.reloadSections(indices, with: .automatic)
+        }
     }
     
     // 삭제
