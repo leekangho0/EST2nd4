@@ -64,11 +64,13 @@ class MainViewModel {
 extension MainViewModel: TravelProviderDelegate {
     func travelProviderDidUpdatePrior(_ travels: [TravelEntity]) {
         pastTrip = travels
+        self.travel = pastTrip
         reloadClosure?()
     }
     
     func travelProviderDidUpdateUpcoming(_ travels: [TravelEntity]) {
         futureTrip = travels
+        self.travel = pastTrip
         reloadClosure?()
     }
 }
