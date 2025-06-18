@@ -20,7 +20,8 @@ extension GooglePlaceDTO {
         entity.name = place.displayName
         entity.photo = image?.jpegData(compressionQuality: 1)
         entity.categoryType = CategoryType.from(placeTypes: place.types.map(\.rawValue))
-//        entity.id = place.placeID?.hashValue
+        entity.address = place.formattedAddress
+        entity.id = UUID(uuidString: place.placeID ?? UUID().uuidString) ?? UUID()
     }
 }
 
