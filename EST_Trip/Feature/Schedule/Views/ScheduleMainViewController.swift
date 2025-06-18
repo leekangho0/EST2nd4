@@ -403,6 +403,8 @@ extension ScheduleMainViewController: UITableViewDataSource{
             self.viewModel.removePlace(indexPath.section, index)
             self.tableView.performBatchUpdates {
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            } completion: { _ in
+                self.tableView.reloadData()
             }
             completion(true)
         }
