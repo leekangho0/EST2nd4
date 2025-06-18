@@ -105,7 +105,7 @@ extension TravelProvider {
     }
     
     func addEndFlight(entity: TravelEntity, flight: FlightDTO) {
-        if let exist = entity.startFlight {
+        if let exist = entity.endFlight {
             flight.apply(entity: exist)
             storageProvider.update()
         } else {
