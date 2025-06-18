@@ -399,7 +399,7 @@ extension ScheduleMainViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.width * 0.25
+        return tableView.frame.width * 0.27
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

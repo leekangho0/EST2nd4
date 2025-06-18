@@ -263,27 +263,29 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="105" translatesAutoresizingMaskIntoConstraints="NO" id="wUx-eO-Q2l">
                                                 <rect key="frame" x="23" y="249" width="347" height="20"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xfc-Ns-vOk">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Xfc-Ns-vOk">
                                                         <rect key="frame" x="0.0" y="0.0" width="222" height="20"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufk-sl-cRE">
-                                                                <rect key="frame" x="0.0" y="0.0" width="102" height="20"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufk-sl-cRE">
+                                                                <rect key="frame" x="0.0" y="0.0" width="83" height="20"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                                 <color key="tintColor" systemColor="labelColor"/>
-                                                                <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="예정된 여행">
-                                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                                </buttonConfiguration>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <state key="normal" title="예정된 여행">
+                                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
                                                                 <connections>
                                                                     <action selector="menuButtonTapped:" destination="nkk-Y5-Veu" eventType="touchUpInside" id="vAm-mA-8nC"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZw-pV-CeA">
-                                                                <rect key="frame" x="120" y="0.0" width="102" height="20"/>
+                                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZw-pV-CeA">
+                                                                <rect key="frame" x="93" y="0.0" width="129" height="20"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                                 <color key="tintColor" name="DolHareubangGray"/>
-                                                                <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="지나간 여행">
-                                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                                </buttonConfiguration>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <state key="normal" title="지나간 여행">
+                                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
                                                                 <connections>
                                                                     <action selector="menuButtonTapped:" destination="nkk-Y5-Veu" eventType="touchUpInside" id="jSp-fD-C1U"/>
                                                                 </connections>
@@ -307,6 +309,7 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Xfc-Ns-vOk" secondAttribute="trailing" id="2wP-fq-9oG"/>
                                                     <constraint firstAttribute="trailing" secondItem="92g-fj-KvF" secondAttribute="trailing" id="3r7-fr-gAg"/>
                                                     <constraint firstItem="Xfc-Ns-vOk" firstAttribute="leading" secondItem="wUx-eO-Q2l" secondAttribute="leading" id="98P-Tz-brS"/>
                                                     <constraint firstAttribute="bottom" secondItem="92g-fj-KvF" secondAttribute="bottom" id="9Fh-Xg-Pr7"/>

@@ -467,6 +467,8 @@ extension RouteFindingViewController: UICollectionViewDelegate {
         updateSelectedTransport(transport: Transport.allCases[indexPath.item])
         fetchRoutes()
         transportationCollectionView.reloadData()
+        
+        NotificationCenter.default.post(name: .didUpdateTransport, object: nil)
     }
 }
 
