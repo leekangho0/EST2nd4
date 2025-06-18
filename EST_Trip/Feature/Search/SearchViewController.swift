@@ -321,11 +321,6 @@ extension SearchViewController: GMSAutocompleteTableDataSourceDelegate {
         
         if let id = place.placeID {
             viewModel.load(by: id)
-        }*/
-        
-        DispatchQueue.main.async { [self] in
-            self.delegate?.searchViewController(self, place: placeDTO, for: viewModel.section)
-            self.navigationController?.popViewController(animated: true)
         }
     }
 
