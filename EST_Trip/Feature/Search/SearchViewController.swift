@@ -196,7 +196,7 @@ class SearchViewController: UIViewController {
         buttons.forEach { btn in
             var config = btn?.configuration ?? UIButton.Configuration.filled()
             config.baseBackgroundColor = .systemGray5
-            config.baseForegroundColor = .black
+            config.baseForegroundColor = .label
             btn?.configuration = config
         }
     }

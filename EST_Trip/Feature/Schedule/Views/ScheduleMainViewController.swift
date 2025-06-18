@@ -419,14 +419,6 @@ extension ScheduleMainViewController: UITableViewDelegate{
         return viewModel.sectionHeight
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if traitCollection.horizontalSizeClass == .regular {
-            return tableView.frame.height * 0.16
-        } else {
-            return tableView.frame.width * 0.27
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) {
             let flightVC = FeatureFactory.makeFlight(travel: viewModel.travel)

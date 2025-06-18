@@ -21,6 +21,7 @@ class RouteFindingViewController: UIViewController {
     
     @IBOutlet weak var transportationCollectionView: UICollectionView!
     @IBOutlet weak var currentLocationButton: UIButton!
+    @IBOutlet weak var swapLocationButton: UIButton!
     @IBOutlet weak var startLocationField: UITextField!
     @IBOutlet weak var endLocationField: UITextField!
     
@@ -62,6 +63,7 @@ class RouteFindingViewController: UIViewController {
         setupMapView()
         embedRouteDetailVC()
         checkAuthorization()
+        updateButtons()
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,6 +71,15 @@ class RouteFindingViewController: UIViewController {
         
         setupCurrentLocationButton()
         setupLayout()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        setupLayout()
+        updateButtons()
+        
+        transportationCollectionView.reloadData()
     }
     
     @IBAction func moveToCurrentLocation(_ sender: Any) {
@@ -227,6 +238,22 @@ extension RouteFindingViewController {
         guard let detailVC else { return 0 }
         
         return detailVC.viewHeight()
+    }
+    
+    private func updateButtons() {
+        var pointSize: CGFloat = 17
+        
+        if traitCollection.horizontalSizeClass == .regular {
+            pointSize = self.view.frame.width > self.view.frame.height ? 25 : 20
+        }
+        
+        let config = UIImage.SymbolConfiguration(pointSize: pointSize, weight: .medium)
+        
+        let locationImage = UIImage(systemName: "location", withConfiguration: config)
+        self.currentLocationButton.setImage(locationImage, for: .normal)
+        
+        let arrowImage = UIImage(systemName: "arrow.up.arrow.down", withConfiguration: config)
+        self.swapLocationButton.setImage(arrowImage, for: .normal)
     }
 }
 
