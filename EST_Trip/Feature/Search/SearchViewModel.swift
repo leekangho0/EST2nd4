@@ -67,6 +67,7 @@ class SearchViewModel {
         }
     }
     
+    // id를 이용하여 검색
     func load(by id: String) {
         Task {
             do {

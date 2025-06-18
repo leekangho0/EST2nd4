@@ -365,19 +365,8 @@ extension ScheduleMainViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView,
                    moveRowAt sourceIndexPath: IndexPath,
                    to destinationIndexPath: IndexPath) {
-        // 여기서 편집 로직 구현해주세요
         
-        /* 예시 코드 입니다
-         // 1. source 섹션의 배열에서 아이템 꺼내고 제거
-         var fromSectionItems = schedulePlaces[sourceIndexPath.section]
-         let movedItem = fromSectionItems.remove(at: sourceIndexPath.row)
-         schedulePlaces[sourceIndexPath.section] = fromSectionItems
-         
-         // 2. destination 섹션의 배열에 아이템 삽입
-         var toSectionItems = schedulePlaces[destinationIndexPath.section]
-         toSectionItems.insert(movedItem, at: destinationIndexPath.row)
-         schedulePlaces[destinationIndexPath.section] = toSectionItems
-         */
+        viewModel.movePlace(sourceIndexPath, destinationIndexPath)
     }
     
     // 삭제
@@ -391,8 +380,12 @@ extension ScheduleMainViewController: UITableViewDataSource{
         
         if isStartFlightCell(at: indexPath) || isEndFlightCell(at: indexPath) { return nil }
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (_, _, completionHandler) in
-            
+        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, completion in
+            self?.viewModel.removePlace(indexPath)
+            self?.tableView.performBatchUpdates {
+                self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+            completion(true)
         }
         
         return UISwipeActionsConfiguration(actions: [deleteAction])
