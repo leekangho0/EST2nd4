@@ -418,7 +418,11 @@ extension ScheduleMainViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.width * 0.27
+        if traitCollection.horizontalSizeClass == .regular {
+            return tableView.frame.height * 0.16
+        } else {
+            return tableView.frame.width * 0.27
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
