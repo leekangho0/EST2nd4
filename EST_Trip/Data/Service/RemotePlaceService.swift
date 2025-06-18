@@ -94,7 +94,7 @@ final class RemotePlaceService {
         let request = SearchByTextRequest(
             textQuery: text,
             placeProperties: Filter.defaultProperties,
-            locationRestriction: center,
+            locationBias: center, // 변경
             includedType: category?.single(),
             maxResultCount: 10, minRating: 2.5,
             rankPreference: .distance,
