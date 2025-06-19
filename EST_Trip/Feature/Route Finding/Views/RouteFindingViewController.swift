@@ -82,6 +82,14 @@ class RouteFindingViewController: UIViewController {
         transportationCollectionView.reloadData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+#if targetEnvironment(simulator)
+        updateLocationAndFetchRoutes(currentLocation: jejuAirportLocation)
+#endif
+    }
+    
     @IBAction func moveToCurrentLocation(_ sender: Any) {
         if let currentLocation = locationManager.location?.coordinate {
             let camera = GMSCameraPosition.camera(
@@ -121,6 +129,7 @@ class RouteFindingViewController: UIViewController {
         
     private func updateRouteInfos() {
         self.detailVC?.routeInfos = self.routeFindingVM.routeInfos
+        self.detailVC?.warningMessage = nil
         
         DispatchQueue.main.async {
             self.setupRouteDetailContainerViewHeight()
@@ -133,6 +142,20 @@ class RouteFindingViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.setupRouteDetailContainerViewHeight()
+        }
+    }
+    
+    private func updateLocationAndFetchRoutes(currentLocation: CLLocationCoordinate2D) {
+        if let place {
+            routeFindingVM.updateLocation(currentLocation, for: .start)
+            routeFindingVM.updateLocation(
+                    CLLocationCoordinate2D(
+                        latitude: place.latitude,
+                        longitude: place.longitude
+                    ),
+                    for: .end
+                )
+            fetchRoutes()
         }
     }
 }
@@ -260,6 +283,13 @@ extension RouteFindingViewController {
 // MARK: - Fetch Datas
 extension RouteFindingViewController {
     private func fetchRoutes() {
+        Task {
+            await self.resetMapView()
+            await self.loadRoutes()
+        }
+    }
+    
+    private func loadRoutes() async {
         switch selectedTransport {
         case .car:
             routeFindingVM.fetchDrivingRoute { [weak self] result in
@@ -311,8 +341,6 @@ extension RouteFindingViewController {
 extension RouteFindingViewController {
     private func drawRouteFromCoordinates(routeCoordinates: [CLLocationCoordinate2D]) {
         DispatchQueue.main.async {
-            self.resetMapView()
-            
             let path = GMSMutablePath()
             for coordinate in routeCoordinates {
                 path.add(coordinate)
@@ -355,8 +383,6 @@ extension RouteFindingViewController {
     
     private func drawRouteFromPolylines(routes: [RouteInfo.Route]) {
         DispatchQueue.main.async {
-            self.resetMapView()
-            
             var bounds: GMSCoordinateBounds?
             
             for route in routes {
@@ -415,7 +441,7 @@ extension RouteFindingViewController {
         }
     }
     
-    private func resetMapView() {
+    private func resetMapView() async {
         startMarker?.map = nil
         endMarker?.map = nil
         polylines.forEach {
@@ -453,18 +479,9 @@ extension RouteFindingViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard !hasUpdatedRoute,
-              let currentLocation = locations.last?.coordinate,
-              let place = place else { return }
+              let currentLocation = locations.last?.coordinate else { return }
         
-        routeFindingVM.updateLocation(jejuAirportLocation, for: .start)
-        routeFindingVM.updateLocation(
-                CLLocationCoordinate2D(
-                    latitude: place.latitude,
-                    longitude: place.longitude
-                ),
-                for: .end
-            )
-        fetchRoutes()
+        updateLocationAndFetchRoutes(currentLocation: currentLocation)
         
         hasUpdatedRoute = true
     }

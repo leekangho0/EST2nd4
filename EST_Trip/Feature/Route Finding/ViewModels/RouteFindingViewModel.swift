@@ -24,7 +24,7 @@ final class RouteFindingViewModel {
     var endLocation: CLLocationCoordinate2D?
     
     func routes(index: Int) -> [RouteInfo.Route] {
-        return routeInfos[index].routes ?? []
+        return routeInfos.count > 0 ? (routeInfos[index].routes ?? []) : []
     }
     
     func updateLocation(_ location: CLLocationCoordinate2D, for type: LocationType) {
