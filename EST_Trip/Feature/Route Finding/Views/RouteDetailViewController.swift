@@ -97,6 +97,8 @@ extension RouteDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if routeInfos.count == 1, warningMessage != nil { return }
+        
         let storyboard = UIStoryboard(name: "RouteFinding", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: String(describing: TransitDetailViewController.self)) as? TransitDetailViewController else { return }
         vc.dragDelegate = self
