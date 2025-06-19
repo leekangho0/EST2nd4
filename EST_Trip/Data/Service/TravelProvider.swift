@@ -60,7 +60,12 @@ final class TravelProvider: NSObject {
 
 extension TravelProvider: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
-        notifyAll()
+        
+        if controller == upcomingFRC {
+            delegate?.travelProviderDidUpdateUpcoming(upcomingFRC.fetchedObjects ?? [])
+        } else {
+            delegate?.travelProviderDidUpdatePrior(priorFRC.fetchedObjects ?? [])
+        }
     }
 }
 

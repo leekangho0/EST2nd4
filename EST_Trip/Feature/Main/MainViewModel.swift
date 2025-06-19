@@ -45,7 +45,10 @@ class MainViewModel {
     }
     
     func item(for IndexPath: IndexPath) -> TravelEntity {
-        selectedTravel[IndexPath.item]
+        return selectedTravel[IndexPath.item]
+//        guard selectedTravel.count > IndexPath.item else {
+//            return nil
+//        }
     }
     
     func bind(reloadAction: @escaping () -> Void) {
