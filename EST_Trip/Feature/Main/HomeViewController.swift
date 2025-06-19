@@ -103,7 +103,7 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
         let travel = viewModel.item(for: indexPath)
 
         let vc = FeatureFactory.makePlanner(travel: travel)
